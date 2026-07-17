@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A Surprise for You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+  <div class="progress-dots" id="progress-dots"></div>
+
+  <!-- Step 1: Scan & Open -->
+  <section class="step" data-step="1">
+    <div class="card center">
+      <p class="eyebrow">A surprise</p>
+      <h1 class="script script-hero">for you</h1>
+      <div class="icon-envelope"><span class="icon-heart"></span></div>
+      <button class="btn-primary" data-action="open">OPEN <span class="icon-heart"></span></button>
+    </div>
+  </section>
+
+  <!-- Step 2: Unlock Mission -->
+  <section class="step" data-step="2">
+    <div class="card">
+      <div class="paper-tag">a date to remember</div>
+      <p class="eyebrow">ภารกิจแรก</p>
+      <h2 class="script">Mission</h2>
+      <p class="hint">วันที่เราเริ่มคบกัน</p>
+      <div class="date-picker">
+        <select id="mission-day"></select>
+        <select id="mission-month"></select>
+        <select id="mission-year"></select>
+      </div>
+      <p class="tip">Tip: วันที่พิเศษของเรา <span class="icon-heart"></span></p>
+      <p class="error-msg" id="mission-error" hidden>ลองอีกครั้งนะ <span class="icon-heart"></span></p>
+      <button class="btn-primary" data-action="check-mission">ยืนยัน</button>
+    </div>
+  </section>
+
+  <!-- Step 3: Mini Games -->
+  <section class="step" data-step="3">
+    <div class="card" id="games-intro">
+      <div class="paper-tag">just for fun</div>
+      <p class="eyebrow">3 มินิเกม</p>
+      <h2 class="script">Let's Play!</h2>
+      <p class="hint">เล่นให้ครบเพื่อปลดล็อกความทรงจำถัดไป</p>
+      <button class="btn-primary" data-action="start-games">START GAMES</button>
+    </div>
+
+    <div class="card" id="game-quiz" hidden>
+      <p class="eyebrow">Game 1 · Love Quiz</p>
+      <div id="quiz-body"></div>
+    </div>
+
+    <div class="card" id="game-memory" hidden>
+      <p class="eyebrow">Game 2 · Memory Match</p>
+      <div id="memory-grid" class="memory-grid"></div>
+    </div>
+
+    <div class="card" id="game-hunt" hidden>
+      <p class="eyebrow">Game 3 · Heart Hunt</p>
+      <p class="hint">แตะหัวใจให้ครบทุกดวง</p>
+      <div id="hunt-field" class="hunt-field"></div>
+      <p class="hunt-count"><span id="hunt-collected">0</span>/<span id="hunt-total">8</span> <span class="icon-heart"></span></p>
+    </div>
+  </section>
+
+  <!-- Step 4: Memory Gallery -->
+  <section class="step" data-step="4">
+    <div class="card">
+      <div class="paper-tag">our moments</div>
+      <p class="eyebrow">ความทรงจำของเรา</p>
+      <h2 class="script">Memories</h2>
+      <p class="relationship-label" id="relationship-label"></p>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <button class="btn-primary" data-action="next">ต่อไป</button>
+    </div>
+  </section>
+
+  <!-- Step 5: Our Song -->
+  <section class="step" data-step="5">
+    <div class="card center">
+      <div class="paper-tag">our song</div>
+      <p class="eyebrow">เพลงของเรา</p>
+      <h2 class="script" id="song-title"></h2>
+      <p class="hint" id="song-artist"></p>
+      <div class="soundwave"><span></span><span></span><span></span><span></span><span></span></div>
+      <audio controls id="song-player"></audio>
+      <button class="btn-primary" data-action="next">ต่อไป</button>
+    </div>
+  </section>
+
+  <!-- Step 6: Voice Message — paused for now, kept for later re-enable, not part of the active flow -->
+  <!--
+  <section class="step" data-step="6-voice">
+    <div class="card center">
+      <p class="eyebrow">ข้อความเสียง</p>
+      <h2 class="script" id="voice-from"></h2>
+      <audio controls id="voice-player"></audio>
+      <button class="btn-primary" data-action="next">ต่อไป</button>
+    </div>
+  </section>
+  -->
+
+  <!-- Step 6: The Letter (was step 7; step 6/Voice paused above) -->
+  <section class="step" data-step="6">
+    <div class="card">
+      <div class="paper-tag">all my heart</div>
+      <p class="eyebrow">จดหมายพิเศษ</p>
+      <div class="letter" id="letter-body"></div>
+      <p class="hint" id="ending-message"></p>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/games.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

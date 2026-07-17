@@ -1,0 +1,527 @@
+* { box-sizing: border-box; }
+
+/* ---- hand-drawn icon set (CSS shapes, no emoji/image assets) ---- */
+.icon-heart {
+  position: relative;
+  display: inline-block;
+  width: 1em; height: 0.9em;
+  color: inherit;
+  vertical-align: -0.05em;
+}
+.icon-heart::before, .icon-heart::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0.5em;
+  width: 0.5em; height: 0.8em;
+  background: currentColor;
+  border-radius: 0.5em 0.5em 0 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+.icon-heart::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+
+.icon-star {
+  display: inline-block;
+  width: 0.9em; height: 0.9em;
+  background: currentColor;
+  clip-path: polygon(50% 0%, 62% 36%, 100% 50%, 62% 64%, 50% 100%, 38% 64%, 0% 50%, 38% 36%);
+  vertical-align: -0.1em;
+}
+
+.icon-photo {
+  position: relative;
+  display: inline-block;
+  width: 1.5em; height: 1.15em;
+  border: 0.13em solid currentColor;
+  border-radius: 0.2em;
+}
+.icon-photo::before {
+  content: "";
+  position: absolute;
+  top: 0.16em; left: 0.16em;
+  width: 0.28em; height: 0.28em;
+  border-radius: 50%;
+  background: currentColor;
+}
+.icon-photo::after {
+  content: "";
+  position: absolute;
+  right: -0.02em; bottom: -0.02em;
+  width: 0; height: 0;
+  border-left: 0.5em solid transparent;
+  border-bottom: 0.6em solid currentColor;
+}
+
+.icon-pin {
+  display: inline-block;
+  width: 0.8em; height: 0.8em;
+  border-radius: 50% 50% 50% 0;
+  background: var(--pink);
+  transform: rotate(-45deg);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.icon-envelope {
+  position: relative;
+  width: 4.2rem; height: 2.8rem;
+  margin: 24px auto 30px;
+  background: #fff;
+  border: 2px solid var(--pink);
+  border-radius: 6px;
+}
+.icon-envelope::before {
+  content: "";
+  position: absolute;
+  inset: -2px -2px auto -2px;
+  height: 55%;
+  background: var(--pink-light);
+  clip-path: polygon(0 0, 50% 62%, 100% 0);
+  border-radius: 6px 6px 0 0;
+}
+.icon-envelope .icon-heart {
+  position: absolute;
+  bottom: -0.35em; left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.3rem;
+  color: var(--pink);
+}
+
+:root {
+  --pink: #e94d88;
+  --pink-light: #fce4ec;
+  --purple: #9b6bea;
+  --cream: #fff5f7;
+  --text: #6b3a4a;
+}
+
+body {
+  margin: 0;
+  font-family: 'Mali', 'Prompt', sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%, #ffd3e4 0%, transparent 45%),
+    radial-gradient(circle at 85% 90%, #ffc9de 0%, transparent 40%),
+    linear-gradient(180deg, #ffe3ec, #fff5f7);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#app {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle, rgba(233,77,136,0.08) 1.5px, transparent 1.5px) 0 0/26px 26px,
+    var(--cream);
+  box-shadow: 0 0 40px rgba(0,0,0,0.08);
+}
+
+.progress-dots {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 0;
+  background: linear-gradient(180deg, var(--cream) 60%, transparent);
+}
+.progress-dots span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #f3c2d4;
+  transition: all 0.3s ease;
+}
+.progress-dots span.done { background: var(--pink); }
+.progress-dots span.current { width: 18px; border-radius: 4px; background: linear-gradient(90deg, var(--pink), var(--purple)); }
+
+.script {
+  font-family: 'Caveat', cursive;
+  font-size: 2.4rem;
+  margin: 0.2em 0;
+  color: var(--pink);
+}
+/* gradient text reserved for the two emotional peaks (opening + final reveal) —
+   using it on every heading read as generic/AI-templatey, so it's dialed back here */
+.script-hero {
+  background: linear-gradient(100deg, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.step {
+  display: none;
+  min-height: 100vh;
+  padding: 32px 20px;
+  flex-direction: column;
+  justify-content: center;
+  animation: fadeIn 0.4s ease;
+}
+.step.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px 22px;
+  box-shadow: 0 12px 30px rgba(233,77,136,0.16), 0 2px 6px rgba(233,77,136,0.1);
+  position: relative;
+  z-index: 1;
+}
+.card::before {
+  /* ponytail: washi-tape decoration, CSS only, no image asset */
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 28px;
+  width: 56px;
+  height: 22px;
+  background: repeating-linear-gradient(135deg, #ffd3e4, #ffd3e4 4px, #ffe8f0 4px, #ffe8f0 8px);
+  opacity: 0.85;
+  transform: rotate(-4deg);
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+/* tape color cycles per step so the run of cards doesn't read as one flat pink block */
+.step[data-step="2"] .card::before { background: repeating-linear-gradient(135deg, #ddd0fb, #ddd0fb 4px, #eee6ff 4px, #eee6ff 8px); }
+.step[data-step="3"] .card::before { background: repeating-linear-gradient(135deg, #ffe3ae, #ffe3ae 4px, #fff3d9 4px, #fff3d9 8px); }
+.step[data-step="4"] .card::before { background: repeating-linear-gradient(135deg, #bdeecb, #bdeecb 4px, #e0f9e7 4px, #e0f9e7 8px); }
+.step[data-step="5"] .card::before { background: repeating-linear-gradient(135deg, #ffc7b0, #ffc7b0 4px, #ffe3d6 4px, #ffe3d6 8px); }
+.step[data-step="6"] .card::before { background: repeating-linear-gradient(135deg, #ddd0fb, #ddd0fb 4px, #eee6ff 4px, #eee6ff 8px); }
+
+.card.center { text-align: center; }
+.card.dark {
+  background: #1a1220;
+  color: #fff;
+}
+.card.dark::before { background: repeating-linear-gradient(135deg, #ff9fc2, #ff9fc2 4px, #ffc9de 4px, #ffc9de 8px); }
+
+/* torn-paper caption tag — kraft-paper scrap with a handwritten note,
+   one per step max (a solid-circle "sticker" badge was tried before this
+   and rejected as too much/not pretty — this replaces that idea) */
+.paper-tag {
+  position: absolute;
+  top: -16px;
+  right: 18px;
+  background: #ede0c8;
+  color: #8a3b3b;
+  font-family: 'Caveat', cursive;
+  font-size: 1.15rem;
+  padding: 10px 16px 14px;
+  transform: rotate(6deg);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  z-index: 2;
+  clip-path: polygon(
+    0% 10%, 8% 2%, 16% 8%, 26% 0%, 36% 7%, 46% 1%, 56% 8%, 66% 2%, 76% 7%, 86% 1%, 94% 6%, 100% 0%,
+    100% 90%, 92% 100%, 84% 93%, 74% 100%, 64% 94%, 54% 100%, 44% 93%, 34% 100%, 24% 94%, 14% 100%, 6% 95%, 0% 100%
+  );
+}
+.step[data-step="3"] .paper-tag,
+.step[data-step="5"] .paper-tag { left: 18px; right: auto; transform: rotate(-5deg); }
+
+.card.shake { animation: fadeIn 0.4s ease, shake 0.4s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  color: var(--pink);
+  font-weight: 600;
+  margin: 0;
+}
+
+.hint { color: #a97a8a; font-size: 0.9rem; }
+.hint.light { color: #d9b8c9; }
+/* chat-bubble style tip, like a UI hint pointing at something */
+.tip {
+  display: inline-block;
+  font-size: 0.78rem;
+  color: var(--pink);
+  background: var(--pink-light);
+  padding: 6px 14px;
+  border-radius: 999px;
+  position: relative;
+  margin-top: 6px;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff7aa8, var(--pink));
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 16px;
+  box-shadow: 0 6px 16px rgba(233,77,136,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-primary:active { transform: scale(0.97); box-shadow: 0 3px 8px rgba(233,77,136,0.3); }
+
+.btn-secondary {
+  flex: 1;
+  padding: 12px;
+  border-radius: 999px;
+  border: 2px solid var(--pink);
+  background: #fff;
+  color: var(--pink);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ending-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+.date-picker { display: flex; gap: 8px; margin: 16px 0 8px; }
+.date-picker select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--pink-light);
+  background: var(--pink-light);
+  font-family: inherit;
+}
+
+.error-msg { color: #d33; font-size: 0.85rem; }
+
+/* Love Quiz */
+.quiz-question { font-weight: 500; margin-bottom: 12px; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-options button {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--pink-light);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.quiz-options button.correct { background: #d4f7dc; border-color: #6ec97f; }
+.quiz-options button.wrong { background: #ffd9d9; border-color: #e08a8a; }
+
+/* Memory Match */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.memory-card {
+  aspect-ratio: 1;
+  perspective: 600px;
+  cursor: pointer;
+}
+.memory-card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s;
+}
+.memory-card.flipped .memory-card-inner,
+.memory-card.matched .memory-card-inner { transform: rotateY(180deg); }
+.memory-face {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  font-size: 1.5rem;
+}
+.memory-face.front { background: var(--pink); color: #fff; }
+.memory-face.back { background: var(--pink-light); transform: rotateY(180deg); }
+.memory-card.matched .memory-face.back { background: #d4f7dc; }
+
+/* memory match shapes: abstract hand-drawn shapes instead of icon emoji */
+.match-shape { display: inline-block; width: 1.4em; height: 1.4em; background: currentColor; }
+.match-circle { border-radius: 50%; }
+.match-square { border-radius: 4px; }
+.match-triangle { background: none; width: 0; height: 0; border-left: 0.7em solid transparent; border-right: 0.7em solid transparent; border-bottom: 1.2em solid currentColor; }
+.match-diamond { transform: rotate(45deg); border-radius: 3px; }
+.match-ring { border-radius: 50%; border: 0.28em solid currentColor; background: none; }
+
+/* Heart Hunt */
+.hunt-field {
+  position: relative;
+  height: 320px;
+  background: var(--pink-light);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+.hunt-heart {
+  position: absolute;
+  font-size: 1.6rem;
+  color: var(--pink);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: transform 0.15s;
+  opacity: 0;
+  animation:
+    huntEnter 0.5s ease-out var(--enter-delay, 0s) forwards,
+    bob var(--bob-duration, 1.8s) ease-in-out calc(var(--enter-delay, 0s) + var(--delay, 0s)) infinite;
+}
+.hunt-heart.collected { opacity: 0; pointer-events: none; transform: scale(1.6) !important; animation: none; }
+.hunt-count { text-align: center; font-weight: 600; margin-top: 10px; }
+@keyframes huntEnter {
+  from { opacity: 0; transform: translateY(16px) scale(0.6); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(var(--tilt, 6deg)); }
+}
+
+/* Gallery */
+.relationship-label {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: var(--purple);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 12px 0;
+}
+.gallery-grid .photo-slot {
+  /* ponytail: polaroid look via padding + border, no image asset needed */
+  aspect-ratio: 0.85;
+  background: #fff;
+  border-radius: 4px;
+  padding: 8px 8px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c48;
+  font-size: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(233,77,136,0.18);
+  position: relative;
+}
+.gallery-grid .photo-slot::before {
+  content: "";
+  position: absolute;
+  top: -6px; left: 50%;
+  width: 0.7em; height: 0.7em;
+  border-radius: 50% 50% 50% 0;
+  background: var(--pink);
+  transform: translateX(-50%) rotate(-45deg);
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+}
+.gallery-grid .photo-slot:nth-child(odd) { transform: rotate(-3deg); }
+.gallery-grid .photo-slot:nth-child(even) { transform: rotate(2.5deg); }
+.gallery-grid .photo-inner {
+  background: var(--pink-light);
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; gap: 6px;
+  align-items: center; justify-content: center;
+  border-radius: 2px;
+  color: #c48;
+}
+.gallery-grid .photo-inner img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Song */
+.soundwave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 90px;
+  margin: 20px auto;
+}
+.soundwave span {
+  width: 8px;
+  height: 20%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--pink), var(--purple));
+  animation: wave 1s ease-in-out infinite;
+  animation-play-state: paused; /* only moves while the song is actually playing */
+}
+.soundwave.playing span { animation-play-state: running; }
+.soundwave span:nth-child(1) { animation-delay: 0s; }
+.soundwave span:nth-child(2) { animation-delay: 0.15s; }
+.soundwave span:nth-child(3) { animation-delay: 0.3s; }
+.soundwave span:nth-child(4) { animation-delay: 0.45s; }
+.soundwave span:nth-child(5) { animation-delay: 0.6s; }
+@keyframes wave {
+  0%, 100% { height: 20%; }
+  50% { height: 100%; }
+}
+
+/* native <audio>, tinted to match the theme instead of default grey (native accent-color, no custom player needed) */
+audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius: 999px; }
+
+/* Letter */
+.letter {
+  background: #fffaf3;
+  border: 1px solid #eaddc6;
+  border-radius: 12px;
+  padding: 20px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  min-height: 200px;
+}
+
+.neon { color: #ff6fa5; text-shadow: 0 0 12px rgba(255,111,165,0.7); }
+
+/* one-time shimmer sweep on entry, not an infinite pulse loop — draws the eye
+   once without nagging at it forever */
+.card.dark .btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.card.dark .btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255,255,255,0.55), transparent);
+  animation: shimmer 2.2s ease-out 0.6s 1;
+}
+@keyframes shimmer {
+  to { left: 130%; }
+}
+
+/* floating hearts background decoration */
+.bg-heart {
+  position: fixed;
+  bottom: -10%;
+  opacity: var(--o, 0.5);
+  font-size: var(--size, 1.2rem);
+  animation: floatUp linear forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes floatUp {
+  from { transform: translateY(0) translateX(0) rotate(0deg); opacity: var(--o, 0.5); }
+  50% { transform: translateY(-55vh) translateX(var(--sway, 20px)) rotate(15deg); }
+  80% { opacity: var(--o, 0.5); }
+  to { transform: translateY(-110vh) translateX(0) rotate(-10deg); opacity: 0; }
+}
+
+/* ponytail: past 700px there's room to breathe — widen the frame and let
+   the gallery use it, instead of keeping a phone-width strip on desktop.
+   Placed last so it wins the cascade over same-specificity base rules. */
+@media (min-width: 700px) {
+  #app { max-width: 640px; }
+  .card { padding: 40px 52px; }
+  .script { font-size: 2.8rem; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
