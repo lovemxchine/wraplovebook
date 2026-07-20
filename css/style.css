@@ -61,78 +61,82 @@
   box-shadow: 0 2px 3px rgba(0,0,0,0.2);
 }
 
-.icon-envelope {
-  position: relative;
-  width: 4.2rem; height: 2.8rem;
-  margin: 24px auto 30px;
-  background: #fff;
-  border: 2px solid var(--pink);
-  border-radius: 6px;
-}
-.icon-envelope::before {
-  content: "";
-  position: absolute;
-  inset: -2px -2px auto -2px;
-  height: 55%;
-  background: var(--pink-light);
-  clip-path: polygon(0 0, 50% 62%, 100% 0);
-  border-radius: 6px 6px 0 0;
-}
-.icon-envelope .icon-heart {
-  position: absolute;
-  bottom: -0.35em; left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.3rem;
-  color: var(--pink);
+/* Step 1 centerpiece (2026-07-20: "ทำหน้าแรกใหม่เลยไม่เอาแบบจดหมาย" — the
+   envelope+wax-seal icon read as "a letter", which Step 6 already is; swapped
+   for the couple sticker instead so Step 1 doesn't front-load that motif). */
+.hero-centerpiece {
+  display: block;
+  width: 110px;
+  height: auto;
+  margin: 14px auto 20px;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.16));
 }
 
+/* Recolored 2026-07-19 ("เปลี่ยนสี theme เอาให้เหมาะกับ sticker") — palette
+ * sampled directly from the HandDrawn Web Elements Pack (assets/stickers/):
+ * deep crimson-maroon (~rgb(122,32,37), sampled off fingerprint_heart.png)
+ * instead of bright pink/purple, kraft-paper cream (~rgb(210,200,175),
+ * sampled off the star sticker's halo) instead of the near-white pink tint.
+ * Variable names kept as-is (--pink/--purple/--cream/--text) since every
+ * component below already references them — only the values change. */
 :root {
-  --pink: #e94d88;
-  --pink-light: #fce4ec;
-  --purple: #9b6bea;
-  --cream: #fff5f7;
-  --text: #6b3a4a;
+  /* 2026-07-20: lightened ~12% across the board per "ปรับโทนสีให้จางลง" — same
+     kraft/maroon palette, just a touch softer. */
+  --pink: #8a3b3f;
+  --pink-light: #ecdcc0;
+  --purple: #b15448;
+  --cream: #f3e8d3;
+  --text: #604c3b;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* ponytail: no page scroll — it's a locked step flow, not a document */
 }
 
 body {
   margin: 0;
   font-family: 'Mali', 'Prompt', sans-serif;
-  background:
-    radial-gradient(circle at 15% 10%, #ffd3e4 0%, transparent 45%),
-    radial-gradient(circle at 85% 90%, #ffc9de 0%, transparent 40%),
-    linear-gradient(180deg, #ffe3ec, #fff5f7);
+  /* fixed = one continuous image behind the whole viewport, so #app (transparent)
+     shows the same crop as the area around it instead of its own separate "cover" zone */
+  background: linear-gradient(rgba(243,232,211,0.55), rgba(243,232,211,0.7)), url('../assets/bg/paper.jpg');
+  background-size: cover;
+  background-attachment: fixed;
   color: var(--text);
   display: flex;
   justify-content: center;
-  min-height: 100vh;
+  height: 100%;
 }
 
 #app {
   width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
+  max-width: 540px; /* was 480px — same fixed cap at every viewport, still no mobile/desktop split */
+  height: 100%;
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle, rgba(233,77,136,0.08) 1.5px, transparent 1.5px) 0 0/26px 26px,
-    var(--cream);
-  box-shadow: 0 0 40px rgba(0,0,0,0.08);
+  background: transparent;
+  /* no box-shadow: #app is transparent and shares one continuous background
+     with body now — a shadow here just drew two dark vertical lines flanking
+     the card wherever open paper showed beside it (barely visible on mobile
+     where #app fills the screen, very visible on desktop — looked like a
+     mobile/desktop split, which it effectively was). */
 }
 
 .progress-dots {
+  display: none; /* ponytail: hidden by default, shown only in ?dev mode (body.dev-mode override below) */
   position: sticky;
   top: 0;
   z-index: 5;
-  display: flex;
   justify-content: center;
   gap: 6px;
   padding: 14px 0;
   background: linear-gradient(180deg, var(--cream) 60%, transparent);
 }
+body.dev-mode .progress-dots { display: flex; }
 .progress-dots span {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: #f3c2d4;
+  background: #d9c49a;
   transition: all 0.3s ease;
 }
 .progress-dots span.done { background: var(--pink); }
@@ -155,7 +159,8 @@ body {
 
 .step {
   display: none;
-  min-height: 100vh;
+  height: 100%;
+  box-sizing: border-box;
   padding: 32px 20px;
   flex-direction: column;
   justify-content: center;
@@ -173,10 +178,17 @@ body {
   background: #fff;
   border-radius: 20px;
   padding: 28px 22px;
-  box-shadow: 0 12px 30px rgba(233,77,136,0.16), 0 2px 6px rgba(233,77,136,0.1);
+  box-shadow: 0 12px 30px rgba(122,32,37,0.16), 0 2px 6px rgba(122,32,37,0.1);
   position: relative;
   z-index: 1;
 }
+/* Recheck 2026-07-19: .paper-tag's rotated bounding box dips ~9px below its
+   own content into whatever's right under it (measured: tag bottom edge at
+   37px from card top, .eyebrow starting at 28px) — clips the first line of
+   text on any card that has one (seen on Steps 3/5/6). Scoped extra top
+   clearance only for cards that actually have a paper-tag, so cards without
+   one keep the normal 28px. */
+.card:has(> .paper-tag) { padding-top: 46px; }
 .card::before {
   /* ponytail: washi-tape decoration, CSS only, no image asset */
   content: "";
@@ -185,25 +197,82 @@ body {
   left: 28px;
   width: 56px;
   height: 22px;
-  background: repeating-linear-gradient(135deg, #ffd3e4, #ffd3e4 4px, #ffe8f0 4px, #ffe8f0 8px);
+  background: repeating-linear-gradient(135deg, #d9c49a, #d9c49a 4px, #e6dbbd 4px, #e6dbbd 8px);
   opacity: 0.85;
   transform: rotate(-4deg);
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 /* tape color cycles per step so the run of cards doesn't read as one flat pink block */
-.step[data-step="2"] .card::before { background: repeating-linear-gradient(135deg, #ddd0fb, #ddd0fb 4px, #eee6ff 4px, #eee6ff 8px); }
+.step[data-step="2"] .card::before { display: none; } /* removed per "เอาสองอันนี้ออก" — the pin+paper-tag date tag was the other */
 .step[data-step="3"] .card::before { background: repeating-linear-gradient(135deg, #ffe3ae, #ffe3ae 4px, #fff3d9 4px, #fff3d9 8px); }
 .step[data-step="4"] .card::before { background: repeating-linear-gradient(135deg, #bdeecb, #bdeecb 4px, #e0f9e7 4px, #e0f9e7 8px); }
 .step[data-step="5"] .card::before { background: repeating-linear-gradient(135deg, #ffc7b0, #ffc7b0 4px, #ffe3d6 4px, #ffe3d6 8px); }
-.step[data-step="6"] .card::before { background: repeating-linear-gradient(135deg, #ddd0fb, #ddd0fb 4px, #eee6ff 4px, #eee6ff 8px); }
+.step[data-step="6"] .card::before { background: repeating-linear-gradient(135deg, #f6c9d0, #f6c9d0 4px, #fbe4e8 4px, #fbe4e8 8px); }
+.step[data-step="7"] .card::before { display: none; } /* washi tape was peeking out behind the i-love-you sticker, removed for this step */
 
 .card.center { text-align: center; }
+
+/* Step 1 cover, 2026-07-20 rebuild: everything old (eyebrow, couple sticker,
+   hint text, clipboard+clip+star art) removed — now just "for you" above a
+   single stacked note/envelope/star photo, with the pencil kept on top as
+   the "open" trigger. Fixed absolute size (not vw/%) so it's identical at
+   every viewport width, matching the earlier "no mobile/desktop split" fix. */
+.notepad {
+  width: 300px;
+  aspect-ratio: 648 / 892;
+  margin: 0 auto;
+  background: url('../assets/stickers/page1-element.png') center / 100% 100% no-repeat, transparent;
+  box-shadow: none; /* png is transparent-edged now, a box shadow would draw a rectangle around it */
+  padding: 0;
+  border-radius: 0;
+  overflow: visible;
+  cursor: pointer; /* whole card is now the "open" trigger since the pencil was removed */
+}
+.notepad::before { display: none; }
+
+.step1-title {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  z-index: 2;
+}
+
+.sticker-pencil-img {
+  position: absolute;
+  width: 30px;
+  bottom: 38%;
+  right: 22%;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.25));
+  cursor: pointer;
+  z-index: 3;
+  transform-origin: 50% 50%; /* center pivot so the +180 flip below doesn't shift the bounding box */
+  /* +180deg from the previous 35/38deg: flips which end (tip vs eraser) sits at which
+     corner ("กลับหัวกลับหาง") while keeping the pencil on the same diagonal line */
+  animation: pencil-idle 6s ease-in-out infinite;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.sticker-pencil-img:hover,
+.sticker-pencil-img:focus-visible {
+  animation: pencil-wiggle 2.5s ease-in-out infinite;
+}
+@keyframes pencil-idle {
+  0%, 100% { transform: rotate(218deg); }
+  50% { transform: rotate(215deg); }
+}
+@keyframes pencil-wiggle {
+  0%, 100% { transform: rotate(210deg) scale(1.05); }
+  25% { transform: rotate(224deg) scale(1.05); }
+  75% { transform: rotate(204deg) scale(1.05); }
+}
 .card.dark {
   background: #1a1220;
   color: #fff;
 }
-.card.dark::before { background: repeating-linear-gradient(135deg, #ff9fc2, #ff9fc2 4px, #ffc9de 4px, #ffc9de 8px); }
+.card.dark::before { background: repeating-linear-gradient(135deg, #c9855a, #c9855a 4px, #e0cda3 4px, #e0cda3 8px); }
 
 /* torn-paper caption tag — kraft-paper scrap with a handwritten note,
    one per step max (a solid-circle "sticker" badge was tried before this
@@ -212,13 +281,18 @@ body {
   position: absolute;
   top: -16px;
   right: 18px;
-  background: #ede0c8;
-  color: #8a3b3b;
+  /* fibrous kraft-paper look: base tone + faint diagonal grain streaks, no image asset */
+  background:
+    repeating-linear-gradient(115deg, rgba(138,59,59,0.05) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(25deg, rgba(255,255,255,0.35) 0 1px, transparent 1px 6px),
+    #e6d5b3;
+  color: #7a2f2f;
   font-family: 'Caveat', cursive;
-  font-size: 1.15rem;
+  font-weight: 600;
+  font-size: 1.2rem;
   padding: 10px 16px 14px;
   transform: rotate(6deg);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.16);
   z-index: 2;
   clip-path: polygon(
     0% 10%, 8% 2%, 16% 8%, 26% 0%, 36% 7%, 46% 1%, 56% 8%, 66% 2%, 76% 7%, 86% 1%, 94% 6%, 100% 0%,
@@ -227,6 +301,170 @@ body {
 }
 .step[data-step="3"] .paper-tag,
 .step[data-step="5"] .paper-tag { left: 18px; right: auto; transform: rotate(-5deg); }
+/* 2026-07-20: "อยากให้ Sticker i love you อยู่ซ้าย All my Heart อยู่ขวาแทน" —
+   swapped back to the default top-right (was moved top-left on 2026-07-19 to
+   dodge .sticker-ransom-img, which is now on the left instead — see its own
+   comment below). No override needed here anymore, default position is right. */
+
+/* ---- scrapbook decorations ----
+   2026-07-20: the pack's named PNGs for record/i_love_you/favorite_person
+   (previously corrupted — see git history / old comment) were replaced with
+   real cut-out stickers from a new source image (user-provided sticker
+   sheet, hand-cropped + alpha-verified transparent). CSS recreations below
+   are gone; real images take their place. */
+
+/* Recheck 2026-07-19: measured overlap with .paper-tag on Step 5 (both were
+   top-left there). Moved to bottom-left — Step 5's card is short on content
+   below the audio player, plenty of clear space. */
+.sticker-vinyl-img {
+  position: absolute;
+  bottom: -30px;
+  left: -18px;
+  width: 78px;
+  height: auto;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+  z-index: 2;
+  animation: spin 9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(352deg); } }
+
+/* 2026-07-20: moved to top-left ("อยากให้ Sticker i love you อยู่ซ้าย All my
+   Heart อยู่ขวาแทน") — paper-tag is back on its default top-right, so this
+   stays clear of it on the left. */
+.sticker-ransom-img {
+  position: absolute;
+  top: -16px;
+  left: 10px;
+  width: 90px;
+  height: auto;
+  transform: rotate(-4deg);
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
+  z-index: 2;
+}
+
+/* Swapped the CSS-drawn fingerprint-heart badge for a real sticker
+   (assets/stickers/fingerprint-heart.png) now that a working transparent
+   PNG of it was confirmed. */
+.sticker-fingerprint-heart-img {
+  display: inline-block;
+  width: 62px;
+  height: auto;
+  margin: 6px;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.18));
+}
+
+/* envelope-heart, tucked bottom-right corner — clear of the top-left
+   .sticker-ransom-img and the top-right .paper-tag. */
+.sticker-envelope-img {
+  position: absolute;
+  bottom: -18px;
+  right: -12px;
+  width: 74px;
+  height: auto;
+  transform: rotate(8deg);
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
+  z-index: 2;
+}
+
+/* Step 2 corner accent — card had no sticker before, .paper-tag sits
+   top-right so this goes top-left instead. */
+.sticker-heart-star-img {
+  position: absolute;
+  top: -20px;
+  left: 6px;
+  width: 72px;
+  height: auto;
+  transform: rotate(-10deg);
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
+  z-index: 2;
+}
+/* Step 2, 2026-07-20: sits before "Mission" on the same line, sized up
+   ("เอา sticker คน ไปอยู่หน้า mission และขยาย size"), in normal flow instead of absolute. */
+.step[data-step="2"] h2.script {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.step[data-step="2"] .sticker-heart-star-img {
+  position: static;
+  display: inline-block;
+  vertical-align: middle;
+  width: 64px;
+  margin: 0;
+  top: auto;
+  left: auto;
+}
+
+/* handwritten "favorite person" tag — separate slot from .paper-tag so both
+   can appear on the same card without colliding. Recheck 2026-07-19: this
+   slot's rotated bounding box was overlapping the washi tape corner when
+   off-center; centered clears it (see .card:has(> .paper-tag) padding fix
+   above too, for the paper-tag/eyebrow overlap that affected every card). */
+.sticker-tag-img {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 84px;
+  height: auto;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.14));
+  z-index: 2;
+}
+
+.sticker-star-img {
+  position: absolute;
+  top: -30px;
+  right: 20px;
+  width: 64px;
+  height: auto;
+  transform: rotate(10deg);
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
+  z-index: 2;
+}
+
+/* Step 3 games-intro only (removed from Step 6 — it collided with the flip
+   grid there). Sits at the script-title band on the right, above the long
+   hint line so it never covers text. */
+.sticker-hearts-img {
+  position: absolute;
+  top: 16%;
+  right: -12px;
+  width: 66px;
+  height: auto;
+  transform: rotate(12deg);
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
+  z-index: 2;
+}
+
+/* Step 3 (Heart Hunt card): this card has no paper-tag/washi of its own to
+   dodge, so a plain top-right corner is clear. */
+.sticker-firework-img {
+  position: absolute;
+  top: -18px;
+  right: 6px;
+  width: 74px;
+  height: auto;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
+  z-index: 2;
+}
+
+/* .sticker-always-img (always-banner.png) removed 2026-07-20 — the source
+   file was deleted by a concurrent edit to assets/stickers/ with no
+   equivalent replacement among the new crops, and the Step 5 card doesn't
+   need it now that the cassette graphic is the visual centerpiece. */
+
+/* small accent for the Love Quiz card (Step 3) — previously had no sticker at all. */
+.sticker-happy-place-img {
+  position: absolute;
+  top: -22px;
+  right: 8px;
+  width: 76px;
+  height: auto;
+  transform: rotate(-6deg);
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
+  z-index: 2;
+}
 
 .card.shake { animation: fadeIn 0.4s ease, shake 0.4s ease; }
 @keyframes shake {
@@ -246,16 +484,16 @@ body {
 
 .hint { color: #a97a8a; font-size: 0.9rem; }
 .hint.light { color: #d9b8c9; }
-/* chat-bubble style tip, like a UI hint pointing at something */
-.tip {
-  display: inline-block;
-  font-size: 0.78rem;
-  color: var(--pink);
-  background: var(--pink-light);
-  padding: 6px 14px;
-  border-radius: 999px;
+/* pinned-note look for Step 2: a little pushpin sticking through the card top */
+.pin {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff8a7a, #b15448 70%);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.35);
+  margin: 0 auto -9px;
   position: relative;
-  margin-top: 6px;
+  z-index: 2;
 }
 
 .btn-primary {
@@ -263,16 +501,16 @@ body {
   padding: 14px;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ff7aa8, var(--pink));
+  background: linear-gradient(135deg, #b15448, var(--pink));
   color: #fff;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   margin-top: 16px;
-  box-shadow: 0 6px 16px rgba(233,77,136,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  box-shadow: 0 6px 16px rgba(122,32,37,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.btn-primary:active { transform: scale(0.97); box-shadow: 0 3px 8px rgba(233,77,136,0.3); }
+.btn-primary:active { transform: scale(0.97); box-shadow: 0 3px 8px rgba(122,32,37,0.3); }
 
 .btn-secondary {
   flex: 1;
@@ -287,14 +525,77 @@ body {
 
 .ending-actions { display: flex; gap: 10px; margin-top: 16px; }
 
-.date-picker { display: flex; gap: 8px; margin: 16px 0 8px; }
-.date-picker select {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid var(--pink-light);
-  background: var(--pink-light);
+/* Step 2 card, 2026-07-20: dropped the white card fill so the paper-scrap pin
+   slots below sit directly on the shared body texture ("เอาพื้นหลังขาวๆออก"). */
+.step[data-step="2"] .card {
+  background: transparent;
+  box-shadow: none;
+}
+
+/* 2026-07-20: switched from 6 cropped pieces to the one uncropped
+   assets/stickers/pin-slot.png sprite as a single background ("ใช้รูปที่ทำมา
+   เลยไม่ต้องมาตัด") — each .pin-slot is now just an invisible, positioned
+   hit-area for its input, sized up from before ("ปรับขนาดให้ใหญ่ขึ้น"). */
+.pin-inputs {
+  position: relative;
+  width: calc(100% + 44px); /* bleeds past the card's 22px side padding so it isn't capped by it */
+  max-width: 540px; /* matches #app's new cap — same budget at every viewport, no mobile/desktop split */
+  aspect-ratio: 1849 / 726;
+  margin: 20px -22px 12px;
+  background: url('../assets/stickers/pin-slot.png') center / contain no-repeat;
+}
+.pin-slot {
+  position: absolute;
+  transform: translateX(-50%);
+}
+/* Each slot's left/top/height/width/tilt is measured off its own piece in
+   pin-slot.png (center x, writable-paper y-range) — not one uniform row,
+   since the 6 pieces sit at different heights/sizes in the photo itself. */
+.pin-slot:nth-child(1) { left: 10.3%; top: 33%; height: 45%; width: 13%; transform: translateX(-50%) rotate(-3deg); }  /* kraft square — short piece */
+.pin-slot:nth-child(2) { left: 27.6%; top: 26%; height: 58%; width: 14%; transform: translateX(-50%) rotate(2deg); }  /* gray, tall below the ribbon */
+.pin-slot:nth-child(3) { left: 40.8%; top: 29%; height: 49%; width: 13%; transform: translateX(-50%) rotate(-1deg); } /* grid, below the tape */
+.pin-slot:nth-child(4) { left: 54.5%; top: 33%; height: 48%; width: 14%; transform: translateX(-50%) rotate(1deg); }  /* lined, below the tape */
+.pin-slot:nth-child(5) { left: 73.1%; top: 28%; height: 48%; width: 16%; transform: translateX(-50%) rotate(2deg); }  /* newsprint, above the button */
+.pin-slot:nth-child(6) { left: 89.2%; top: 41%; height: 42%; width: 14%; transform: translateX(-50%) rotate(-4deg); } /* tag, below the hole */
+
+.pin-digit {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 1.3rem;
   font-family: inherit;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: transparent; /* the typed digit stays hidden — .pin-digit-img shows the mapped number.png instead */
+  caret-color: var(--text);
+}
+.pin-digit:focus { outline: none; }
+/* cute focus state: a little heart pops up above the paper piece, instead of
+   a plain browser outline (no border/glow ring — not wanted). */
+.pin-slot:focus-within::before {
+  content: "♥";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  color: var(--pink);
+  font-size: 0.9rem;
+  transform: translateX(-50%);
+  animation: pin-heart-bob 0.9s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pin-heart-bob { 0%, 100% { transform: translateX(-50%) translateY(0) scale(1); } 50% { transform: translateX(-50%) translateY(-4px) scale(1.15); } }
+.pin-slot:focus-within .pin-digit-img { animation: pin-pop 0.3s ease; }
+@keyframes pin-pop { 0% { transform: scale(1); } 60% { transform: scale(1.22); } 100% { transform: scale(1.08); } }
+.pin-slot:focus-within .pin-digit-img { transform: scale(1.08); }
+.pin-digit-img {
+  position: absolute;
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  pointer-events: none;
+  display: none; /* shown via JS once a digit is entered */
 }
 
 .error-msg { color: #d33; font-size: 0.85rem; }
@@ -313,45 +614,6 @@ body {
 }
 .quiz-options button.correct { background: #d4f7dc; border-color: #6ec97f; }
 .quiz-options button.wrong { background: #ffd9d9; border-color: #e08a8a; }
-
-/* Memory Match */
-.memory-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  margin-top: 12px;
-}
-.memory-card {
-  aspect-ratio: 1;
-  perspective: 600px;
-  cursor: pointer;
-}
-.memory-card-inner {
-  width: 100%; height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.4s;
-}
-.memory-card.flipped .memory-card-inner,
-.memory-card.matched .memory-card-inner { transform: rotateY(180deg); }
-.memory-face {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  backface-visibility: hidden;
-  font-size: 1.5rem;
-}
-.memory-face.front { background: var(--pink); color: #fff; }
-.memory-face.back { background: var(--pink-light); transform: rotateY(180deg); }
-.memory-card.matched .memory-face.back { background: #d4f7dc; }
-
-/* memory match shapes: abstract hand-drawn shapes instead of icon emoji */
-.match-shape { display: inline-block; width: 1.4em; height: 1.4em; background: currentColor; }
-.match-circle { border-radius: 50%; }
-.match-square { border-radius: 4px; }
-.match-triangle { background: none; width: 0; height: 0; border-left: 0.7em solid transparent; border-right: 0.7em solid transparent; border-bottom: 1.2em solid currentColor; }
-.match-diamond { transform: rotate(45deg); border-radius: 3px; }
-.match-ring { border-radius: 50%; border: 0.28em solid currentColor; background: none; }
 
 /* Heart Hunt */
 .hunt-field {
@@ -410,7 +672,7 @@ body {
   color: #c48;
   font-size: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 6px 14px rgba(233,77,136,0.18);
+  box-shadow: 0 6px 14px rgba(122,32,37,0.18);
   position: relative;
 }
 .gallery-grid .photo-slot::before {
@@ -435,33 +697,66 @@ body {
 }
 .gallery-grid .photo-inner img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Song */
-.soundwave {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 90px;
-  margin: 20px auto;
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
 }
-.soundwave span {
-  width: 8px;
-  height: 20%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, var(--pink), var(--purple));
-  animation: wave 1s ease-in-out infinite;
-  animation-play-state: paused; /* only moves while the song is actually playing */
+.reason-card {
+  aspect-ratio: 0.9;
+  perspective: 600px;
+  cursor: pointer;
 }
-.soundwave.playing span { animation-play-state: running; }
-.soundwave span:nth-child(1) { animation-delay: 0s; }
-.soundwave span:nth-child(2) { animation-delay: 0.15s; }
-.soundwave span:nth-child(3) { animation-delay: 0.3s; }
-.soundwave span:nth-child(4) { animation-delay: 0.45s; }
-.soundwave span:nth-child(5) { animation-delay: 0.6s; }
-@keyframes wave {
-  0%, 100% { height: 20%; }
-  50% { height: 100%; }
+.reason-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
 }
+.reason-card.flipped .reason-inner { transform: rotateY(180deg); }
+.reason-face {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  padding: 6px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(122,32,37,0.15);
+}
+.reason-front {
+  background: linear-gradient(135deg, var(--pink), var(--purple));
+  color: var(--cream);
+  font-family: 'Caveat', cursive;
+  font-size: 1.6rem;
+}
+.reason-back {
+  background: var(--pink-light);
+  color: var(--text);
+  font-size: 0.7rem;
+  line-height: 1.3;
+  transform: rotateY(180deg);
+}
+
+/* #bg-music — persistent background-music iframe, lives outside #app in
+   index.html so it survives every step change. Tiny + off-screen since it's
+   audio-only. See startBgMusic() in app.js / DATA.song in data.js. */
+#bg-music {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.credit {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #c99;
+  padding: 6px 0 14px;
+}
+.credit a { color: inherit; }
 
 /* native <audio>, tinted to match the theme instead of default grey (native accent-color, no custom player needed) */
 audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius: 999px; }
@@ -499,15 +794,16 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   to { left: 130%; }
 }
 
-/* floating hearts background decoration */
+/* floating background decoration — img now (assets/stickers/effect-background/), was a CSS-drawn icon */
 .bg-heart {
   position: fixed;
   bottom: -10%;
   opacity: var(--o, 0.5);
-  font-size: var(--size, 1.2rem);
+  width: var(--size, 1.2rem);
+  height: auto;
   animation: floatUp linear forwards;
   pointer-events: none;
-  z-index: 0;
+  z-index: 5; /* was 0 — .step's fadeIn animation (opacity+transform) creates its own stacking context that otherwise painted over these */
 }
 @keyframes floatUp {
   from { transform: translateY(0) translateX(0) rotate(0deg); opacity: var(--o, 0.5); }
@@ -516,12 +812,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   to { transform: translateY(-110vh) translateX(0) rotate(-10deg); opacity: 0; }
 }
 
-/* ponytail: past 700px there's room to breathe — widen the frame and let
-   the gallery use it, instead of keeping a phone-width strip on desktop.
-   Placed last so it wins the cascade over same-specificity base rules. */
-@media (min-width: 700px) {
-  #app { max-width: 640px; }
-  .card { padding: 40px 52px; }
-  .script { font-size: 2.8rem; }
-  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
-}
+/* 2026-07-20: explicitly asked to stop splitting mobile vs desktop styling —
+   the two breakpoints that used to widen #app/.card at 700px/1000px caused a
+   visible seam/rectangle where the wider box met the body background. One
+   fixed layout at every viewport width now (#app stays 480px, see above). */

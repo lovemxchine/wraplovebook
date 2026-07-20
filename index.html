@@ -9,34 +9,32 @@
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+<!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
+<div id="bg-music"></div>
 <div id="app">
   <div class="progress-dots" id="progress-dots"></div>
 
   <!-- Step 1: Scan & Open -->
   <section class="step" data-step="1">
-    <div class="card center">
-      <p class="eyebrow">A surprise</p>
-      <h1 class="script script-hero">for you</h1>
-      <div class="icon-envelope"><span class="icon-heart"></span></div>
-      <button class="btn-primary" data-action="open">OPEN <span class="icon-heart"></span></button>
+    <div class="card center notepad" data-action="open">
+      <h1 class="script script-hero step1-title">for you</h1>
     </div>
   </section>
 
   <!-- Step 2: Unlock Mission -->
   <section class="step" data-step="2">
     <div class="card">
-      <div class="paper-tag">a date to remember</div>
-      <p class="eyebrow">ภารกิจแรก</p>
+      <img class="sticker-heart-star-img" src="assets/stickers/heart-star-duo.png" alt="" />
       <h2 class="script">Mission</h2>
-      <p class="hint">วันที่เราเริ่มคบกัน</p>
-      <div class="date-picker">
-        <select id="mission-day"></select>
-        <select id="mission-month"></select>
-        <select id="mission-year"></select>
+      <div class="pin-inputs" id="mission-pin">
+        <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
+        <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
+        <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
+        <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
+        <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
+        <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
       </div>
-      <p class="tip">Tip: วันที่พิเศษของเรา <span class="icon-heart"></span></p>
       <p class="error-msg" id="mission-error" hidden>ลองอีกครั้งนะ <span class="icon-heart"></span></p>
-      <button class="btn-primary" data-action="check-mission">ยืนยัน</button>
     </div>
   </section>
 
@@ -44,24 +42,22 @@
   <section class="step" data-step="3">
     <div class="card" id="games-intro">
       <div class="paper-tag">just for fun</div>
-      <p class="eyebrow">3 มินิเกม</p>
+      <img class="sticker-hearts-img" src="assets/stickers/hearts.png" alt="" />
+      <p class="eyebrow">2 มินิเกม</p>
       <h2 class="script">Let's Play!</h2>
       <p class="hint">เล่นให้ครบเพื่อปลดล็อกความทรงจำถัดไป</p>
       <button class="btn-primary" data-action="start-games">START GAMES</button>
     </div>
 
     <div class="card" id="game-quiz" hidden>
+      <img class="sticker-happy-place-img" src="assets/stickers/happy-place.png" alt="" />
       <p class="eyebrow">Game 1 · Love Quiz</p>
       <div id="quiz-body"></div>
     </div>
 
-    <div class="card" id="game-memory" hidden>
-      <p class="eyebrow">Game 2 · Memory Match</p>
-      <div id="memory-grid" class="memory-grid"></div>
-    </div>
-
     <div class="card" id="game-hunt" hidden>
-      <p class="eyebrow">Game 3 · Heart Hunt</p>
+      <img class="sticker-firework-img" src="assets/stickers/firework.png" alt="" />
+      <p class="eyebrow">Game 2 · Heart Hunt</p>
       <p class="hint">แตะหัวใจให้ครบทุกดวง</p>
       <div id="hunt-field" class="hunt-field"></div>
       <p class="hunt-count"><span id="hunt-collected">0</span>/<span id="hunt-total">8</span> <span class="icon-heart"></span></p>
@@ -71,7 +67,7 @@
   <!-- Step 4: Memory Gallery -->
   <section class="step" data-step="4">
     <div class="card">
-      <div class="paper-tag">our moments</div>
+      <img class="sticker-tag-img" src="assets/stickers/favorite-person.png" alt="favorite person" />
       <p class="eyebrow">ความทรงจำของเรา</p>
       <h2 class="script">Memories</h2>
       <p class="relationship-label" id="relationship-label"></p>
@@ -80,22 +76,9 @@
     </div>
   </section>
 
-  <!-- Step 5: Our Song -->
-  <section class="step" data-step="5">
-    <div class="card center">
-      <div class="paper-tag">our song</div>
-      <p class="eyebrow">เพลงของเรา</p>
-      <h2 class="script" id="song-title"></h2>
-      <p class="hint" id="song-artist"></p>
-      <div class="soundwave"><span></span><span></span><span></span><span></span><span></span></div>
-      <audio controls id="song-player"></audio>
-      <button class="btn-primary" data-action="next">ต่อไป</button>
-    </div>
-  </section>
-
-  <!-- Step 6: Voice Message — paused for now, kept for later re-enable, not part of the active flow -->
+  <!-- Step 5: Voice Message — paused for now, kept for later re-enable, not part of the active flow -->
   <!--
-  <section class="step" data-step="6-voice">
+  <section class="step" data-step="5-voice">
     <div class="card center">
       <p class="eyebrow">ข้อความเสียง</p>
       <h2 class="script" id="voice-from"></h2>
@@ -105,13 +88,30 @@
   </section>
   -->
 
-  <!-- Step 6: The Letter (was step 7; step 6/Voice paused above) -->
+  <!-- Step 5: Reasons I Love You -->
+  <section class="step" data-step="5">
+    <div class="card">
+      <div class="paper-tag">reasons why</div>
+      <p class="eyebrow">แตะการ์ดเพื่ออ่าน</p>
+      <h2 class="script">เหตุผลที่รักเธอ</h2>
+      <div class="reasons-grid" id="reasons-grid"></div>
+      <button class="btn-primary" data-action="next">ต่อไป</button>
+    </div>
+  </section>
+
+  <!-- Step 6: The Letter (was step 7; song page removed, step 5/Voice paused above) -->
   <section class="step" data-step="6">
     <div class="card">
       <div class="paper-tag">all my heart</div>
+      <img class="sticker-ransom-img" src="assets/stickers/i-love-you.png" alt="" />
+      <img class="sticker-envelope-img" src="assets/stickers/envelope-heart.png" alt="" />
       <p class="eyebrow">จดหมายพิเศษ</p>
       <div class="letter" id="letter-body"></div>
+      <img class="sticker-fingerprint-heart-img" src="assets/stickers/fingerprint-heart.png" alt="" />
       <p class="hint" id="ending-message"></p>
+      <div class="ending-actions">
+        <button class="btn-secondary" data-action="share">แชร์ <span class="icon-heart"></span></button>
+      </div>
     </div>
   </section>
 

@@ -13,27 +13,26 @@ const DATA = {
     { question: "ทดสอบคำถามที่ 3?", options: ["ก", "ข", "ค", "ง"], correctIndex: 2 },
   ],
 
-  // Step 3b: Memory Match — 6 pairs, shown as hand-drawn colored shapes (no
-  // emoji/photos needed). Each is [shapeClass, color]; shapeClass matches a
-  // .match-<name> CSS rule in style.css.
-  memoryIcons: [
-    ['circle', '#e94d88'],
-    ['square', '#9b6bea'],
-    ['triangle', '#ff9fc2'],
-    ['diamond', '#f7b267'],
-    ['ring', '#6ec97f'],
-    ['heart', '#e94d88'],
-  ],
-
   // Step 4: Memory Gallery — add { src, caption } once photos exist.
   photos: [],
   relationshipLabel: "", // e.g. "3 ปี 1 เดือนของเรา"
 
-  // Step 5: Our Song
-  song: { title: "", artist: "", src: "" }, // src: path under assets/
+  // Step 5: Our Song — paste any youtube.com/watch?v= or youtu.be/ link.
+  // startSeconds: where playback begins. loop is always on (whole video, back to 0).
+  song: { title: "I love you 3000", artist: "", youtubeUrl: "https://www.youtube.com/watch?v=cPkE0IbDVs4", startSeconds: 0 },
 
   // Step 6: Voice Message
   voiceMessage: { from: "", src: "" },
+
+  // Step 6: Reasons I Love You — flip cards, front shows the number, back shows the reason.
+  reasons: [
+    "เหตุผลที่ 1 ใส่ทีหลัง",
+    "เหตุผลที่ 2 ใส่ทีหลัง",
+    "เหตุผลที่ 3 ใส่ทีหลัง",
+    "เหตุผลที่ 4 ใส่ทีหลัง",
+    "เหตุผลที่ 5 ใส่ทีหลัง",
+    "เหตุผลที่ 6 ใส่ทีหลัง",
+  ],
 
   // Step 7: The Letter
   letter: { to: "", body: "", from: "" },
