@@ -258,11 +258,6 @@ body.dev-mode .progress-dots { display: flex; }
   60% { transform: rotate(-3deg); }
   80% { transform: rotate(3deg); }
 }
-@keyframes tap-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
 .step1-title {
   position: absolute;
   top: 30%;
@@ -270,6 +265,10 @@ body.dev-mode .progress-dots { display: flex; }
   transform: translate(-50%, -50%);
   margin: 0;
   z-index: 2;
+  font-size: 2.8rem; /* Yellowtail is much wider than Caveat per character, sized down to fit on one line */
+  display: inline-block;
+  white-space: nowrap;
+  font-family: 'Yellowtail', cursive; /* swapped from Caveat — a flowing signature-style script */
 }
 .step1-subtitle {
   position: absolute;
@@ -410,37 +409,27 @@ body.dev-mode .progress-dots { display: flex; }
   z-index: 2;
 }
 
-/* Step 2 corner accent — card had no sticker before, .paper-tag sits
-   top-right so this goes top-left instead. */
-.sticker-heart-star-img {
-  position: absolute;
-  top: -20px;
-  left: 6px;
-  width: 72px;
-  height: auto;
-  transform: rotate(-10deg);
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
-  z-index: 2;
-}
-/* Step 2, 2026-07-20: sits before "Mission" on the same line, sized up
-   ("เอา sticker คน ไปอยู่หน้า mission และขยาย size"), in normal flow instead of absolute. */
+/* Step 2, 2026-07-21: "Mission" heading + couple sticker removed, replaced by
+   a single unlock.png graphic acting as the title — centered, in normal flow. */
 .step[data-step="2"] .card {
-  text-align: center; /* centers the sticker+heading row below */
+  text-align: center;
 }
-.step[data-step="2"] h2.script {
+.step2-unlock-img {
   display: inline-block;
-  vertical-align: middle;
-  margin-left: 6px;
-  font-size: 3.2rem; /* was the shared .script 2.4rem — enlarged + centered per request */
+  width: 420px;
+  height: auto;
+  margin-bottom: 44px;
 }
-.step[data-step="2"] .sticker-heart-star-img {
-  position: static;
-  display: inline-block;
-  vertical-align: middle;
-  width: 64px;
-  margin: 0;
-  top: auto;
-  left: auto;
+.step2-subtext {
+  position: absolute;
+  top: 435px; /* clears the pin-inputs graphic (starts at top:235px, ~212px tall) */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-size: 1.3rem;
+  color: var(--text);
 }
 
 /* handwritten "favorite person" tag — separate slot from .paper-tag so both
@@ -577,8 +566,17 @@ body.dev-mode .progress-dots { display: flex; }
 .step[data-step="2"] .card {
   background: transparent;
   box-shadow: none;
-  padding-top: 60px; /* pushes Mission further down, into the notepad's own empty space */
-  padding-bottom: 220px; /* reserves flow space for .pin-inputs now that it's positioned absolute below */
+  padding-top: 60px; /* pushes unlock title further down, into the notepad's own empty space */
+  padding-bottom: 325px; /* reserves flow space for .pin-inputs + .step2-subtext now that they're positioned absolute below */
+}
+/* body-level (not #app/.step-level) so paper-2 is one continuous image across
+   the full viewport while step 1 or 2 is active — same trick as the shared
+   paper.jpg above, avoids a visible seam at #app's edge on wide screens. */
+body:has(.step[data-step="1"].active),
+body:has(.step[data-step="2"].active) {
+  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/paper-2.png');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 /* 2026-07-20: switched from 6 cropped pieces to the one uncropped
@@ -587,7 +585,7 @@ body.dev-mode .progress-dots { display: flex; }
    hit-area for its input, sized up from before ("ปรับขนาดให้ใหญ่ขึ้น"). */
 .pin-inputs {
   position: absolute; /* freed from the header's flow — its own space, positioned off the card ("space" only, same pin-slot.png) */
-  top: 130px;
+  top: 235px; /* was 130px — pushed down to clear the enlarged step2-unlock-img title above it */
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% + 20px); /* small bleed past the card's 22px side padding, but keeps a margin off the screen edge on mobile */
@@ -598,6 +596,9 @@ body.dev-mode .progress-dots { display: flex; }
 .pin-slot {
   position: absolute;
   transform: translateX(-50%);
+  /* pencil sticker as the cursor, tilted 135deg so the tip points down-right
+     like it's actually writing on the paper piece — hotspot near the tip */
+  cursor: url('../assets/stickers/pencil-cursor-135.png') 42 41, text;
 }
 /* Each slot's left/top/height/width/tilt is measured off its own piece in
    pin-slot.png (center x, writable-paper y-range) — not one uniform row,
@@ -622,20 +623,6 @@ body.dev-mode .progress-dots { display: flex; }
   caret-color: var(--pink); /* cute pink caret instead of plain text-color */
 }
 .pin-digit:focus { outline: none; }
-/* cute focus state: a little heart pops up above the paper piece, instead of
-   a plain browser outline (no border/glow ring — not wanted). */
-.pin-slot:focus-within::before {
-  content: "♥";
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  color: var(--pink);
-  font-size: 0.9rem;
-  transform: translateX(-50%);
-  animation: pin-heart-bob 0.9s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes pin-heart-bob { 0%, 100% { transform: translateX(-50%) translateY(0) scale(1); } 50% { transform: translateX(-50%) translateY(-4px) scale(1.15); } }
 .pin-slot:focus-within .pin-digit-img { animation: pin-pop 0.3s ease; }
 @keyframes pin-pop { 0% { transform: scale(1); } 60% { transform: scale(1.22); } 100% { transform: scale(1.08); } }
 .pin-slot:focus-within .pin-digit-img { transform: scale(1.08); }
