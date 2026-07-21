@@ -228,25 +228,35 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 0;
   overflow: visible;
   cursor: pointer; /* whole card is now the "open" trigger since the pencil was removed */
-  animation: notepad-breathe 3.2s ease-in-out infinite; /* gentle idle pulse — invites a tap, makes the cover feel alive instead of static */
 }
 .notepad::before { display: none; }
-@keyframes notepad-breathe {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.025) rotate(-0.6deg); }
-}
 .step1-hint {
   position: absolute;
-  bottom: -34px;
-  left: 50%;
+  top: 72%;
+  left: 62%;
   transform: translateX(-50%);
   margin: 0;
   white-space: nowrap;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.step1-hint .tap-icon {
-  display: inline-block;
-  animation: tap-bounce 1.4s ease-in-out infinite;
+.click-letters {
+  display: inline-flex;
+  align-items: center;
+  animation: click-shake 1.6s ease-in-out infinite;
+}
+.click-letters img {
+  height: 26px;
+  width: auto;
+}
+@keyframes click-shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-4deg); }
+  40% { transform: rotate(4deg); }
+  60% { transform: rotate(-3deg); }
+  80% { transform: rotate(3deg); }
 }
 @keyframes tap-bounce {
   0%, 100% { transform: translateY(0); }
