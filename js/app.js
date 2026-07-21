@@ -205,15 +205,28 @@ async function shareSite() {
 
 // --- background floating shapes (decorative, all steps) ---
 // 2026-07-21: swapped the CSS-drawn heart/star icons for the hand-drawn
-// star PNG in assets/stickers/effect-background/.
+// stickers in assets/stickers/effect-background/. Weighted so the pink ones
+// (1, 2, 5) show up less — clashes with the kraft-paper background otherwise.
+const BG_STICKERS = [
+  { file: 'sticker-1.png', weight: 1 }, // pink star
+  { file: 'sticker-2.png', weight: 1 }, // pink star
+  { file: 'sticker-3.png', weight: 3 }, // gold star
+  { file: 'sticker-4.png', weight: 3 }, // gold sparkle
+  { file: 'sticker-5.png', weight: 1 }, // pink heart
+  { file: 'sticker-6.png', weight: 3 }, // red heart
+];
+const BG_STICKER_POOL = BG_STICKERS.flatMap(s => Array(s.weight).fill(s.file));
+// three movement styles so it's not just "float straight up" every time
+const BG_ANIMS = ['floatUp', 'floatDrift', 'floatWobble'];
 function spawnBgHeart() {
   const h = document.createElement('img');
-  h.src = 'assets/stickers/effect-background/sticker-1.png';
+  h.src = `assets/stickers/effect-background/${BG_STICKER_POOL[Math.floor(Math.random() * BG_STICKER_POOL.length)]}`;
   h.className = 'bg-heart';
   h.style.left = `${Math.random() * 100}%`;
   h.style.setProperty('--size', `${1.1 + Math.random() * 1.6}rem`);
   h.style.setProperty('--o', 0.3 + Math.random() * 0.35);
-  h.style.setProperty('--sway', `${(Math.random() - 0.5) * 80}px`);
+  h.style.setProperty('--sway', `${(Math.random() - 0.5) * 100}px`);
+  h.style.setProperty('--anim', BG_ANIMS[Math.floor(Math.random() * BG_ANIMS.length)]);
   h.style.animationDuration = `${7 + Math.random() * 5}s`;
   document.body.appendChild(h);
   h.addEventListener('animationend', () => h.remove());
@@ -228,6 +241,12 @@ if (new URLSearchParams(location.search).has('dev')) {
   skipBtn.style.cssText = 'position:fixed;bottom:12px;right:12px;z-index:99;padding:8px 14px;border-radius:999px;border:none;background:#333;color:#fff;opacity:0.7;font-size:0.8rem;cursor:pointer;';
   skipBtn.addEventListener('click', () => goToStep(Math.min(state.step + 1, TOTAL_STEPS)));
   document.body.appendChild(skipBtn);
+
+  const backBtn = document.createElement('button');
+  backBtn.textContent = '« back';
+  backBtn.style.cssText = 'position:fixed;bottom:12px;left:12px;z-index:99;padding:8px 14px;border-radius:999px;border:none;background:#333;color:#fff;opacity:0.7;font-size:0.8rem;cursor:pointer;';
+  backBtn.addEventListener('click', () => goToStep(Math.max(state.step - 1, 1)));
+  document.body.appendChild(backBtn);
 }
 
 // --- click delegation for data-action buttons ---

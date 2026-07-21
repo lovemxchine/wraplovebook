@@ -143,7 +143,7 @@ body.dev-mode .progress-dots { display: flex; }
 .progress-dots span.current { width: 18px; border-radius: 4px; background: linear-gradient(90deg, var(--pink), var(--purple)); }
 
 .script {
-  font-family: 'Caveat', cursive;
+  font-family: 'Caveat', 'Sriracha', cursive; /* Caveat has no Thai glyphs — falls through to Sriracha, a casual Thai handwritten/marker font, closer to Caveat's playful feel */
   font-size: 2.4rem;
   margin: 0.2em 0;
   color: var(--pink);
@@ -228,8 +228,30 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 0;
   overflow: visible;
   cursor: pointer; /* whole card is now the "open" trigger since the pencil was removed */
+  animation: notepad-breathe 3.2s ease-in-out infinite; /* gentle idle pulse — invites a tap, makes the cover feel alive instead of static */
 }
 .notepad::before { display: none; }
+@keyframes notepad-breathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.025) rotate(-0.6deg); }
+}
+.step1-hint {
+  position: absolute;
+  bottom: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  z-index: 2;
+}
+.step1-hint .tap-icon {
+  display: inline-block;
+  animation: tap-bounce 1.4s ease-in-out infinite;
+}
+@keyframes tap-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
 
 .step1-title {
   position: absolute;
@@ -237,6 +259,17 @@ body.dev-mode .progress-dots { display: flex; }
   left: 50%;
   transform: translate(-50%, -50%);
   margin: 0;
+  z-index: 2;
+}
+.step1-subtitle {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  text-align: center;
   z-index: 2;
 }
 
@@ -801,15 +834,32 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   opacity: var(--o, 0.5);
   width: var(--size, 1.2rem);
   height: auto;
-  animation: floatUp linear forwards;
+  animation: var(--anim, floatUp) linear forwards;
   pointer-events: none;
-  z-index: 5; /* was 0 — .step's fadeIn animation (opacity+transform) creates its own stacking context that otherwise painted over these */
+  z-index: 0; /* behind .card (z-index 1) — was 5 (on top of everything), asked to sit behind the paper instead */
 }
+/* straight-up float, gentle sway */
 @keyframes floatUp {
   from { transform: translateY(0) translateX(0) rotate(0deg); opacity: var(--o, 0.5); }
   50% { transform: translateY(-55vh) translateX(var(--sway, 20px)) rotate(15deg); }
   80% { opacity: var(--o, 0.5); }
   to { transform: translateY(-110vh) translateX(0) rotate(-10deg); opacity: 0; }
+}
+/* drifts diagonally sideways as it rises, bigger horizontal travel */
+@keyframes floatDrift {
+  from { transform: translate(0, 0) rotate(0deg); opacity: var(--o, 0.5); }
+  50% { transform: translate(var(--sway, 60px), -50vh) rotate(-20deg); }
+  80% { opacity: var(--o, 0.5); }
+  to { transform: translate(var(--sway, 60px), -100vh) rotate(20deg); opacity: 0; }
+}
+/* lazy side-to-side wobble while barely rising, more "floating in place" */
+@keyframes floatWobble {
+  from { transform: translate(0, 0) rotate(0deg); opacity: var(--o, 0.5); }
+  25% { transform: translate(var(--sway, 30px), -20vh) rotate(10deg); }
+  50% { transform: translate(calc(var(--sway, 30px) * -1), -45vh) rotate(-10deg); }
+  75% { transform: translate(var(--sway, 30px), -70vh) rotate(10deg); }
+  80% { opacity: var(--o, 0.5); }
+  to { transform: translate(0, -105vh) rotate(0deg); opacity: 0; }
 }
 
 /* 2026-07-20: explicitly asked to stop splitting mobile vs desktop styling —
