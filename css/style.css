@@ -424,10 +424,14 @@ body.dev-mode .progress-dots { display: flex; }
 }
 /* Step 2, 2026-07-20: sits before "Mission" on the same line, sized up
    ("เอา sticker คน ไปอยู่หน้า mission และขยาย size"), in normal flow instead of absolute. */
+.step[data-step="2"] .card {
+  text-align: center; /* centers the sticker+heading row below */
+}
 .step[data-step="2"] h2.script {
   display: inline-block;
   vertical-align: middle;
   margin-left: 6px;
+  font-size: 3.2rem; /* was the shared .script 2.4rem — enlarged + centered per request */
 }
 .step[data-step="2"] .sticker-heart-star-img {
   position: static;
@@ -573,6 +577,8 @@ body.dev-mode .progress-dots { display: flex; }
 .step[data-step="2"] .card {
   background: transparent;
   box-shadow: none;
+  padding-top: 60px; /* pushes Mission further down, into the notepad's own empty space */
+  padding-bottom: 220px; /* reserves flow space for .pin-inputs now that it's positioned absolute below */
 }
 
 /* 2026-07-20: switched from 6 cropped pieces to the one uncropped
@@ -580,11 +586,13 @@ body.dev-mode .progress-dots { display: flex; }
    เลยไม่ต้องมาตัด") — each .pin-slot is now just an invisible, positioned
    hit-area for its input, sized up from before ("ปรับขนาดให้ใหญ่ขึ้น"). */
 .pin-inputs {
-  position: relative;
-  width: calc(100% + 44px); /* bleeds past the card's 22px side padding so it isn't capped by it */
+  position: absolute; /* freed from the header's flow — its own space, positioned off the card ("space" only, same pin-slot.png) */
+  top: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 20px); /* small bleed past the card's 22px side padding, but keeps a margin off the screen edge on mobile */
   max-width: 540px; /* matches #app's new cap — same budget at every viewport, no mobile/desktop split */
   aspect-ratio: 1849 / 726;
-  margin: 20px -22px 12px;
   background: url('../assets/stickers/pin-slot.png') center / contain no-repeat;
 }
 .pin-slot {
@@ -611,7 +619,7 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 6px;
   background: transparent;
   color: transparent; /* the typed digit stays hidden — .pin-digit-img shows the mapped number.png instead */
-  caret-color: var(--text);
+  caret-color: var(--pink); /* cute pink caret instead of plain text-color */
 }
 .pin-digit:focus { outline: none; }
 /* cute focus state: a little heart pops up above the paper piece, instead of
