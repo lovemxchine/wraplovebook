@@ -208,9 +208,10 @@ async function shareSite() {
 // stickers in assets/stickers/effect-background/. Weighted so the pink ones
 // (1, 2, 5) show up less — clashes with the kraft-paper background otherwise.
 const BG_STICKERS = [
-  { file: 'sticker-5.png', weight: 1 }, // pink heart
-  { file: 'sticker-6.png', weight: 3 }, // red heart
-  { file: 'sticker-3.png', weight: 3 }, // red heart
+  { file: 'sticker-5.png', weight: 1 }, 
+  { file: 'sticker-6.png', weight: 3 }, 
+  { file: 'sticker-3.png', weight: 3 }, 
+  { file: 'sticker-7.png', weight: 2 }, 
   // ponytail: star/sparkle stickers (1-4) removed per request, kept in
   // assets/ unused — re-add to this array if the floating stars come back
 ];

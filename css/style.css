@@ -415,10 +415,19 @@ body.dev-mode .progress-dots { display: flex; }
   text-align: center;
 }
 .step2-unlock-img {
-  display: inline-block;
-  width: 420px;
+  /* 2026-07-22: centered on top edge of the pin-slot graphic, not overlapping
+     the paper pieces ("ตรงกลางด้านบน" — top-center, not dead-center).
+     Width now scales like .pin-inputs (% of card, capped) instead of a fixed
+     px so it shrinks on narrow screens instead of overflowing ("behavior
+     แบบ pin slot ตอนย่อ"). Nudged slightly left of true-center per request. */
+  position: absolute;
+  top: 0;
+  left: calc(50% - 14px);
+  transform: translate(-50%, -100%);
+  width: 78%;
+  max-width: 420px;
   height: auto;
-  margin-bottom: 44px;
+  pointer-events: none;
 }
 .step2-subtext {
   position: absolute;
@@ -603,12 +612,14 @@ body:has(.step[data-step="2"].active) {
 /* Each slot's left/top/height/width/tilt is measured off its own piece in
    pin-slot.png (center x, writable-paper y-range) — not one uniform row,
    since the 6 pieces sit at different heights/sizes in the photo itself. */
-.pin-slot:nth-child(1) { left: 10.3%; top: 33%; height: 45%; width: 13%; transform: translateX(-50%) rotate(-3deg); }  /* kraft square — short piece */
-.pin-slot:nth-child(2) { left: 27.6%; top: 26%; height: 58%; width: 14%; transform: translateX(-50%) rotate(2deg); }  /* gray, tall below the ribbon */
-.pin-slot:nth-child(3) { left: 40.8%; top: 29%; height: 49%; width: 13%; transform: translateX(-50%) rotate(-1deg); } /* grid, below the tape */
-.pin-slot:nth-child(4) { left: 54.5%; top: 33%; height: 48%; width: 14%; transform: translateX(-50%) rotate(1deg); }  /* lined, below the tape */
-.pin-slot:nth-child(5) { left: 73.1%; top: 28%; height: 48%; width: 16%; transform: translateX(-50%) rotate(2deg); }  /* newsprint, above the button */
-.pin-slot:nth-child(6) { left: 89.2%; top: 41%; height: 42%; width: 14%; transform: translateX(-50%) rotate(-4deg); } /* tag, below the hole */
+/* nth-of-type (not nth-child): counts only sibling <span>s, so the
+   .step2-unlock-img <img> now living inside #mission-pin doesn't shift the index */
+.pin-slot:nth-of-type(1) { left: 10.3%; top: 33%; height: 45%; width: 13%; transform: translateX(-50%) rotate(-3deg); }  /* kraft square — short piece */
+.pin-slot:nth-of-type(2) { left: 27.6%; top: 26%; height: 58%; width: 14%; transform: translateX(-50%) rotate(2deg); }  /* gray, tall below the ribbon */
+.pin-slot:nth-of-type(3) { left: 40.8%; top: 29%; height: 49%; width: 13%; transform: translateX(-50%) rotate(-1deg); } /* grid, below the tape */
+.pin-slot:nth-of-type(4) { left: 54.5%; top: 33%; height: 48%; width: 14%; transform: translateX(-50%) rotate(1deg); }  /* lined, below the tape */
+.pin-slot:nth-of-type(5) { left: 73.1%; top: 28%; height: 48%; width: 16%; transform: translateX(-50%) rotate(2deg); }  /* newsprint, above the button */
+.pin-slot:nth-of-type(6) { left: 89.2%; top: 41%; height: 42%; width: 14%; transform: translateX(-50%) rotate(-4deg); } /* tag, below the hole */
 
 .pin-digit {
   width: 100%;
