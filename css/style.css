@@ -431,7 +431,7 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .step2-subtext {
   position: absolute;
-  top: 435px; /* clears the pin-inputs graphic (starts at top:235px, ~212px tall) */
+  top: 300px; /* 2026-07-22: shifted up another 40px in lockstep with .pin-inputs' top (140px->100px) */
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -575,7 +575,7 @@ body.dev-mode .progress-dots { display: flex; }
 .step[data-step="2"] .card {
   background: transparent;
   box-shadow: none;
-  padding-top: 60px; /* pushes unlock title further down, into the notepad's own empty space */
+  padding-top: 0px; /* 2026-07-22: reduced further from 10px per follow-up ("ขออีกนิด") */
   padding-bottom: 325px; /* reserves flow space for .pin-inputs + .step2-subtext now that they're positioned absolute below */
 }
 /* body-level (not #app/.step-level) so paper-2 is one continuous image across
@@ -594,7 +594,7 @@ body:has(.step[data-step="2"].active) {
    hit-area for its input, sized up from before ("ปรับขนาดให้ใหญ่ขึ้น"). */
 .pin-inputs {
   position: absolute; /* freed from the header's flow — its own space, positioned off the card ("space" only, same pin-slot.png) */
-  top: 235px; /* was 130px — pushed down to clear the enlarged step2-unlock-img title above it */
+  top: 100px; /* 2026-07-22: raised further from 140px per follow-up ("ขออีกนิด") */
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% + 20px); /* small bleed past the card's 22px side padding, but keeps a margin off the screen edge on mobile */
