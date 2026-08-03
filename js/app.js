@@ -88,7 +88,10 @@ function checkMission(digits) {
   const errEl = document.getElementById('mission-error');
   if (entered === missionPinAnswer()) {
     errEl.hidden = true;
-    goToStep(3);
+    digits.forEach(d => d.blur()); // drop focus so the 6th digit's image + caret aren't fighting for attention
+    const successEl = document.getElementById('mission-success');
+    successEl.hidden = false;
+    setTimeout(() => { successEl.hidden = true; goToStep(3); }, 1200); // let all 6 digits + "ถูกต้อง" actually be seen before advancing
   } else {
     errEl.hidden = false;
     const app = document.getElementById('app'); // shake the whole screen, not just the card — feels more "wrong"

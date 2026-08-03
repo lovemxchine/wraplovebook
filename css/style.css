@@ -655,6 +655,10 @@ body.dev-mode .progress-dots { display: flex; }
   white-space: nowrap;
   animation: toast-fade 1.8s ease forwards; /* matches the auto-dismiss timing in checkMission() */
 }
+.toast-success {
+  color: var(--pink);
+  animation: toast-fade 1.2s ease forwards; /* matches the setTimeout in checkMission() before goToStep(3) */
+}
 @keyframes toast-fade {
   0%, 60% { opacity: 1; }
   100% { opacity: 0; }
