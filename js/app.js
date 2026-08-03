@@ -29,6 +29,8 @@ function renderDots(n) {
 }
 
 function onEnterStep(n) {
+  if (n === 2) resetMissionPin();
+  if (n === 3) setTimeout(() => goToStep(4), 2800); // matches .journey-text's fade animation duration
   if (n === 4) renderGallery();
   if (n === 5) renderReasons();
   if (n === 6) { renderLetter(); renderEnding(); }
@@ -59,12 +61,25 @@ function initMissionPin() {
     input.addEventListener('input', () => {
       input.value = input.value.replace(/\D/g, '').slice(0, 1);
       updateDigitImg(input);
+      document.getElementById('mission-error').hidden = true; // typing again -> hide the "wrong" warning right away
       if (input.value && digits[i + 1]) digits[i + 1].focus();
-      // ponytail: no auto-check on the 6th digit — a confirm button will trigger checkMission(digits) later
+      if (digits.every(d => d.value)) checkMission(digits); // last digit filled -> auto-check
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Backspace' && !input.value && digits[i - 1]) digits[i - 1].focus();
     });
+  });
+}
+
+// clears any leftover state (wrong-answer error, shake, filled digits) from
+// a previous attempt — called every time Step 2 is (re-)entered so it never
+// shows "wrong" before the user has typed anything this time
+function resetMissionPin() {
+  document.getElementById('mission-error').hidden = true;
+  document.getElementById('app').classList.remove('shake');
+  document.querySelectorAll('#mission-pin .pin-digit').forEach(d => {
+    d.value = '';
+    d.nextElementSibling.style.display = 'none';
   });
 }
 
@@ -76,39 +91,173 @@ function checkMission(digits) {
     goToStep(3);
   } else {
     errEl.hidden = false;
-    const card = document.querySelector('#app .step.active .card');
-    card.classList.remove('shake');
-    void card.offsetWidth; // restart animation
-    card.classList.add('shake');
+    const app = document.getElementById('app'); // shake the whole screen, not just the card — feels more "wrong"
+    app.classList.remove('shake');
+    void app.offsetWidth; // restart animation
+    app.classList.add('shake');
     setTimeout(() => { // keep the wrong digits visible through the shake instead of wiping instantly
       digits.forEach(d => { d.value = ''; d.nextElementSibling.style.display = 'none'; });
       digits[0].focus();
     }, 500);
+    setTimeout(() => { errEl.hidden = true; }, 1800); // toast auto-dismisses like a toast should
   }
-}
-
-// --- Step 3: Mini Games sequence ---
-function startGames() {
-  document.getElementById('games-intro').hidden = true;
-  document.getElementById('game-quiz').hidden = false;
-  runLoveQuiz(() => {
-    document.getElementById('game-quiz').hidden = true;
-    document.getElementById('game-hunt').hidden = false;
-    runHeartHunt(() => goToStep(4));
-  });
 }
 
 // --- Step 4: Gallery ---
+let galleryRevealedCount = 0;
+let galleryModalOpened = false; // gates the "ไปต่อ" button — must open+close the modal once
+
+function galleryPhotoList() {
+  // real photos once filled in, DATA.photos.length placeholders until then
+  return DATA.photos.length ? DATA.photos : Array.from({ length: 4 }, () => null);
+}
+
 function renderGallery() {
   document.getElementById('relationship-label').textContent = DATA.relationshipLabel;
-  const grid = document.getElementById('gallery-grid');
-  if (DATA.photos.length === 0) {
-    grid.innerHTML = Array.from({ length: 4 })
-      .map(() => `<div class="photo-slot"><div class="photo-inner"><span class="icon-photo"></span> no image</div></div>`).join('');
-  } else {
-    grid.innerHTML = DATA.photos.map(p =>
-      `<div class="photo-slot"><div class="photo-inner"><img src="${p.src}" alt="${p.caption || ''}"></div></div>`).join('');
+  document.getElementById('photo-stack').innerHTML = '';
+  galleryRevealedCount = 0;
+  galleryModalOpened = false;
+  document.getElementById('camera-trigger').disabled = false; // re-arm each time the step is (re-)entered
+  document.getElementById('gallery-continue').hidden = true;
+}
+
+// tap the camera -> exactly one photo streams out of its bottom slot and
+// lands on the pile, tilted, staying a bit blurred (not a focus-pull).
+// Tap the pile itself (data-action="next" on #photo-stack) to move on.
+function revealNextPhoto() {
+  const photos = galleryPhotoList();
+  if (galleryRevealedCount >= photos.length) return; // nothing left to eject
+  const trigger = document.getElementById('camera-trigger');
+  const stack = document.getElementById('photo-stack');
+  const flash = document.getElementById('camera-flash');
+  flash.classList.remove('fire');
+  void flash.offsetWidth; // restart the animation if tapped again quickly
+  flash.classList.add('fire');
+  const photo = photos[galleryRevealedCount];
+  const slot = document.createElement('div');
+  slot.className = 'photo-slot';
+  slot.style.zIndex = galleryRevealedCount + 1;
+  slot.innerHTML = photo
+    ? `<div class="photo-inner"><img src="${photo.src}" alt="${photo.caption || ''}"></div>`
+    : `<div class="photo-inner"><span class="icon-photo"></span> no image</div>`;
+  stack.appendChild(slot);
+
+  // fixed fan-out per photo index (not pure random) so the pile lands in a
+  // deliberate messy-but-controlled spread instead of sometimes overlapping
+  // dead-on — this is the FINAL resting transform, set as a plain literal
+  // string (not CSS custom-property calc()) because transitioning a
+  // transform built from var()/calc() didn't reliably animate in this
+  // engine — it just jumped straight to the end value instead of
+  // interpolating, which is why it looked like an instant "warp" in.
+  const FAN = [
+    { rot: -10, jx: -14, jy: -4 },
+    { rot: 8, jx: 10, jy: 2 },
+    { rot: -6, jx: -6, jy: 8 },
+    { rot: 12, jx: 12, jy: -6 },
+  ];
+  const { rot, jx, jy } = FAN[galleryRevealedCount % FAN.length];
+  const restTransform = `translate(${jx}px, ${jy}px) rotate(${rot}deg)`;
+  // Measure the slot's UNTRANSFORMED box (no inline transform set yet at all)
+  // and add jy by hand instead of temporarily applying restTransform to
+  // measure it directly — setting a property, reading layout, then changing
+  // that same property again turned out to make the browser treat the
+  // reading step's value as the transition's baseline, so the real
+  // start->rest animation below collapsed to a no-op (instant jump, no
+  // visible motion). Rotation doesn't move the center point, so this math
+  // is exact without ever touching .style.transform pre-animation.
+  const cam = trigger.getBoundingClientRect();
+  const r = slot.getBoundingClientRect();
+  const dx = cam.left + cam.width / 2 - (r.left + r.width / 2); // horizontal offset so the start pose sits at the camera's true center, not the fan spot
+  const dy = cam.bottom - (r.top + r.height / 2); // straight vertical drop — reads as flowing straight down out of the camera
+
+  // .photo-slot has an unconditional CSS transition on `transform`, so even
+  // this FIRST-EVER assignment (default "none" -> start pose) would itself
+  // animate over 1.6s unless suppressed — leaving barely any visible travel
+  // left for the real start->rest move that follows right after in the same
+  // tick. Force it to jump instantly, then hand control back to the CSS
+  // transition for the actual reveal.
+  slot.style.transition = 'none';
+  slot.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(0deg)`; // start pose: dead center under the camera, no tilt yet
+  void slot.offsetWidth; // commit the instant jump before re-enabling the transition
+  slot.style.transition = '';
+  slot.style.transform = `translate(${dx.toFixed(1)}px, 0px) rotate(0deg)`; // phase 1: straight down only, x stays locked to camera center — no diagonal drift yet
+  slot.classList.add('revealed'); // drives opacity + .photo-inner's scale/blur
+  // phase 2: only once it's fully landed does it shift into its messy fan spot + tilt
+  slot.addEventListener('transitionend', function tilt(e) {
+    if (e.propertyName !== 'transform') return;
+    slot.removeEventListener('transitionend', tilt);
+    slot.style.transform = restTransform;
+  });
+
+  galleryRevealedCount++;
+  if (galleryRevealedCount >= photos.length) trigger.disabled = true; // camera's out of film
+}
+
+// Tapping the pile (only once the camera's fully emptied) opens a focused
+// photo-by-photo viewer instead of advancing the step directly. Front card
+// starts as the most-recently-revealed one (same one on top of the pile),
+// tapping it sends it to the back and loops.
+let modalOrder = []; // card elements, index 0 = front, rest = peeking out behind in order
+
+function openPhotoModal() {
+  const photos = galleryPhotoList();
+  if (galleryRevealedCount < photos.length) return; // camera not empty yet — pile isn't tappable
+  const modal = document.getElementById('photo-modal');
+  const stack = document.getElementById('photo-modal-stack');
+  stack.innerHTML = '';
+  modalOrder = [];
+  // last-revealed photo (top of the pile) starts as the front card here too
+  for (let i = photos.length - 1; i >= 0; i--) {
+    const photo = photos[i];
+    const slot = document.createElement('div');
+    slot.className = 'photo-slot';
+    slot.innerHTML = (photo
+      ? `<div class="photo-inner"><img src="${photo.src}" alt="${photo.caption || ''}"></div>`
+      : `<div class="photo-inner"><span class="icon-photo"></span> no image</div>`)
+      + (photo && photo.caption ? `<p class="photo-caption">${photo.caption}</p>` : '');
+    stack.appendChild(slot);
+    modalOrder.push(slot);
   }
+  applyModalDepths(true); // true = snap to starting positions, no transition
+  modal.hidden = false;
+  void modal.offsetWidth;
+  modal.classList.add('active');
+}
+
+// positions every card by its depth in modalOrder — depth 0 (front) is full
+// size dead-center, deeper cards are offset down-right and shrunk so their
+// edges peek out from behind it. Reordering modalOrder + re-running this is
+// what makes tapping the front card read as "sliding to the back": the
+// element never moves in the DOM, only its own transform changes, so the
+// CSS transition on transform animates it smoothly.
+function applyModalDepths(instant) {
+  modalOrder.forEach((card, depth) => {
+    if (instant) card.style.transition = 'none';
+    card.style.zIndex = modalOrder.length - depth;
+    // cards behind fan out sideways (alternating left/right) instead of
+    // stacking straight down, so tapping the front one reads as "slides
+    // off to the side, then tucks in behind" rather than dropping in place
+    const dir = depth % 2 === 0 ? 1 : -1;
+    card.style.transform = `translate(${dir * depth * 16}px, ${depth * 6}px) rotate(${dir * depth * 4}deg) scale(${(1 - depth * 0.06).toFixed(2)})`;
+    card.classList.toggle('front', depth === 0);
+    if (instant) { void card.offsetWidth; card.style.transition = ''; }
+  });
+}
+
+// front card tapped -> cycle it to the back of modalOrder; every card's
+// depth shifts by one, so they all animate to their new spot together.
+function cyclePhotoModal() {
+  if (modalOrder.length < 2) return;
+  modalOrder.push(modalOrder.shift());
+  applyModalDepths(false);
+}
+
+function closePhotoModal() {
+  const modal = document.getElementById('photo-modal');
+  modal.classList.remove('active');
+  setTimeout(() => { modal.hidden = true; }, 250); // matches .photo-modal's opacity transition
+  galleryModalOpened = true;
+  document.getElementById('gallery-continue').hidden = false;
 }
 
 // --- Background music (plays across the whole site, see DATA.song in data.js) ---
@@ -249,15 +398,25 @@ if (new URLSearchParams(location.search).has('dev')) {
   document.body.appendChild(backBtn);
 }
 
+// --- photo modal: close button, backdrop tap, and cycling the front card ---
+document.getElementById('photo-modal-close').addEventListener('click', closePhotoModal);
+document.getElementById('photo-modal').addEventListener('click', (e) => {
+  if (e.target.id === 'photo-modal') closePhotoModal(); // backdrop itself, not a card
+});
+document.getElementById('photo-modal-stack').addEventListener('click', (e) => {
+  if (e.target.closest('.photo-slot.front')) cyclePhotoModal();
+});
+
 // --- click delegation for data-action buttons ---
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
   if (action === 'open') { startBgMusic(); goToStep(2); }
-  if (action === 'start-games') startGames();
   if (action === 'next') goToStep(state.step + 1);
   if (action === 'save') saveMemory(btn);
+  if (action === 'reveal-photos') revealNextPhoto();
+  if (action === 'open-photo-modal') openPhotoModal();
   if (action === 'share') shareSite();
   if (action === 'flip-reason') {
     btn.classList.toggle('flipped');

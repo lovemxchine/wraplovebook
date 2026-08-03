@@ -4,7 +4,7 @@ const DATA = {
   names: "", // e.g. "เอิร์น & ต้นน้ำ"
 
   // Step 2: Mission — the date they first met, checked against these 3 selects.
-  metDate: { day: 1, month: 1, year: 2021 },
+  metDate: { day: 1, month: 4, year: 2569 }, // pin = 010469
 
   // Step 3a: Love Quiz — each question needs exactly one correctIndex.
   quiz: [

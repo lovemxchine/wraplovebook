@@ -6,7 +6,7 @@
 <title>A Surprise for You</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=8" />
 </head>
 <body>
 <!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
@@ -17,8 +17,7 @@
   <!-- Step 1: Scan & Open -->
   <section class="step" data-step="1">
     <div class="card center notepad" data-action="open">
-      <h1 class="script script-hero step1-title">for you</h1>
-      <p class="script step1-subtitle">วันนี้มีอะไร<br>จะบอกด้วยหล่ะ</p>
+      <p class="script script-hero step1-subtitle">วันนี้มีอะไร<br>จะบอกด้วยหล่ะ <span class="icon-heart"></span></p>
       <p class="hint step1-hint">
         <span class="click-letters">
           <img src="assets/alphabet/C.png" alt="C" />
@@ -42,49 +41,40 @@
         <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
         <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
         <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
+        <p class="pin-slot-tip">tip: วันอะไรน้า</p>
       </div>
-      <p class="error-msg" id="mission-error" hidden>ลองอีกครั้งนะ <span class="icon-heart"></span></p>
-      <p class="step2-subtext">ลองใส่รหัสดูสิ</p>
+      <p class="toast" id="mission-error" hidden>ลองอีกครั้งนะ</p>
     </div>
   </section>
 
-  <!-- Step 3: Mini Games -->
+  <!-- Step 3: no card, no button — just a line of text that fades in and
+       out, then auto-advances into the Memory Gallery/camera (Step 4).
+       See runJourneyText() in app.js. -->
   <section class="step" data-step="3">
-    <div class="card" id="games-intro">
-      <div class="paper-tag">just for fun</div>
-      <img class="sticker-hearts-img" src="assets/stickers/hearts.png" alt="" />
-      <p class="eyebrow">2 มินิเกม</p>
-      <h2 class="script">Let's Play!</h2>
-      <p class="hint">เล่นให้ครบเพื่อปลดล็อกความทรงจำถัดไป</p>
-      <button class="btn-primary" data-action="start-games">START GAMES</button>
-    </div>
-
-    <div class="card" id="game-quiz" hidden>
-      <img class="sticker-happy-place-img" src="assets/stickers/happy-place.png" alt="" />
-      <p class="eyebrow">Game 1 · Love Quiz</p>
-      <div id="quiz-body"></div>
-    </div>
-
-    <div class="card" id="game-hunt" hidden>
-      <img class="sticker-firework-img" src="assets/stickers/firework.png" alt="" />
-      <p class="eyebrow">Game 2 · Heart Hunt</p>
-      <p class="hint">แตะหัวใจให้ครบทุกดวง</p>
-      <div id="hunt-field" class="hunt-field"></div>
-      <p class="hunt-count"><span id="hunt-collected">0</span>/<span id="hunt-total">8</span> <span class="icon-heart"></span></p>
-    </div>
+    <p class="journey-text">ไปถ่ายรูปกัน</p>
   </section>
 
   <!-- Step 4: Memory Gallery -->
-  <section class="step" data-step="4">
-    <div class="card">
-      <img class="sticker-tag-img" src="assets/stickers/favorite-person.png" alt="favorite person" />
-      <p class="eyebrow">ความทรงจำของเรา</p>
-      <h2 class="script">Memories</h2>
-      <p class="relationship-label" id="relationship-label"></p>
-      <div class="gallery-grid" id="gallery-grid"></div>
-      <button class="btn-primary" data-action="next">ต่อไป</button>
-    </div>
+  <!-- no card background here on purpose — camera + photo pile sit directly
+       on the page background; tapping the pile itself is the "next" action,
+       so there's no separate button either -->
+  <section class="step center" data-step="4">
+    <p class="eyebrow">ความทรงจำของเรา</p>
+    <h2 class="script">Memories</h2>
+    <p class="relationship-label" id="relationship-label"></p>
+    <!-- ponytail: placeholder frame only — real camera artwork drops in later, same as assets/photos/ -->
+    <button class="camera-frame" id="camera-trigger" data-action="reveal-photos"><img class="camera-frame-img" src="assets/stickers/camera.png" alt="camera" /><span class="flash" id="camera-flash"></span></button>
+    <div class="photo-stack" id="photo-stack" data-action="open-photo-modal"></div>
+    <button class="btn-transparent" id="gallery-continue" data-action="next" hidden>ไปต่อ</button>
   </section>
+
+  <!-- Step 4's photo viewer — opens once the camera pile is complete (see
+       openPhotoModal() in app.js). Tapping a card sends it to the back of
+       the stack so the next one shows; loops indefinitely. -->
+  <div class="photo-modal" id="photo-modal" hidden>
+    <button class="modal-close" id="photo-modal-close" aria-label="close">×</button>
+    <div class="photo-modal-stack" id="photo-modal-stack"></div>
+  </div>
 
   <!-- Step 5: Voice Message — paused for now, kept for later re-enable, not part of the active flow -->
   <!--
@@ -127,8 +117,6 @@
 
 </div>
 
-<script src="js/data.js"></script>
-<script src="js/games.js"></script>
-<script src="js/app.js"></script>
+<script src="js/data.js?v=2"></script><script src="js/app.js?v=2"></script>
 </body>
 </html>
