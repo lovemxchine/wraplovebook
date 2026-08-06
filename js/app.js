@@ -1,7 +1,7 @@
 // State machine: step N is "unlocked" once step N-1 is completed.
 // Progress is in-memory only — a reload always restarts from the cover, so the
 // surprise opens the same way every time (was persisted to localStorage).
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 7;
 
 let state = { step: 1 };
 
@@ -28,7 +28,8 @@ function onEnterStep(n) {
   if (n === 3) startQuestions();
   if (n === 4) setTimeout(() => goToStep(5), 2800); // matches .journey-text's fade animation duration
   if (n === 5) renderGallery();
-  if (n === 6) { renderLetter(); renderEnding(); }
+  if (n === 6) renderSpread();
+  if (n === 7) { renderLetter(); renderEnding(); }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -186,7 +187,13 @@ function unlockShutter() {
     shutterSound.currentTime = 0;
   }).catch(() => {});
 }
-document.addEventListener('pointerdown', unlockShutter, { once: true });
+// The first tap anywhere is the gesture that lets audio play — use it for both
+// the shutter and the background music, so the song starts on whatever step
+// the visitor happens to land on.
+document.addEventListener('pointerdown', () => {
+  unlockShutter();
+  startBgMusic();
+}, { once: true });
 
 function playShutter() {
   const s = shutterSound.cloneNode(); // already cached, so no extra request
@@ -341,8 +348,9 @@ function youtubeId(url) {
   const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
   return m ? m[1] : null;
 }
-// Called from the Step 1 tap (a real user gesture) — browsers block audio
-// autoplay without one, so this can't just run on page load.
+// Browsers block audio autoplay without a user gesture, so this can't run on
+// page load — it's wired to the first tap anywhere (see the listener below),
+// which covers deep links like ?page=5 that never see the Step 1 tap.
 function startBgMusic() {
   const embed = document.getElementById('bg-music');
   if (embed.dataset.started) return; // only start once
@@ -374,6 +382,28 @@ function renderVoice() {
 }
 
 // --- Step 6: Letter ---
+// --- Step 6: Scrapbook spread ---
+// The collage layout is fixed in markup/CSS; this only fills in the photos and
+// the cut-out text. Slots with no photo keep the empty placeholder look.
+function renderSpread() {
+  const sp = DATA.spread || {};
+  document.getElementById('spread-dict-word').textContent = sp.dictWord || '';
+  document.getElementById('spread-dict-note').textContent = sp.dictNote || '';
+  document.getElementById('spread-strip-1').textContent = sp.strip1 || '';
+  document.getElementById('spread-strip-2').textContent = sp.strip2 || '';
+  document.querySelectorAll('#spread .sp-img').forEach(img => {
+    const photo = DATA.photos[Number(img.dataset.photo)];
+    if (photo) {
+      img.src = photo.src;
+      img.alt = photo.caption || '';
+      img.classList.remove('empty');
+    } else {
+      img.removeAttribute('src'); // no broken-image icon on an empty slot
+      img.classList.add('empty');
+    }
+  });
+}
+
 function renderLetter() {
   const { to, body, from } = DATA.letter;
   const lines = [
@@ -460,7 +490,7 @@ document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
-  if (action === 'open') { startBgMusic(); goToStep(2); }
+  if (action === 'open') goToStep(2); // music already started on the pointerdown above
   if (action === 'next') goToStep(state.step + 1);
   if (action === 'reveal-photos') revealNextPhoto();
   if (action === 'open-photo-modal') openPhotoModal();

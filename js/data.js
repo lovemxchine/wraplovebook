@@ -19,6 +19,15 @@ const DATA = {
   photos: [],
   relationshipLabel: "", // e.g. "3 ปี 1 เดือนของเรา"
 
+  // Step 6: Scrapbook spread — the cut-out text pasted onto the collage.
+  // Photos are the first 3 of `photos` above — no separate list.
+  spread: {
+    dictWord: "lover:",
+    dictNote: "(บุคคลอันเป็นที่รัก) n.",
+    strip1: "cause i'm a fool for you",
+    strip2: "อยากอยู่ใกล้ๆ แบบนี้ตลอดไป",
+  },
+
   // Background music — paste any youtube.com/watch?v= or youtu.be/ link.
   // startSeconds: where playback begins. loop is always on (whole video, back to 0).
   // volume: 0-100, it's background music so it sits well under the shutter sound.
