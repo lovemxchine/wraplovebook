@@ -103,15 +103,26 @@ html, body {
 body {
   margin: 0;
   font-family: 'Mali', 'Prompt', sans-serif;
-  /* fixed = one continuous image behind the whole viewport, so #app (transparent)
-     shows the same crop as the area around it instead of its own separate "cover" zone */
-  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/paper-2.webp'); /* same background as Step 1, now used everywhere */
-  background-size: cover;
-  background-attachment: fixed;
+  background: var(--cream); /* base tint under the image layer, so nothing ever flashes white */
   color: var(--text);
   display: flex;
   justify-content: center;
   height: 100%;
+}
+/* The paper background lives on its own fixed layer rather than on `body` with
+   `background-attachment: fixed`. iOS Safari treats background-attachment:fixed
+   as unreliable at the best of times, and body here is itself position:fixed —
+   that combination made the background simply not paint on phones
+   ("เปิดบนทรศ.พื้นหลังหายอะ"). A plain fixed layer gives the same single
+   continuous crop behind everything, on every browser.
+   It's out of flow (position:fixed), so body's flex layout is unaffected. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/paper-2.webp') center / cover no-repeat;
+  pointer-events: none;
 }
 
 #app {
