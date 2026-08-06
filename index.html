@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=37" />
+<link rel="stylesheet" href="css/style.css?v=40" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -136,10 +136,12 @@
     <div class="spread" id="spread">
       <span class="sp-spiral"></span>
 
-      <!-- three polaroids, zigzagging left-right down the page -->
+      <!-- four polaroids, zigzagging left-right down the page — the same four
+           photos the camera ejects in Step 5 (DATA.photos, see galleryPhotoList) -->
       <div class="sp-item sp-frame sp-polaroid sp-p0"><span class="sp-clip"></span><img class="sp-img" data-photo="0" alt="" /></div>
       <div class="sp-item sp-frame sp-polaroid sp-p1"><span class="sp-tape sp-tape-a"></span><img class="sp-img" data-photo="1" alt="" /></div>
       <div class="sp-item sp-frame sp-polaroid sp-p2"><span class="sp-tape sp-tape-b"></span><img class="sp-img" data-photo="2" alt="" /></div>
+      <div class="sp-item sp-frame sp-polaroid sp-p3"><span class="sp-tape sp-tape-a"></span><img class="sp-img" data-photo="3" alt="" /></div>
 
       <img class="sp-flower" src="assets/stickers/flower/1.webp" alt="" />
       <span class="sp-heart sp-heart-1 icon-heart"></span>

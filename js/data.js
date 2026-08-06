@@ -20,7 +20,7 @@ const DATA = {
   relationshipLabel: "", // e.g. "3 ปี 1 เดือนของเรา"
 
   // Step 6: Scrapbook spread — the cut-out text pasted onto the collage.
-  // Photos are the first 3 of `photos` above — no separate list.
+  // Photos are the first 4 of `photos` above (same set Step 5 ejects) — no separate list.
   spread: {
     dictWord: "lover:",
     dictNote: "(บุคคลอันเป็นที่รัก) n.",

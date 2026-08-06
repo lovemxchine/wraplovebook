@@ -1406,9 +1406,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 /* the "lover: (booklover)n." dictionary clipping */
 .sp-dict {
-  /* no width:max-content here — with an explicit width the box stopped
-     honouring `right` and stuck to its static position. Plain shrink-to-fit. */
-  max-width: 38%;
+  max-width: 38%; /* plain shrink-to-fit, capped so it stays in its gap */
   background: #f0ead9;
   padding: 6px 10px 8px;
   font-family: Georgia, 'Times New Roman', serif;
@@ -1448,21 +1446,22 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   font-size: 1.5rem;
 }
 
-/* --- the actual layout: three polaroids zigzagging down the page, with every
+/* --- the actual layout: four polaroids zigzagging down the page, with every
        cut-out placed in the gap the zigzag leaves open on the other side --- */
-.sp-p0 { top: 3%;  left: 8%;   width: 50%; height: 29%; transform: rotate(-3deg);  z-index: 3; }
-.sp-p1 { top: 36%; right: 5%;  width: 50%; height: 29%; transform: rotate(2.5deg); z-index: 3; }
-.sp-p2 { top: 68%; left: 10%;  width: 50%; height: 29%; transform: rotate(-2deg);  z-index: 3; }
+.sp-p0 { top: 1%;  left: 7%;   width: 46%; height: 23%; transform: rotate(-3deg);  z-index: 3; }
+.sp-p1 { top: 25%; right: 5%;  width: 46%; height: 23%; transform: rotate(2.5deg); z-index: 3; }
+.sp-p2 { top: 49%; left: 9%;   width: 46%; height: 23%; transform: rotate(-2deg);  z-index: 3; }
+.sp-p3 { top: 73%; right: 4%;  width: 46%; height: 23%; transform: rotate(3deg);   z-index: 3; }
 
-.sp-dict-1   { top: 27%; left: auto; right: 3%; transform: rotate(3deg);  z-index: 4; }
-.sp-strip-1  { top: 45%; left: 9%;  transform: rotate(-2deg); z-index: 4; }
-.sp-strip-2  { top: 74%; left: auto; right: 4%; max-width: 58%; transform: rotate(2deg);  z-index: 4; }
+.sp-dict-1   { top: 6%;  right: 3%; transform: rotate(3deg);  z-index: 4; }
+.sp-strip-1  { top: 33%; left: 6%;   transform: rotate(-2deg); z-index: 4; }
+.sp-strip-2  { top: 79%; left: 5%; max-width: 44%; transform: rotate(2deg); z-index: 4; }
 .sp-lace-1   { bottom: 0; left: 26px; right: 0; z-index: 1; }
 
-.sp-heart-1 { top: 33%; left: 8%; transform: rotate(-12deg); z-index: 5; }
-.sp-heart-2 { top: 36%; left: 16%; font-size: 1.1rem; transform: rotate(10deg); z-index: 5; }
+.sp-heart-1 { top: 46%; left: 62%; transform: rotate(-12deg); z-index: 5; }
+.sp-heart-2 { top: 49%; left: 70%;  font-size: 1.1rem; transform: rotate(10deg); z-index: 5; }
 
-.sp-flower { position: absolute; top: 60%; left: 4%; width: 48px; z-index: 5; transform: rotate(-8deg); }
+.sp-flower { position: absolute; top: 60%; right: 4%; width: 48px; z-index: 5; transform: rotate(-8deg); }
 
 /* the tape positions, relative to their own piece */
 .sp-tape-a { top: -8px;  left: -14px; transform: rotate(-32deg); }
