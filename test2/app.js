@@ -30,5 +30,5 @@ cover.addEventListener('click', (e) => {
   heartBurst(e.clientX, e.clientY);
   cover.classList.add('opening');
   // matches the pad-out animation so the page doesn't cut away mid-burst
-  setTimeout(() => { location.href = '../index.html'; }, 620);
+  setTimeout(() => { location.href = '/'; }, 620);
 });

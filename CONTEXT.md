@@ -4,7 +4,7 @@ Single source of truth for architecture decisions and domain glossary for this
 project. AI-agent-agnostic — any coding agent should be able to read this file
 + README.md and be productive.
 
-Last updated: 2026-07-16 (grill-with-docs session, initial scope defined)
+Last updated: 2026-08-06 (flow trimmed to 6 steps, progress persistence removed)
 
 ---
 
@@ -15,10 +15,25 @@ not a SaaS, not a reusable template with an editing UI. All content (photos,
 music, messages, dates) lives directly in the site's code/data as a static
 site. No backend, no database, no accounts.
 
-The visitor experience is a **linear, locked 9-step flow**: Scan & Open →
-Unlock Mission → Mini Games → Memory Gallery → Our Song → Voice Message →
-The Letter → Final Surprise → Ending. Each step unlocks only after the
-previous one is completed — no skipping ahead.
+The visitor experience is a **linear, locked 6-step flow**:
+
+| Step | Screen | Advances when |
+|---|---|---|
+| 1 | Cover | tapping the notepad |
+| 2 | Unlock Mission (6-digit pin) | the pin matches `DATA.metDate` |
+| 3 | Questions | every question answered, then the score summary's "ไปต่อ" |
+| 4 | Journey text | auto-advances after the line fades |
+| 5 | Memory Gallery (camera) | the photo modal has been opened and closed once |
+| 6 | The Letter (closing scrapbook spread) | — end of flow |
+
+Each step unlocks only after the previous one is completed — no skipping
+ahead. `?page=N` jumps straight to a step, for testing only.
+
+Steps that existed earlier and were cut: Mini Games (replaced by the simpler
+Questions step), Our Song as its own screen (the song is now background music
+across the whole site), Reasons I Love You, Final Surprise, and a separate
+Ending screen (folded into the letter). Voice Message is written but paused —
+its markup is commented out in `index.html` and `renderVoice()` is not called.
 
 ## Architecture decisions
 
@@ -35,7 +50,7 @@ edits the code/data directly — no self-serve editing UI. Acceptable since
 reuse-by-others was explicitly deferred, not required.
 
 ### Decision: Linear locked step progression, no skipping
-**Choice**: The 9 steps unlock strictly in order. No jumping ahead, no going
+**Choice**: The steps unlock strictly in order. No jumping ahead, no going
 back once past a step.
 
 **Why**: Preserves the "surprise reveal" pacing — the whole point of the
@@ -65,22 +80,31 @@ again" state would work against the surprise/gift framing.
 code (printed on a card/gift) that links to this site's URL is out of scope
 — it's produced separately, not by this codebase.
 
-### Decision: One external dependency — canvas-confetti (Final Surprise only)
-**Choice**: Everything is native CSS animation/transition + vanilla JS,
-except the confetti effect on the Final Surprise step, which uses the
-`canvas-confetti` CDN library (~3KB, no sub-dependencies).
+### Decision: Zero runtime dependencies
+**Choice**: Everything is native CSS animation/transition + vanilla JS. No
+libraries at all.
 
-**Why**: Confetti physics is native-doable but not worth hand-rolling for one
-effect; everything else (heart float, card flip, step transitions) is
-straightforward with CSS keyframes.
+**Why**: An earlier plan pulled in `canvas-confetti` for the Final Surprise
+step; that step no longer exists, and nothing else needed a library. The only
+external requests left are the Google Fonts stylesheet and the background-music
+YouTube embed.
 
-### Decision: Ending actions — Share is real, Save is decorative, Download is out of scope
-**Choice**:
-- **Share** → `navigator.share` (Web Share API), shares this site's URL.
-- **Save Memory** → visual/animation feedback only, does not persist
-  anything (no account/DB to save to).
-- **Download** → not built. Would require canvas-rendering a summary
-  image/PDF — real scope, deferred.
+### Decision: Ending has no Share/Save actions
+**Choice**: The letter is the last screen and carries no action buttons.
+
+**Why**: Share (`navigator.share`) and a decorative Save button were built and
+then removed — the buttons pulled attention away from the letter, which is the
+emotional payload. Download (canvas-rendering a summary image/PDF) was never
+built and stays out of scope.
+
+### Decision: All images are WebP
+**Choice**: Every asset in `assets/` is `.webp`. No PNG/JPEG originals are
+kept in the repo.
+
+**Why**: The PNG set was 15MB, enough to make the first paint and the pin
+screen visibly wait on images. WebP took it to 1.8MB (-88%) with full alpha
+support, so the transparent stickers are unchanged. Browser support is
+universal for the target (any phone that can run this site).
 
 ### Decision: Mobile-first, fixed max-width layout
 **Choice**: Layout is a fixed-width mobile frame (e.g. `max-width: 480px`)
@@ -134,14 +158,15 @@ user to fill in later.
 
 | Term | Meaning |
 |---|---|
-| **Step** | One of the 9 sequential screens in the flow (Scan & Open, Unlock Mission, Mini Games, Memory Gallery, Our Song, Voice Message, The Letter, Final Surprise, Ending). The unit of locked progression — a Step is either locked, active, or completed. |
-| **Mission** | Step 2's unlock puzzle — a fill-in prompt (e.g. the date the couple met) that must be answered correctly to proceed. Distinct from Mini Game (no fail state; Mission's correctness is checked against a fixed answer). |
-| **Mini Game** | One of 3 interactive games in Step 3 (Love Quiz, Memory Match, Heart Hunt). Always completable — no fail state, only a completion state that unlocks the next Step. |
-| **Memory Gallery** | Step 4 — a photo/video collection screen ("Memory Feed" in one mockup, same concept). |
-| **Final Surprise** | Step 8 — the climactic reveal screen, includes the confetti effect. |
-| **Ending** | Step 9 — closing screen with Share/Save Memory actions. |
+| **Step** | One of the 6 sequential screens in the flow (see the table above). The unit of locked progression — a Step is either locked, active, or completed. |
+| **Mission** | Step 2's unlock puzzle — a 6-digit pin (`DDMMYY` of the date the couple met) that must match to proceed. Correctness is checked against a fixed answer, unlike Questions. |
+| **Questions** | Step 3 — a short quiz. Always completable: any answer advances, and the score summary praises the recipient regardless. Score is counted but never blocks. |
+| **Memory Gallery** | Step 5 — the camera screen. Tapping the camera ejects one photo per tap onto a pile; tapping the completed pile opens the Photo Viewer. |
+| **Photo Viewer** | Step 5's modal — the photos enlarged one at a time over a blurred backdrop, tapping the front one sends it to the back, looping. Opening and closing it once is what reveals the "ไปต่อ" button. |
+| **Scrapbook spread** | Step 6's layout — layered paper sheets, washi tape, and stickers around the letter. The visual language the whole site aims for. |
 
 ## Sources
 - Design reference: two mockup images provided by user (9-step and 8-step
   variants of the same flow), branding "Surprise by ourday" in one variant.
-- Resolved via `/grill-with-docs` session, 2026-07-16.
+- Resolved via `/grill-with-docs` session, 2026-07-16; flow and decisions
+  updated 2026-08-06 to match what actually shipped.

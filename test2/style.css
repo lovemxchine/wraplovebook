@@ -27,7 +27,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background: linear-gradient(rgba(255,255,255,0.32), rgba(255,255,255,0.32)), url('../assets/bg/paper-2.webp') center / cover no-repeat;
+  background: linear-gradient(rgba(255,255,255,0.32), rgba(255,255,255,0.32)), url('/assets/bg/paper-2.webp') center / cover no-repeat;
 }
 /* soft warm vignette so the middle of the page reads brighter than the edges
    and the eye lands on the notepad instead of drifting to the corners */
@@ -96,7 +96,7 @@ body::after {
   position: relative;
   width: 300px;
   aspect-ratio: 648 / 892;
-  background: url('../assets/stickers/page1-element.webp') center / 100% 100% no-repeat;
+  background: url('/assets/stickers/page1-element.webp') center / 100% 100% no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
