@@ -163,16 +163,34 @@ function renderGallery() {
   document.getElementById('gallery-continue').hidden = true;
 }
 
-// Shutter sound. One Audio element reused rather than a new one per tap —
-// currentTime = 0 restarts it, so rapid taps re-trigger cleanly instead of
-// stacking up objects. Playback is inside a tap gesture, so autoplay policy
-// is satisfied; the catch swallows the rejection if a browser refuses anyway.
+// Shutter sound.
+//
+// Two things make bare .play() unreliable here:
+//  1. Autoplay policy. An Audio element built at load time stays blocked until
+//     it has played once inside a real user gesture. Entering deep (?page=5)
+//     skips the cover tap, so nothing has unlocked it yet.
+//  2. Re-playing one element. Setting currentTime=0 and calling play() again
+//     while it's still playing rejects the previous promise (AbortError), and
+//     the tap goes silent — that's the intermittent "sometimes no sound".
+//
+// So: unlock on the first gesture anywhere, and play a clone per tap so taps
+// never interrupt each other.
 const shutterSound = new Audio('assets/sounds/shutter.wav');
 shutterSound.preload = 'auto';
 
+function unlockShutter() {
+  // play-then-immediately-pause inside a genuine gesture is the standard way to
+  // take an audio element off the blocked list; it's inaudible.
+  shutterSound.play().then(() => {
+    shutterSound.pause();
+    shutterSound.currentTime = 0;
+  }).catch(() => {});
+}
+document.addEventListener('pointerdown', unlockShutter, { once: true });
+
 function playShutter() {
-  shutterSound.currentTime = 0;
-  shutterSound.play().catch(() => {}); // never let a blocked sound break the reveal
+  const s = shutterSound.cloneNode(); // already cached, so no extra request
+  s.play().catch(() => {}); // never let a blocked sound break the reveal
 }
 
 // tap the camera -> exactly one photo streams out of its bottom slot and

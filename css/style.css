@@ -898,31 +898,29 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 1px;
 }
 /* camera shutter flash on tap — plain white overlay that pops then fades */
-/* Shutter flash — a burst of light coming OUT of the camera, not a full-screen
-   whiteout. Sized larger than the button and centred on it, so the glow spills
-   past the camera body and falls off into the page. */
+/* Shutter flash — blinks inside the top-right box on the camera itself.
+   It sits in that box in the markup, so it's positioned against it, and the
+   box-shadow lets the light bleed a little past the box's edges. */
 .camera-frame .flash {
   position: absolute;
-  top: 50%; left: 50%;
-  width: 200%; height: 200%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(255,255,255,0.95) 0%,
-    rgba(255,255,255,0.8) 22%,
-    rgba(255,255,255,0.35) 45%,
-    rgba(255,255,255,0) 68%);
+  inset: 0;
+  border-radius: inherit;
+  background: #fff;
   opacity: 0;
   pointer-events: none;
-  z-index: -1; /* behind the camera, so the body stays readable through the burst */
+  z-index: 2; /* above the viewfinder's ::after, which is painted as its last child */
 }
 .camera-frame .flash.fire {
   animation: camera-flash 0.42s ease-out;
 }
-/* scales up slightly as it fades — reads as light travelling outward */
+/* two quick pulses rather than one fade — a blink reads as a flash firing,
+   a single fade reads as a light being switched off */
 @keyframes camera-flash {
-  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.75); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.15); }
+  0%   { opacity: 0;   box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  12%  { opacity: 1;   box-shadow: 0 0 16px 7px rgba(255,255,255,0.9); }
+  34%  { opacity: 0.2; box-shadow: 0 0 6px 2px rgba(255,255,255,0.25); }
+  52%  { opacity: 0.95; box-shadow: 0 0 13px 6px rgba(255,255,255,0.75); }
+  100% { opacity: 0;   box-shadow: 0 0 0 0 rgba(255,255,255,0); }
 }
 
 /* One photo comes out per camera tap and lands in this pile — no grid of
