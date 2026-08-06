@@ -864,13 +864,15 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 999px;
   background: #3a3835;
 }
+/* the sliding catch on the handle — a rounded bar, not a circle: a dot there
+   read as a stray hole rather than part of the mechanism */
 .cam-handle::after {
   content: "";
   position: absolute;
-  top: 50%; left: 54%;
+  top: 50%; left: 52%;
   transform: translateY(-50%);
-  width: 17%; aspect-ratio: 1;
-  border-radius: 50%;
+  width: 34%; height: 52%;
+  border-radius: 999px;
   background: #6d6a66;
 }
 /* the slot the photos come out of */
@@ -896,19 +898,22 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 1px;
 }
 /* camera shutter flash on tap — plain white overlay that pops then fades */
+/* Shutter flash covers the whole viewport, not just the camera — a flash
+   confined to the camera body read as the camera lighting up rather than a
+   photo being taken. position:fixed, so it escapes the button's box. */
 .camera-frame .flash {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  border-radius: 12px;
+  z-index: 900; /* over everything except the photo modal (999) */
   background: #fff;
   opacity: 0;
   pointer-events: none;
 }
 .camera-frame .flash.fire {
-  animation: camera-flash 0.4s ease-out;
+  animation: camera-flash 0.42s ease-out;
 }
 @keyframes camera-flash {
-  0% { opacity: 0.9; }
+  0%   { opacity: 0.92; }
   100% { opacity: 0; }
 }
 
