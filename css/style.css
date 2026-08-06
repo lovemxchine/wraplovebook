@@ -726,7 +726,6 @@ body.dev-mode .progress-dots { display: flex; }
 .camera-frame {
   display: block;
   width: 240px;
-  height: 240px;
   margin: 6px auto;
   background: none;
   border: none;
@@ -738,7 +737,196 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .camera-frame:active { transform: scale(0.9); } /* press feedback */
 .camera-frame:disabled { cursor: default; }
-.camera-frame-img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+/* ---- the camera itself, drawn in CSS (was assets/stickers/camera.webp) ----
+   Everything below is sized in % of .cam, so the camera scales purely from
+   .camera-frame's width above — no magic numbers to re-tune per size. */
+.cam {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.92;
+  pointer-events: none; /* the <button> owns the click, not its parts */
+  filter: drop-shadow(0 10px 18px rgba(60,40,35,0.22));
+}
+/* cream upper body */
+.cam-top {
+  position: absolute;
+  top: 0; left: 2.5%;
+  width: 95%; height: 66%;
+  background: linear-gradient(170deg, #fdfdfb 0%, #f2efe8 60%, #e8e4db 100%);
+  border-radius: 11% 11% 4% 4% / 15% 15% 4% 4%;
+}
+/* black film-door lower body, slightly wider than the top */
+.cam-bottom {
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 37%;
+  background: linear-gradient(180deg, #34322f 0%, #1d1c1a 55%, #131211 100%);
+  border-radius: 3% 3% 7% 7% / 6% 6% 18% 18%;
+}
+/* flash unit — vertical striped window, top-left */
+.cam-flash-unit {
+  position: absolute;
+  top: 9%; left: 7%;
+  width: 15%; height: 45%;
+  border-radius: 3px;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(130,130,130,0.42) 0 1px,
+      rgba(255,255,255,0.92) 1px 4px),
+    #e9e9e7;
+  box-shadow: inset 0 0 0 2.5px #cfcbc2, 0 1px 2px rgba(0,0,0,0.14);
+}
+.cam-power {
+  position: absolute;
+  top: 12%; left: 25.5%;
+  width: 5.5%; aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1.5px solid #b9b4aa;
+}
+/* the small dot under the power symbol */
+.cam-sensor {
+  position: absolute;
+  top: 23%; left: 26.5%; /* clear of the lens edge, which starts around 29% */
+  width: 4.5%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #6b6862, #2c2a27);
+}
+/* lens: three nested rings, glass gets the iridescent tint */
+.cam-lens {
+  position: absolute;
+  top: 8%; left: 50%;
+  transform: translateX(-50%);
+  width: 42%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #4a4744, #232120 55%, #171615);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cam-lens-mid {
+  width: 74%; height: 74%;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #2e2c2a, #121110);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cam-lens-glass {
+  width: 62%; height: 62%;
+  border-radius: 50%;
+  /* the coloured coating flare a real lens throws back at the camera */
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.5) 0 8%, transparent 40%),
+    radial-gradient(circle at 62% 62%, #7ac6a8 0 22%, transparent 55%),
+    radial-gradient(circle at 40% 68%, #6f5fa8 0 26%, transparent 60%),
+    radial-gradient(circle at 55% 40%, #d9c98a 0 18%, transparent 52%),
+    #14202a;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.75);
+}
+/* viewfinder block, top-right */
+.cam-viewfinder {
+  position: absolute;
+  top: 8%; right: 6%;
+  width: 20%; aspect-ratio: 1 / 0.86;
+  border-radius: 14%;
+  background: linear-gradient(165deg, #3a3835, #201f1d);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.14);
+}
+.cam-viewfinder::after {
+  content: "";
+  position: absolute;
+  top: 22%; left: 22%;
+  width: 56%; height: 56%;
+  border-radius: 22%;
+  background: radial-gradient(circle at 60% 35%, #8d8a85 0 14%, #2a2825 45%, #0d0c0c);
+}
+/* exposure slider: − ● + */
+.cam-slider {
+  position: absolute;
+  top: 60%; right: 7%;
+  width: 19%; height: 5%;
+}
+.cam-slider::before, .cam-slider::after {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a8a49b;
+  font-size: 9px;
+  line-height: 1;
+}
+.cam-slider::before { content: "−"; left: -18%; }
+.cam-slider::after  { content: "+"; right: -20%; }
+.cam-slider-knob {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58%; height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffc93f, #e8a013);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.28);
+}
+/* red shutter button, bottom-left of the cream body */
+.cam-shutter {
+  position: absolute;
+  bottom: 7%; left: 7%;
+  width: 17%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #f4574a, #d0271c 62%, #a81b13);
+  box-shadow: 0 0 0 3px #f7f5f0, 0 2px 4px rgba(0,0,0,0.28), inset 0 -2px 4px rgba(0,0,0,0.22);
+}
+/* small dark port right of the lens */
+.cam-port {
+  position: absolute;
+  bottom: 15%; right: 26%;
+  width: 8%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 32%, #3d3a37, #0e0d0d 70%);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+}
+/* the dark handle bridging the two bodies */
+.cam-handle {
+  position: absolute;
+  top: -7%; left: 50%;
+  transform: translateX(-50%);
+  width: 34%; height: 15%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #4a4744, #2a2826);
+}
+.cam-handle::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 54%;
+  transform: translateY(-50%);
+  width: 17%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: #6d6a66;
+}
+/* the slot the photos come out of */
+.cam-eject {
+  position: absolute;
+  top: 30%; left: 5%;
+  width: 90%; height: 9%;
+  border-radius: 3px;
+  background: #08080a;
+  box-shadow: inset 0 2px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.08);
+}
+/* the rainbow stripe, bottom-left */
+.cam-rainbow {
+  position: absolute;
+  bottom: 12%; left: 10%;
+  width: 17%; height: 30%;
+  background: linear-gradient(180deg,
+    #4a90d9 0 25%,
+    #57b85e 25% 45%,
+    #f2c53d 45% 62%,
+    #ef8c3a 62% 80%,
+    #e0483c 80% 100%);
+  border-radius: 1px;
+}
 /* camera shutter flash on tap — plain white overlay that pops then fades */
 .camera-frame .flash {
   position: absolute;

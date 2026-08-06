@@ -207,7 +207,9 @@ function revealNextPhoto() {
   // start->rest animation below collapsed to a no-op (instant jump, no
   // visible motion). Rotation doesn't move the center point, so this math
   // is exact without ever touching .style.transform pre-animation.
-  const cam = trigger.getBoundingClientRect();
+  // measure the drawn eject slot when it's there, so photos start at the actual
+  // opening rather than the button's outer edge
+  const cam = (trigger.querySelector('.cam-eject') || trigger).getBoundingClientRect();
   const r = slot.getBoundingClientRect();
   const dx = cam.left + cam.width / 2 - (r.left + r.width / 2); // horizontal offset so the start pose sits at the camera's true center, not the fan spot
   const dy = cam.bottom - (r.top + r.height / 2); // straight vertical drop — reads as flowing straight down out of the camera

@@ -7,13 +7,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=20" />
+<link rel="stylesheet" href="css/style.css?v=22" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
 <link rel="preload" as="image" href="assets/bg/paper-2.webp" />
 <link rel="preload" as="image" href="assets/stickers/pin-slot.webp" />
-<link rel="preload" as="image" href="assets/stickers/camera.webp" />
 </head>
 <body>
 <!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
@@ -82,8 +81,29 @@
     <p class="eyebrow">ความทรงจำของเรา</p>
     <h2 class="script">ความทรงจำ</h2>
     <p class="relationship-label" id="relationship-label"></p>
-    <!-- ponytail: placeholder frame only — real camera artwork drops in later, same as assets/photos/ -->
-    <button class="camera-frame" id="camera-trigger" data-action="reveal-photos"><img class="camera-frame-img" src="assets/stickers/camera.webp" alt="camera" /><span class="flash" id="camera-flash"></span></button>
+    <!-- The camera is drawn in CSS (no image asset) — see .cam-* rules in
+         style.css. Every part is a positioned div sized in % of .cam, so the
+         whole thing scales by changing .camera-frame's width alone. -->
+    <button class="camera-frame" id="camera-trigger" data-action="reveal-photos" aria-label="ถ่ายรูป">
+      <span class="cam">
+        <span class="cam-top">
+          <span class="cam-flash-unit"></span>
+          <span class="cam-power"></span>
+          <span class="cam-sensor"></span>
+          <span class="cam-lens"><span class="cam-lens-mid"><span class="cam-lens-glass"></span></span></span>
+          <span class="cam-viewfinder"></span>
+          <span class="cam-slider"><span class="cam-slider-knob"></span></span>
+          <span class="cam-shutter"></span>
+          <span class="cam-port"></span>
+        </span>
+        <span class="cam-bottom">
+          <span class="cam-handle"></span>
+          <span class="cam-eject"></span>
+          <span class="cam-rainbow"></span>
+        </span>
+      </span>
+      <span class="flash" id="camera-flash"></span>
+    </button>
     <div class="photo-stack" id="photo-stack" data-action="open-photo-modal"></div>
     <button class="btn-transparent" id="gallery-continue" data-action="next" hidden>ไปต่อ</button>
   </section>
@@ -145,6 +165,6 @@
 
 </div>
 
-<script src="js/data.js?v=7"></script><script src="js/app.js?v=7"></script>
+<script src="js/data.js?v=8"></script><script src="js/app.js?v=8"></script>
 </body>
 </html>
