@@ -41,13 +41,16 @@ back once past a step.
 **Why**: Preserves the "surprise reveal" pacing — the whole point of the
 experience is content unlocking progressively, not being browsable upfront.
 
-### Decision: Progress persisted via localStorage
-**Choice**: Current step + completed mission/game state saved to
-`localStorage`. Reopening the site resumes at the saved step instead of
-restarting from Step 1.
+### Decision: Progress is NOT persisted — every visit restarts at Step 1
+**Choice**: The current step lives in memory only. Reloading or reopening the
+site always restarts from the cover.
 
-**Why**: No backend exists to persist state server-side; localStorage is the
-native browser mechanism for this and needs no server round-trip.
+**Why**: This is a gift that gets opened, not an app that gets used. Resuming
+mid-flow meant a reload could drop the recipient into the middle of the
+surprise, skipping the build-up the pacing depends on.
+
+**Supersedes**: an earlier decision to persist progress to `localStorage`
+(key `lovememo-progress`) so a reload resumed where it left off.
 
 ### Decision: Mini-games are always winnable — no fail state
 **Choice**: All 3 mini-games (Love Quiz, Memory Match, Heart Hunt) unlock the

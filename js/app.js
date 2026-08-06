@@ -1,17 +1,12 @@
 // State machine: step N is "unlocked" once step N-1 is completed.
-// Persisted to localStorage so a reload resumes instead of restarting.
-const STORAGE_KEY = 'lovememo-progress';
+// Progress is in-memory only — a reload always restarts from the cover, so the
+// surprise opens the same way every time (was persisted to localStorage).
 const TOTAL_STEPS = 6;
 
-let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"step":1}');
-
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+let state = { step: 1 };
 
 function goToStep(n) {
   state.step = n;
-  save();
   document.querySelectorAll('.step').forEach(el => {
     el.classList.toggle('active', Number(el.dataset.step) === n);
   });
@@ -35,7 +30,6 @@ function onEnterStep(n) {
   if (n === 5) renderGallery();
   if (n === 6) { renderLetter(); renderEnding(); }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
-  if (n === TOTAL_STEPS) localStorage.removeItem(STORAGE_KEY); // ponytail: reaching the end resets progress for next visit
 }
 
 // --- Step 2: Mission ---
@@ -441,5 +435,4 @@ preloadDigits();
 initMissionPin();
 // ?page=N jumps straight to step N (testing/sharing a specific step), clamped to valid range
 const pageParam = Number(new URLSearchParams(location.search).get('page'));
-const startStep = pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : Math.min(state.step, TOTAL_STEPS);
-goToStep(startStep);
+goToStep(pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : 1);
