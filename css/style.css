@@ -849,8 +849,8 @@ body.dev-mode .progress-dots { display: flex; }
 /* red shutter button, bottom-left of the cream body */
 .cam-shutter {
   position: absolute;
-  bottom: 7%; left: 7%;
-  width: 17%; aspect-ratio: 1;
+  bottom: 8%; left: 9%;
+  width: 12.5%; aspect-ratio: 1;
   border-radius: 50%;
   background: #d8352a;
   box-shadow: 0 0 0 3px #f7f5f0, 0 1px 3px rgba(0,0,0,0.22);
