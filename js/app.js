@@ -163,6 +163,18 @@ function renderGallery() {
   document.getElementById('gallery-continue').hidden = true;
 }
 
+// Shutter sound. One Audio element reused rather than a new one per tap —
+// currentTime = 0 restarts it, so rapid taps re-trigger cleanly instead of
+// stacking up objects. Playback is inside a tap gesture, so autoplay policy
+// is satisfied; the catch swallows the rejection if a browser refuses anyway.
+const shutterSound = new Audio('assets/sounds/shutter.wav');
+shutterSound.preload = 'auto';
+
+function playShutter() {
+  shutterSound.currentTime = 0;
+  shutterSound.play().catch(() => {}); // never let a blocked sound break the reveal
+}
+
 // tap the camera -> exactly one photo streams out of its bottom slot and
 // lands on the pile, tilted, staying a bit blurred (not a focus-pull).
 // Tap the pile itself (data-action="next" on #photo-stack) to move on.
@@ -175,6 +187,7 @@ function revealNextPhoto() {
   flash.classList.remove('fire');
   void flash.offsetWidth; // restart the animation if tapped again quickly
   flash.classList.add('fire');
+  playShutter();
   const photo = photos[galleryRevealedCount];
   const slot = document.createElement('div');
   slot.className = 'photo-slot';
