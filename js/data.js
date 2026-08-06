@@ -7,10 +7,12 @@ const DATA = {
   metDate: { day: 1, month: 4, year: 2569 }, // pin = 010469
 
   // Step 3a: Love Quiz — each question needs exactly one correctIndex.
+  // ponytail: any answer advances (no fail state), so correctIndex is unused
+  // by the UI — kept only in case a scored version is ever wanted.
   quiz: [
-    { question: "ทดสอบคำถามที่ 1?", options: ["ก", "ข", "ค", "ง"], correctIndex: 0 },
-    { question: "ทดสอบคำถามที่ 2?", options: ["ก", "ข", "ค", "ง"], correctIndex: 1 },
-    { question: "ทดสอบคำถามที่ 3?", options: ["ก", "ข", "ค", "ง"], correctIndex: 2 },
+    { question: "เจอกันครั้งแรกที่ไหนน้า?", options: ["ที่ทำงาน", "ร้านกาแฟ", "ในเกม", "เพื่อนแนะนำ"], correctIndex: 0 },
+    { question: "เดตแรกของเรากินอะไร?", options: ["ชาบู", "หมูกระทะ", "พิซซ่า", "ก๋วยเตี๋ยว"], correctIndex: 0 },
+    { question: "คำแรกที่เราบอกรักกันคือ?", options: ["รักนะ", "ชอบเธอ", "เป็นแฟนกันไหม", "จำไม่ได้แล้ว"], correctIndex: 0 },
   ],
 
   // Step 4: Memory Gallery — add { src, caption } once photos exist.
@@ -24,19 +26,9 @@ const DATA = {
   // Step 6: Voice Message
   voiceMessage: { from: "", src: "" },
 
-  // Step 6: Reasons I Love You — flip cards, front shows the number, back shows the reason.
-  reasons: [
-    "เหตุผลที่ 1 ใส่ทีหลัง",
-    "เหตุผลที่ 2 ใส่ทีหลัง",
-    "เหตุผลที่ 3 ใส่ทีหลัง",
-    "เหตุผลที่ 4 ใส่ทีหลัง",
-    "เหตุผลที่ 5 ใส่ทีหลัง",
-    "เหตุผลที่ 6 ใส่ทีหลัง",
-  ],
-
-  // Step 7: The Letter
+  // Step 6: The Letter
   letter: { to: "", body: "", from: "" },
 
   // Ending (shown together with the letter)
-  ending: { message: "Thank you for being my favorite person." },
+  ending: { message: "ขอบคุณที่เป็นคนพิเศษของเรานะ" },
 };

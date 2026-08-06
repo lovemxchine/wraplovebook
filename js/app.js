@@ -30,9 +30,9 @@ function renderDots(n) {
 
 function onEnterStep(n) {
   if (n === 2) resetMissionPin();
-  if (n === 3) setTimeout(() => goToStep(4), 2800); // matches .journey-text's fade animation duration
-  if (n === 4) renderGallery();
-  if (n === 5) renderReasons();
+  if (n === 3) startQuestions();
+  if (n === 4) setTimeout(() => goToStep(5), 2800); // matches .journey-text's fade animation duration
+  if (n === 5) renderGallery();
   if (n === 6) { renderLetter(); renderEnding(); }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
   if (n === TOTAL_STEPS) localStorage.removeItem(STORAGE_KEY); // ponytail: reaching the end resets progress for next visit
@@ -51,7 +51,7 @@ function initMissionPin() {
   const updateDigitImg = (input) => {
     const img = input.nextElementSibling; // .pin-digit-img, see index.html markup
     if (input.value) {
-      img.src = `assets/number/${input.value}.png`;
+      img.src = `assets/number/${input.value}.webp`;
       img.style.display = 'block';
     } else {
       img.style.display = 'none';
@@ -106,7 +106,52 @@ function checkMission(digits) {
   }
 }
 
-// --- Step 4: Gallery ---
+// --- Step 3: Questions ---
+// No fail state by design (see CONTEXT.md's mini-game decision) — any option
+// advances. It's a keepsake, not a test.
+let questionIndex = 0;
+let questionScore = 0;
+
+function startQuestions() {
+  questionIndex = 0;
+  questionScore = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = DATA.quiz[questionIndex];
+  if (!q) { renderQuestionResult(); return; } // out of questions -> score summary
+  document.getElementById('question-progress').textContent = `ข้อ ${questionIndex + 1} จาก ${DATA.quiz.length}`;
+  document.getElementById('question-text').textContent = q.question;
+  document.getElementById('question-options').innerHTML = q.options
+    .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
+    .join('');
+}
+
+function answerQuestion(btn) {
+  if (Number(btn.dataset.index) === DATA.quiz[questionIndex].correctIndex) questionScore++;
+  btn.classList.add('chosen'); // brief highlight so the tap registers visually
+  setTimeout(() => { questionIndex++; renderQuestion(); }, 450);
+}
+
+// Praise is warm regardless of score — this is a keepsake, not a test, so even
+// a perfect miss gets an affectionate line rather than a "you failed".
+function questionPraise(score, total) {
+  if (score === total) return 'จำได้ทุกอย่างเลย เก่งมากก <span class="icon-heart"></span>';
+  if (score >= total / 2) return 'จำได้เยอะเลยนะเนี่ย น่ารักจัง';
+  return 'ไม่เป็นไรน้า เดี๋ยวเราเล่าให้ฟังใหม่ทั้งหมดเลย';
+}
+
+function renderQuestionResult() {
+  const total = DATA.quiz.length;
+  document.getElementById('question-progress').textContent = 'สรุปผล';
+  document.getElementById('question-text').textContent = `ตอบถูก ${questionScore} จาก ${total} ข้อ`;
+  document.getElementById('question-options').innerHTML =
+    `<p class="quiz-praise">${questionPraise(questionScore, total)}</p>
+     <button class="btn-primary" data-action="next">ไปต่อ</button>`;
+}
+
+// --- Step 5: Gallery ---
 let galleryRevealedCount = 0;
 let galleryModalOpened = false; // gates the "ไปต่อ" button — must open+close the modal once
 
@@ -282,29 +327,7 @@ function startBgMusic() {
   embed.innerHTML = `<iframe width="1" height="1" src="https://www.youtube.com/embed/${id}?start=${start}&autoplay=1&loop=1&playlist=${id}" title="background music" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
 }
 
-// --- Step 5: Reasons I Love You ---
-function renderReasons() {
-  const grid = document.getElementById('reasons-grid');
-  delete grid.dataset.celebrated;
-  grid.innerHTML = DATA.reasons.map((r, i) => `
-    <div class="reason-card" data-action="flip-reason">
-      <div class="reason-inner">
-        <div class="reason-face reason-front">${i + 1}</div>
-        <div class="reason-face reason-back">${r}</div>
-      </div>
-    </div>`).join('');
-}
-
-function checkReasonsComplete() {
-  const cards = document.querySelectorAll('#reasons-grid .reason-card');
-  if (![...cards].every(c => c.classList.contains('flipped'))) return;
-  const grid = document.getElementById('reasons-grid');
-  if (grid.dataset.celebrated) return; // ponytail: fire once per visit to this step
-  grid.dataset.celebrated = '1';
-  for (let i = 0; i < 16; i++) setTimeout(spawnBgHeart, i * 60);
-}
-
-// --- Step 5 (voice, paused) ---
+// --- Voice (paused) ---
 function renderVoice() {
   document.getElementById('voice-from').textContent = DATA.voiceMessage.from
     ? `มีข้อความเสียงจาก${DATA.voiceMessage.from}`
@@ -340,30 +363,15 @@ function renderEnding() {
   document.getElementById('ending-message').textContent = DATA.ending.message;
 }
 
-function saveMemory(btn) {
-  btn.innerHTML = 'Saved <span class="icon-heart"></span>';
-  btn.disabled = true;
-}
-
-async function shareSite() {
-  const shareData = { title: document.title, url: location.href };
-  if (navigator.share) {
-    try { await navigator.share(shareData); } catch (_) { /* user cancelled, ignore */ }
-  } else {
-    await navigator.clipboard.writeText(location.href);
-    alert('คัดลอกลิงก์แล้ว');
-  }
-}
-
 // --- background floating shapes (decorative, all steps) ---
 // 2026-07-21: swapped the CSS-drawn heart/star icons for the hand-drawn
 // stickers in assets/stickers/effect-background/. Weighted so the pink ones
 // (1, 2, 5) show up less — clashes with the kraft-paper background otherwise.
 const BG_STICKERS = [
-  { file: 'sticker-5.png', weight: 1 }, 
-  { file: 'sticker-6.png', weight: 3 }, 
-  { file: 'sticker-3.png', weight: 3 }, 
-  { file: 'sticker-7.png', weight: 2 }, 
+  { file: 'sticker-5.webp', weight: 1 }, 
+  { file: 'sticker-6.webp', weight: 3 }, 
+  { file: 'sticker-3.webp', weight: 3 }, 
+  { file: 'sticker-7.webp', weight: 2 }, 
   // ponytail: star/sparkle stickers (1-4) removed per request, kept in
   // assets/ unused — re-add to this array if the floating stars come back
 ];
@@ -417,17 +425,19 @@ document.addEventListener('click', (e) => {
   const action = btn.dataset.action;
   if (action === 'open') { startBgMusic(); goToStep(2); }
   if (action === 'next') goToStep(state.step + 1);
-  if (action === 'save') saveMemory(btn);
   if (action === 'reveal-photos') revealNextPhoto();
   if (action === 'open-photo-modal') openPhotoModal();
-  if (action === 'share') shareSite();
-  if (action === 'flip-reason') {
-    btn.classList.toggle('flipped');
-    checkReasonsComplete();
-  }
+  if (action === 'answer-question') answerQuestion(btn);
 });
 
 // --- init ---
+// The digit images are only assigned on keypress, so without this the first
+// tap of each number waits on a network/disk fetch — that's the "pin slot
+// feels laggy while typing". Warm all ten into cache up front.
+function preloadDigits() {
+  for (let i = 0; i <= 9; i++) new Image().src = `assets/number/${i}.webp`;
+}
+preloadDigits();
 initMissionPin();
 // ?page=N jumps straight to step N (testing/sharing a specific step), clamped to valid range
 const pageParam = Number(new URLSearchParams(location.search).get('page'));

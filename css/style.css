@@ -105,7 +105,7 @@ body {
   font-family: 'Mali', 'Prompt', sans-serif;
   /* fixed = one continuous image behind the whole viewport, so #app (transparent)
      shows the same crop as the area around it instead of its own separate "cover" zone */
-  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/paper-2.png'); /* same background as Step 1, now used everywhere */
+  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/paper-2.webp'); /* same background as Step 1, now used everywhere */
   background-size: cover;
   background-attachment: fixed;
   color: var(--text);
@@ -216,8 +216,6 @@ body.dev-mode .progress-dots { display: flex; }
 .step[data-step="3"] .card::before { background: repeating-linear-gradient(135deg, #ffe3ae, #ffe3ae 4px, #fff3d9 4px, #fff3d9 8px); }
 .step[data-step="4"] .card::before { background: repeating-linear-gradient(135deg, #bdeecb, #bdeecb 4px, #e0f9e7 4px, #e0f9e7 8px); }
 .step[data-step="5"] .card::before { background: repeating-linear-gradient(135deg, #ffc7b0, #ffc7b0 4px, #ffe3d6 4px, #ffe3d6 8px); }
-.step[data-step="6"] .card::before { background: repeating-linear-gradient(135deg, #f6c9d0, #f6c9d0 4px, #fbe4e8 4px, #fbe4e8 8px); }
-.step[data-step="7"] .card::before { display: none; } /* washi tape was peeking out behind the i-love-you sticker, removed for this step */
 
 .card.center { text-align: center; }
 
@@ -230,7 +228,7 @@ body.dev-mode .progress-dots { display: flex; }
   width: 300px;
   aspect-ratio: 648 / 892;
   margin: 0 auto;
-  background: url('../assets/stickers/page1-element.png') center / 100% 100% no-repeat, transparent;
+  background: url('../assets/stickers/page1-element.webp') center / 100% 100% no-repeat, transparent;
   box-shadow: none; /* png is transparent-edged now, a box shadow would draw a rectangle around it */
   padding: 0;
   border-radius: 0;
@@ -341,8 +339,6 @@ body.dev-mode .progress-dots { display: flex; }
     100% 90%, 92% 100%, 84% 93%, 74% 100%, 64% 94%, 54% 100%, 44% 93%, 34% 100%, 24% 94%, 14% 100%, 6% 95%, 0% 100%
   );
 }
-.step[data-step="3"] .paper-tag,
-.step[data-step="5"] .paper-tag { left: 18px; right: auto; transform: rotate(-5deg); }
 /* 2026-07-20: "อยากให้ Sticker i love you อยู่ซ้าย All my Heart อยู่ขวาแทน" —
    swapped back to the default top-right (was moved top-left on 2026-07-19 to
    dodge .sticker-ransom-img, which is now on the left instead — see its own
@@ -371,43 +367,7 @@ body.dev-mode .progress-dots { display: flex; }
 }
 @keyframes spin { to { transform: rotate(352deg); } }
 
-/* 2026-07-20: moved to top-left ("อยากให้ Sticker i love you อยู่ซ้าย All my
-   Heart อยู่ขวาแทน") — paper-tag is back on its default top-right, so this
-   stays clear of it on the left. */
-.sticker-ransom-img {
-  position: absolute;
-  top: -16px;
-  left: 10px;
-  width: 90px;
-  height: auto;
-  transform: rotate(-4deg);
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.18));
-  z-index: 2;
-}
 
-/* Swapped the CSS-drawn fingerprint-heart badge for a real sticker
-   (assets/stickers/fingerprint-heart.png) now that a working transparent
-   PNG of it was confirmed. */
-.sticker-fingerprint-heart-img {
-  display: inline-block;
-  width: 62px;
-  height: auto;
-  margin: 6px;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.18));
-}
-
-/* envelope-heart, tucked bottom-right corner — clear of the top-left
-   .sticker-ransom-img and the top-right .paper-tag. */
-.sticker-envelope-img {
-  position: absolute;
-  bottom: -18px;
-  right: -12px;
-  width: 74px;
-  height: auto;
-  transform: rotate(8deg);
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.16));
-  z-index: 2;
-}
 
 /* Step 2, 2026-07-21: "Mission" heading + couple sticker removed, replaced by
    a single unlock.png graphic acting as the title — centered, in normal flow. */
@@ -564,6 +524,34 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .btn-primary:active { transform: scale(0.97); box-shadow: 0 3px 8px rgba(122,32,37,0.3); }
 
+/* Step 3 quiz — paper-cutout style options, one per row */
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+.quiz-option {
+  padding: 13px 16px;
+  border: 1.5px solid var(--pink);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.75);
+  color: var(--text);
+  font-family: 'Mali', sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+.quiz-option:active { transform: scale(0.97); }
+.quiz-option.chosen { background: var(--pink); color: #fff; } /* brief tap feedback before the next question */
+.quiz-praise {
+  text-align: center;
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-size: 1.3rem;
+  color: var(--purple);
+  margin: 4px 0 0;
+}
+
 .btn-secondary {
   flex: 1;
   padding: 12px;
@@ -586,7 +574,7 @@ body.dev-mode .progress-dots { display: flex; }
   padding-bottom: 325px; /* reserves flow space for .pin-inputs + .step2-subtext now that they're positioned absolute below */
 }
 /* 2026-07-20: switched from 6 cropped pieces to the one uncropped
-   assets/stickers/pin-slot.png sprite as a single background ("ใช้รูปที่ทำมา
+   assets/stickers/pin-slot.webp sprite as a single background ("ใช้รูปที่ทำมา
    เลยไม่ต้องมาตัด") — each .pin-slot is now just an invisible, positioned
    hit-area for its input, sized up from before ("ปรับขนาดให้ใหญ่ขึ้น"). */
 .pin-inputs {
@@ -597,14 +585,14 @@ body.dev-mode .progress-dots { display: flex; }
   width: calc(100% + 20px); /* small bleed past the card's 22px side padding, but keeps a margin off the screen edge on mobile */
   max-width: 540px; /* matches #app's new cap — same budget at every viewport, no mobile/desktop split */
   aspect-ratio: 1849 / 726;
-  background: url('../assets/stickers/pin-slot.png') center / contain no-repeat;
+  background: url('../assets/stickers/pin-slot.webp') center / contain no-repeat;
 }
 .pin-slot {
   position: absolute;
   transform: translateX(-50%);
   /* pencil sticker as the cursor, tilted 135deg so the tip points down-right
      like it's actually writing on the paper piece — hotspot near the tip */
-  cursor: url('../assets/stickers/pencil-cursor-135.png') 42 41, text;
+  cursor: url('../assets/stickers/pencil-cursor-135.webp') 42 41, text;
 }
 /* Each slot's left/top/height/width/tilt is measured off its own piece in
    pin-slot.png (center x, writable-paper y-range) — not one uniform row,
@@ -722,29 +710,24 @@ body.dev-mode .progress-dots { display: flex; }
 /* Step 4 runs tighter than other steps — a 200px camera + photo pile is tall,
    so this pulls the title block up and shrinks the gaps around it to avoid
    the page needing to scroll. */
-.step[data-step="4"] { padding-top: 12px; justify-content: flex-start; }
-.step[data-step="4"] .script { margin: 0.05em 0 0; }
+.step[data-step="5"] { padding-top: 12px; justify-content: flex-start; }
+.step[data-step="5"] .script { margin: 0.05em 0 0; }
 .camera-frame {
   display: block;
-  width: 200px;
-  height: 200px;
+  width: 240px;
+  height: 240px;
   margin: 6px auto;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  animation: camera-pulse 1.6s ease-in-out infinite; /* invites tapping, same idea as step1's click-shake */
   transition: transform 0.15s ease;
   position: relative;
   z-index: 10; /* camera stays above the photo pile/stickers at all times */
 }
 .camera-frame:active { transform: scale(0.9); } /* press feedback */
-.camera-frame:disabled { animation: none; cursor: default; }
+.camera-frame:disabled { cursor: default; }
 .camera-frame-img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-@keyframes camera-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
 /* camera shutter flash on tap — plain white overlay that pops then fades */
 .camera-frame .flash {
   position: absolute;
@@ -810,16 +793,6 @@ body.dev-mode .progress-dots { display: flex; }
   font-size: 0.75rem;
   overflow: hidden;
   box-shadow: 0 6px 14px rgba(122,32,37,0.18);
-}
-.photo-stack .photo-slot::before, .photo-modal-stack .photo-slot::before {
-  content: "";
-  position: absolute;
-  top: -6px; left: 50%;
-  width: 0.7em; height: 0.7em;
-  border-radius: 50% 50% 50% 0;
-  background: var(--pink);
-  transform: translateX(-50%) rotate(-45deg);
-  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
 }
 .photo-stack .photo-inner, .photo-modal-stack .photo-inner {
   background: var(--pink-light);
@@ -908,47 +881,6 @@ body.dev-mode .progress-dots { display: flex; }
   color: #c48;
 }
 
-.reasons-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 16px 0;
-}
-.reason-card {
-  aspect-ratio: 0.9;
-  perspective: 600px;
-  cursor: pointer;
-}
-.reason-inner {
-  position: relative;
-  width: 100%; height: 100%;
-  transition: transform 0.5s;
-  transform-style: preserve-3d;
-}
-.reason-card.flipped .reason-inner { transform: rotateY(180deg); }
-.reason-face {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 10px;
-  backface-visibility: hidden;
-  padding: 6px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(122,32,37,0.15);
-}
-.reason-front {
-  background: linear-gradient(135deg, var(--pink), var(--purple));
-  color: var(--cream);
-  font-family: 'Caveat', cursive;
-  font-size: 1.6rem;
-}
-.reason-back {
-  background: var(--pink-light);
-  color: var(--text);
-  font-size: 0.7rem;
-  line-height: 1.3;
-  transform: rotateY(180deg);
-}
-
 /* #bg-music — persistent background-music iframe, lives outside #app in
    index.html so it survives every step change. Tiny + off-screen since it's
    audio-only. See startBgMusic() in app.js / DATA.song in data.js. */
@@ -972,17 +904,98 @@ body.dev-mode .progress-dots { display: flex; }
 /* native <audio>, tinted to match the theme instead of default grey (native accent-color, no custom player needed) */
 audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius: 999px; }
 
-/* Letter */
+/* Letter — inside the closing scrapbook spread, so no box of its own:
+   the .sb-paper page underneath already IS the paper. */
 .letter {
-  background: #fffaf3;
-  border: 1px solid #eaddc6;
-  border-radius: 12px;
-  padding: 20px;
-  font-family: 'Caveat', cursive;
-  font-size: 1.3rem;
-  line-height: 1.5;
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-size: 1.25rem;
+  line-height: 1.6;
   white-space: pre-wrap;
-  min-height: 200px;
+  min-height: 150px;
+  color: var(--text);
+}
+
+/* ---- Step 7: closing scrapbook spread ---- */
+.step[data-step="6"] { padding: 20px 16px; justify-content: center; }
+.scrapbook {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+/* small floating decorations — placed around the page rather than scattered
+   at random, filling the corners the note itself doesn't reach */
+.sb-deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  animation: sb-float 5s ease-in-out infinite;
+}
+@keyframes sb-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-7px) rotate(var(--r, 0deg)); }
+}
+.sb-deco-flower1   { --r: -14deg; width: 48px; bottom: 66px; left: -6px;  animation-delay: 1.7s; }
+.sb-deco-flower2   { --r: 10deg;  width: 42px; bottom: 26px; right: -4px; animation-delay: 2.4s; }
+
+/* the paper the note is written on — layered, tilted, taped down */
+.sb-paper {
+  position: relative;
+  z-index: 2;
+  background: #fffaf3;
+  border-radius: 3px;
+  padding: 34px 24px 30px;
+  transform: rotate(-1.2deg);
+  box-shadow: 0 10px 24px rgba(122,32,37,0.16), 0 2px 0 #f3e8d6;
+}
+/* a second sheet peeking out behind the first, for depth */
+.sb-paper::before {
+  content: "";
+  position: absolute;
+  inset: 6px -6px -8px 6px;
+  background: #fdf3e4;
+  border-radius: 3px;
+  transform: rotate(2.2deg);
+  z-index: -1;
+  box-shadow: 0 6px 14px rgba(122,32,37,0.10);
+}
+/* washi tape holding the page down at opposite corners */
+.sb-tape {
+  position: absolute;
+  width: 78px;
+  height: 24px;
+  background: rgba(240,190,200,0.55);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.sb-tape-tl { top: -11px; left: -16px; transform: rotate(-32deg); }
+.sb-tape-br { bottom: -10px; right: -16px; transform: rotate(-28deg); }
+
+.sb-eyebrow {
+  text-align: center;
+  font-family: 'Sriracha', cursive;
+  font-size: 0.9rem;
+  color: var(--pink);
+  margin: 0 0 10px;
+}
+/* handwritten closing line on its own little card, tucked below the page */
+.sb-note {
+  position: relative;
+  z-index: 4;
+  width: 78%;
+  margin: 18px auto 0;
+  padding: 16px 14px 14px;
+  background: #fff;
+  border-radius: 3px;
+  transform: rotate(1.6deg);
+  box-shadow: 0 8px 18px rgba(122,32,37,0.14);
+}
+.sb-note-text {
+  margin: 6px 0 0;
+  text-align: center;
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: var(--purple);
 }
 
 .neon { color: #ff6fa5; text-shadow: 0 0 12px rgba(255,111,165,0.7); }

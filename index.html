@@ -5,8 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>A Surprise for You</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=9" />
+<link rel="stylesheet" href="css/style.css?v=17" />
+<!-- the background + the two biggest step images: fetched up front so they're
+     already cached by the time their step appears, instead of popping in late.
+     The number/*.png digits are preloaded from app.js (see preloadDigits). -->
+<link rel="preload" as="image" href="assets/bg/paper-2.webp" />
+<link rel="preload" as="image" href="assets/stickers/pin-slot.webp" />
+<link rel="preload" as="image" href="assets/stickers/camera.webp" />
 </head>
 <body>
 <!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
@@ -20,11 +27,11 @@
       <p class="script script-hero step1-subtitle">วันนี้มีอะไร<br>จะบอกด้วยหล่ะ <span class="icon-heart"></span></p>
       <p class="hint step1-hint">
         <span class="click-letters">
-          <img src="assets/alphabet/C.png" alt="C" />
-          <img src="assets/alphabet/L.png" alt="L" />
-          <img src="assets/alphabet/i.png" alt="I" />
-          <img src="assets/alphabet/C.png" alt="C" />
-          <img src="assets/alphabet/K.png" alt="K" />
+          <img src="assets/alphabet/C.webp" alt="C" />
+          <img src="assets/alphabet/L.webp" alt="L" />
+          <img src="assets/alphabet/i.webp" alt="I" />
+          <img src="assets/alphabet/C.webp" alt="C" />
+          <img src="assets/alphabet/K.webp" alt="K" />
         </span>
       </p>
     </div>
@@ -34,7 +41,7 @@
   <section class="step" data-step="2">
     <div class="card">
       <div class="pin-inputs" id="mission-pin">
-        <img class="step2-unlock-img" src="assets/alphabet/unlock.png" alt="unlock" />
+        <img class="step2-unlock-img" src="assets/alphabet/unlock.webp" alt="unlock" />
         <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
         <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
         <span class="pin-slot"><input class="pin-digit" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" /><img class="pin-digit-img" alt="" /></span>
@@ -48,23 +55,35 @@
     </div>
   </section>
 
-  <!-- Step 3: no card, no button — just a line of text that fades in and
-       out, then auto-advances into the Memory Gallery/camera (Step 4).
-       See runJourneyText() in app.js. -->
+  <!-- Step 3: Question — a few quiz questions before the camera, always
+       "winnable" (no fail state, see CONTEXT.md's mini-game decision).
+       Tapping any option just advances to the next question. See
+       renderQuestion()/answerQuestion() in app.js. -->
   <section class="step" data-step="3">
+    <div class="card">
+      <p class="eyebrow" id="question-progress"></p>
+      <h2 class="script" id="question-text"></h2>
+      <div class="quiz-options" id="question-options"></div>
+    </div>
+  </section>
+
+  <!-- Step 4: no card, no button — just a line of text that fades in and
+       out, then auto-advances into the Memory Gallery/camera (Step 5).
+       See runJourneyText() in app.js. -->
+  <section class="step" data-step="4">
     <p class="journey-text">ไปถ่ายรูปกัน</p>
   </section>
 
-  <!-- Step 4: Memory Gallery -->
+  <!-- Step 5: Memory Gallery -->
   <!-- no card background here on purpose — camera + photo pile sit directly
        on the page background; tapping the pile itself is the "next" action,
        so there's no separate button either -->
-  <section class="step center" data-step="4">
+  <section class="step center" data-step="5">
     <p class="eyebrow">ความทรงจำของเรา</p>
-    <h2 class="script">Memories</h2>
+    <h2 class="script">ความทรงจำ</h2>
     <p class="relationship-label" id="relationship-label"></p>
     <!-- ponytail: placeholder frame only — real camera artwork drops in later, same as assets/photos/ -->
-    <button class="camera-frame" id="camera-trigger" data-action="reveal-photos"><img class="camera-frame-img" src="assets/stickers/camera.png" alt="camera" /><span class="flash" id="camera-flash"></span></button>
+    <button class="camera-frame" id="camera-trigger" data-action="reveal-photos"><img class="camera-frame-img" src="assets/stickers/camera.webp" alt="camera" /><span class="flash" id="camera-flash"></span></button>
     <div class="photo-stack" id="photo-stack" data-action="open-photo-modal"></div>
     <button class="btn-transparent" id="gallery-continue" data-action="next" hidden>ไปต่อ</button>
   </section>
@@ -77,9 +96,9 @@
     <div class="photo-modal-stack" id="photo-modal-stack"></div>
   </div>
 
-  <!-- Step 5: Voice Message — paused for now, kept for later re-enable, not part of the active flow -->
+  <!-- Voice Message — paused for now, kept for later re-enable, not part of the active flow -->
   <!--
-  <section class="step" data-step="5-voice">
+  <section class="step" data-step="voice">
     <div class="card center">
       <p class="eyebrow">ข้อความเสียง</p>
       <h2 class="script" id="voice-from"></h2>
@@ -89,35 +108,35 @@
   </section>
   -->
 
-  <!-- Step 5: Reasons I Love You -->
-  <section class="step" data-step="5">
-    <div class="card">
-      <div class="paper-tag">reasons why</div>
-      <p class="eyebrow">แตะการ์ดเพื่ออ่าน</p>
-      <h2 class="script">เหตุผลที่รักเธอ</h2>
-      <div class="reasons-grid" id="reasons-grid"></div>
-      <button class="btn-primary" data-action="next">ต่อไป</button>
-    </div>
-  </section>
-
-  <!-- Step 6: The Letter (was step 7; song page removed, step 5/Voice paused above) -->
+  <!-- Step 6: The Letter — the closing scrapbook spread. Layered paper +
+       washi tape around a handwritten note, per the love-scrapbook asset
+       rules (reuse existing PNGs, build depth, no flat layout).
+       ponytail: decoration is deliberately sparse right now — the user is
+       preparing new sticker assets; drop them into .scrapbook as more
+       .sb-deco elements and give each one a position rule. -->
   <section class="step" data-step="6">
-    <div class="card">
-      <div class="paper-tag">all my heart</div>
-      <img class="sticker-ransom-img" src="assets/stickers/i-love-you.png" alt="" />
-      <img class="sticker-envelope-img" src="assets/stickers/envelope-heart.png" alt="" />
-      <p class="eyebrow">จดหมายพิเศษ</p>
-      <div class="letter" id="letter-body"></div>
-      <img class="sticker-fingerprint-heart-img" src="assets/stickers/fingerprint-heart.png" alt="" />
-      <p class="hint" id="ending-message"></p>
-      <div class="ending-actions">
-        <button class="btn-secondary" data-action="share">แชร์ <span class="icon-heart"></span></button>
+    <div class="scrapbook">
+      <!-- floating decorations, layered behind/around the note -->
+      <img class="sb-deco sb-deco-flower1" src="assets/stickers/flower/1.webp" alt="" />
+      <img class="sb-deco sb-deco-flower2" src="assets/stickers/flower/2.webp" alt="" />
+
+      <!-- the note itself: torn-paper page, taped down, handwritten -->
+      <div class="sb-paper">
+        <span class="sb-tape sb-tape-tl"></span>
+        <span class="sb-tape sb-tape-br"></span>
+        <p class="sb-eyebrow">คำในใจที่อยากบอก</p>
+        <div class="letter" id="letter-body"></div>
+      </div>
+
+      <!-- closing line on its own little card, tucked under the page corner -->
+      <div class="sb-note">
+        <p class="sb-note-text" id="ending-message"></p>
       </div>
     </div>
   </section>
 
 </div>
 
-<script src="js/data.js?v=3"></script><script src="js/app.js?v=3"></script>
+<script src="js/data.js?v=6"></script><script src="js/app.js?v=6"></script>
 </body>
 </html>
