@@ -756,7 +756,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   top: 0; left: 2.5%;
   width: 95%; height: 66%;
-  background: linear-gradient(170deg, #fdfdfb 0%, #f2efe8 60%, #e8e4db 100%);
+  background: #f7f5f0;
   border-radius: 11% 11% 4% 4% / 15% 15% 4% 4%;
 }
 /* black film-door lower body, slightly wider than the top */
@@ -764,7 +764,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   bottom: 0; left: 0;
   width: 100%; height: 37%;
-  background: linear-gradient(180deg, #34322f 0%, #1d1c1a 55%, #131211 100%);
+  background: #22201e;
   border-radius: 3% 3% 7% 7% / 6% 6% 18% 18%;
 }
 /* flash unit — vertical striped window, top-left */
@@ -787,7 +787,7 @@ body.dev-mode .progress-dots { display: flex; }
   transform: translateX(-50%);
   width: 42%; aspect-ratio: 1;
   border-radius: 50%;
-  background: linear-gradient(160deg, #4a4744, #232120 55%, #171615);
+  background: #2b2927;
   box-shadow: 0 3px 7px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.16);
   display: flex;
   align-items: center;
@@ -796,7 +796,7 @@ body.dev-mode .progress-dots { display: flex; }
 .cam-lens-mid {
   width: 74%; height: 74%;
   border-radius: 50%;
-  background: linear-gradient(160deg, #2e2c2a, #121110);
+  background: #171615;
   box-shadow: inset 0 2px 4px rgba(0,0,0,0.65);
   display: flex;
   align-items: center;
@@ -805,13 +805,19 @@ body.dev-mode .progress-dots { display: flex; }
 .cam-lens-glass {
   width: 62%; height: 62%;
   border-radius: 50%;
-  /* one soft highlight + a single teal coating tint — the four-colour flare
-     this replaced turned muddy once the camera shrank to 180px */
-  background:
-    radial-gradient(circle at 34% 30%, rgba(255,255,255,0.45) 0 10%, transparent 42%),
-    radial-gradient(circle at 58% 60%, rgba(122,198,168,0.55) 0 25%, transparent 62%),
-    #16222c;
-  box-shadow: inset 0 0 5px rgba(0,0,0,0.75);
+  /* flat teal glass with one small hard highlight — no shading blends, to
+     match the flat treatment across the rest of the camera */
+  background: #2b4a4a;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.6);
+  position: relative;
+}
+.cam-lens-glass::after {
+  content: "";
+  position: absolute;
+  top: 18%; left: 20%;
+  width: 26%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.42);
 }
 /* viewfinder block, top-right */
 .cam-viewfinder {
@@ -819,7 +825,7 @@ body.dev-mode .progress-dots { display: flex; }
   top: 8%; right: 6%;
   width: 20%; aspect-ratio: 1 / 0.86;
   border-radius: 14%;
-  background: linear-gradient(165deg, #3a3835, #201f1d);
+  background: #2b2926;
   box-shadow: inset 0 1px 1px rgba(255,255,255,0.14);
 }
 .cam-viewfinder::after {
@@ -828,7 +834,7 @@ body.dev-mode .progress-dots { display: flex; }
   top: 22%; left: 22%;
   width: 56%; height: 56%;
   border-radius: 22%;
-  background: radial-gradient(circle at 60% 35%, #8d8a85 0 14%, #2a2825 45%, #0d0c0c);
+  background: #100f0f;
 }
 /* the one orange accent — kept because it's the detail that reads
    "Polaroid" fastest; the −/+ marks around it were fussy at this size */
@@ -837,7 +843,7 @@ body.dev-mode .progress-dots { display: flex; }
   top: 60%; right: 11%;
   width: 11%; height: 4.5%;
   border-radius: 999px;
-  background: linear-gradient(180deg, #ffc93f, #e8a013);
+  background: #f0ad20;
   box-shadow: 0 1px 2px rgba(0,0,0,0.28);
 }
 /* red shutter button, bottom-left of the cream body */
@@ -846,8 +852,8 @@ body.dev-mode .progress-dots { display: flex; }
   bottom: 7%; left: 7%;
   width: 17%; aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle at 36% 30%, #f4574a, #d0271c 62%, #a81b13);
-  box-shadow: 0 0 0 3px #f7f5f0, 0 2px 4px rgba(0,0,0,0.28), inset 0 -2px 4px rgba(0,0,0,0.22);
+  background: #d8352a;
+  box-shadow: 0 0 0 3px #f7f5f0, 0 1px 3px rgba(0,0,0,0.22);
 }
 /* the dark handle bridging the two bodies */
 .cam-handle {
@@ -856,7 +862,7 @@ body.dev-mode .progress-dots { display: flex; }
   transform: translateX(-50%);
   width: 34%; height: 15%;
   border-radius: 999px;
-  background: linear-gradient(180deg, #4a4744, #2a2826);
+  background: #3a3835;
 }
 .cam-handle::after {
   content: "";
