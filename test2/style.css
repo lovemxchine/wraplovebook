@@ -1,0 +1,261 @@
+/* Standalone cover page (/test2) — self-contained on purpose so experimenting
+   here can't affect the live flow's stylesheet. Palette matches the main site. */
+* { box-sizing: border-box; }
+
+:root {
+  --pink: #8a3b3f;
+  --purple: #b15448;
+  --cream: #f3e8d3;
+  --text: #604c3b;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  font-family: 'Mali', sans-serif;
+  color: var(--text);
+  background: var(--cream);
+}
+
+/* background on its own fixed layer, never background-attachment:fixed —
+   that combination silently fails to paint on iOS Safari */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(rgba(255,255,255,0.32), rgba(255,255,255,0.32)), url('../assets/bg/paper-2.webp') center / cover no-repeat;
+}
+/* soft warm vignette so the middle of the page reads brighter than the edges
+   and the eye lands on the notepad instead of drifting to the corners */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 55%, rgba(122,80,60,0.13) 100%);
+}
+
+.cover {
+  position: relative;
+  height: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- decorations ---------- */
+.deco {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  filter: drop-shadow(0 4px 7px rgba(122,32,37,0.16));
+  /* fade in first, then hand off to the endless float — two animations so the
+     entrance doesn't fight the idle motion */
+  animation: deco-in 0.7s ease forwards, deco-float 6s ease-in-out infinite;
+}
+@keyframes deco-in {
+  from { opacity: 0; transform: scale(0.6) rotate(var(--r, 0deg)); }
+  to   { opacity: 1; transform: scale(1) rotate(var(--r, 0deg)); }
+}
+@keyframes deco-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50%      { transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 2deg)); }
+}
+
+.deco-hearts    { --r: -10deg; width: 74px; top: 9%;  left: 6%;   animation-delay: 0s,    0.7s; }
+.deco-star      { --r: 14deg;  width: 42px; top: 15%; right: 11%; animation-delay: 0.12s, 1.4s; }
+.deco-flower-a  { --r: -16deg; width: 62px; bottom: 15%; left: 3%; animation-delay: 0.24s, 0.3s; }
+.deco-flower-b  { --r: 12deg;  width: 54px; bottom: 9%;  right: 6%; animation-delay: 0.36s, 2.1s; }
+.deco-heartstar { --r: 8deg;   width: 44px; top: 44%; right: 2%;  animation-delay: 0.48s, 1.1s; }
+.deco-vinyl     { --r: -8deg;  width: 52px; top: 40%; left: 1%;   animation-delay: 0.6s,  1.8s; }
+.deco-camera    { --r: 10deg;  width: 58px; bottom: 22%; right: 1%; animation-delay: 0.72s, 0.9s; }
+
+/* ---------- the notepad ---------- */
+.pad-wrap {
+  position: relative;
+  z-index: 2;
+  animation: pad-in 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+@keyframes pad-in {
+  from { opacity: 0; transform: translateY(26px) scale(0.94) rotate(-3deg); }
+  to   { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+.pad {
+  position: relative;
+  width: 300px;
+  aspect-ratio: 648 / 892;
+  background: url('../assets/stickers/page1-element.webp') center / 100% 100% no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* the artwork has its own soft edge, so the shadow goes on a filter rather
+     than box-shadow (which would draw a hard rectangle around the transparency) */
+  filter: drop-shadow(0 14px 22px rgba(122,32,37,0.2));
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+/* gentle breathing so the cover never looks like a static screenshot */
+.pad-wrap::after { content: none; }
+.cover:hover .pad { transform: translateY(-6px) rotate(-1deg); }
+.cover:active .pad { transform: scale(0.97) rotate(0deg); }
+
+.kicker {
+  margin: 0 0 6px;
+  font-family: 'Sriracha', cursive;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--purple);
+  opacity: 0.85;
+}
+
+.title {
+  margin: 0;
+  padding: 0 24px;
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-weight: 400;
+  font-size: clamp(1.55rem, 6.6vw, 2rem);
+  line-height: 1.45;
+  text-align: center;
+  background: linear-gradient(100deg, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* hand-drawn heart under the title, CSS-only (no asset needed for one shape) */
+.title-heart {
+  position: relative;
+  display: block;
+  width: 17px; height: 15px;
+  margin-top: 12px;
+  color: var(--pink);
+  animation: heartbeat 1.9s ease-in-out infinite;
+}
+.title-heart::before, .title-heart::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 8.5px;
+  width: 8.5px; height: 13.5px;
+  background: currentColor;
+  border-radius: 8.5px 8.5px 0 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+.title-heart::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%      { transform: scale(1.22); }
+  28%      { transform: scale(1); }
+  42%      { transform: scale(1.15); }
+  56%      { transform: scale(1); }
+}
+
+.click-row {
+  margin: 18px 0 0;
+  display: flex;
+  justify-content: center;
+}
+.click-letters {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  animation: click-shake 1.6s ease-in-out infinite;
+}
+.click-letters img { height: 26px; width: auto; }
+@keyframes click-shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-4deg); }
+  40% { transform: rotate(4deg); }
+  60% { transform: rotate(-3deg); }
+  80% { transform: rotate(3deg); }
+}
+
+/* washi tape holding the pad to the page */
+.tape {
+  position: absolute;
+  z-index: 3;
+  width: 92px;
+  height: 27px;
+  background: repeating-linear-gradient(135deg, rgba(214,180,150,0.5), rgba(214,180,150,0.5) 5px, rgba(240,222,200,0.5) 5px, rgba(240,222,200,0.5) 10px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.09);
+  animation: tape-in 0.5s ease 0.45s both;
+}
+.tape-tl { top: 4px;  left: -26px;  transform: rotate(-38deg); }
+.tape-br { bottom: 22px; right: -26px; transform: rotate(-34deg); }
+@keyframes tape-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* sticker tucked behind the pad's bottom edge, so the pad reads as a real
+   piece of paper laid on top of something */
+.peek {
+  position: absolute;
+  z-index: -1;
+  bottom: -14px;
+  left: 50%;
+  width: 108px;
+  transform: translateX(-52%) rotate(-6deg);
+  filter: drop-shadow(0 5px 9px rgba(122,32,37,0.2));
+  animation: deco-in 0.7s ease 0.55s both;
+}
+
+.footnote {
+  position: absolute;
+  bottom: 34px;
+  left: 0; right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text);
+  opacity: 0.5;
+  animation: footnote-pulse 2.6s ease-in-out infinite;
+}
+@keyframes footnote-pulse {
+  0%, 100% { opacity: 0.32; }
+  50%      { opacity: 0.62; }
+}
+
+/* tap burst — hearts fly out from the tap point, then the page fades on */
+.burst {
+  position: fixed;
+  z-index: 20;
+  width: 18px; height: 16px;
+  pointer-events: none;
+  color: var(--pink);
+}
+.burst::before, .burst::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 9px;
+  width: 9px; height: 14px;
+  background: currentColor;
+  border-radius: 9px 9px 0 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+.burst::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+
+.cover.opening { pointer-events: none; }
+.cover.opening .pad-wrap { animation: pad-out 0.6s ease forwards; }
+@keyframes pad-out {
+  to { opacity: 0; transform: translateY(-18px) scale(1.08); }
+}
+.cover.opening .deco, .cover.opening .footnote { animation: fade-out 0.4s ease forwards; }
+@keyframes fade-out { to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A Surprise for You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css?v=1" />
+<link rel="preload" as="image" href="../assets/bg/paper-2.webp" />
+<link rel="preload" as="image" href="../assets/stickers/page1-element.webp" />
+</head>
+<body>
+
+<!-- Cover art for the whole gift. Everything on this page is one big tap
+     target — the point is "open me", not "read me". -->
+<main class="cover" id="cover">
+
+  <!-- decorations orbiting the notepad, layered behind it -->
+  <img class="deco deco-hearts"    src="../assets/stickers/hearts.webp" alt="" />
+  <img class="deco deco-star"      src="../assets/stickers/star.webp" alt="" />
+  <img class="deco deco-flower-a"  src="../assets/stickers/flower/1.webp" alt="" />
+  <img class="deco deco-flower-b"  src="../assets/stickers/flower/2.webp" alt="" />
+  <img class="deco deco-heartstar" src="../assets/stickers/heart-star-duo.webp" alt="" />
+  <img class="deco deco-vinyl"     src="../assets/stickers/record-vinyl.webp" alt="" />
+  <img class="deco deco-camera"    src="../assets/stickers/camera.webp" alt="" />
+
+  <!-- the notepad itself, taped down onto the page -->
+  <div class="pad-wrap">
+    <span class="tape tape-tl"></span>
+    <span class="tape tape-br"></span>
+
+    <div class="pad">
+      <p class="kicker">เปิดดูสิ</p>
+      <h1 class="title">วันนี้มีอะไร<br>จะบอกด้วยหล่ะ</h1>
+      <span class="title-heart"></span>
+
+      <p class="click-row">
+        <span class="click-letters">
+          <img src="../assets/alphabet/C.webp" alt="C" />
+          <img src="../assets/alphabet/L.webp" alt="L" />
+          <img src="../assets/alphabet/i.webp" alt="I" />
+          <img src="../assets/alphabet/C.webp" alt="C" />
+          <img src="../assets/alphabet/K.webp" alt="K" />
+        </span>
+      </p>
+    </div>
+
+    <!-- sticker peeking out from behind the pad's bottom edge -->
+    <img class="peek" src="../assets/stickers/couple-heart-string.webp" alt="" />
+  </div>
+
+  <p class="footnote">แตะที่ไหนก็ได้เพื่อเริ่ม</p>
+</main>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>
