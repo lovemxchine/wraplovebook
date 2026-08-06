@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=18" />
+<link rel="stylesheet" href="css/style.css?v=20" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -124,14 +124,22 @@
       <div class="sb-paper">
         <span class="sb-tape sb-tape-tl"></span>
         <span class="sb-tape sb-tape-br"></span>
+        <span class="sb-tape sb-tape-top"></span>
+        <!-- label sticker straddling the paper's edge, like a real cutout -->
+        <img class="sb-label" src="assets/stickers/favorite-person.webp" alt="" />
         <p class="sb-eyebrow">คำในใจที่อยากบอก</p>
         <div class="letter" id="letter-body"></div>
       </div>
 
-      <!-- closing line on its own little card, tucked under the page corner -->
+      <!-- closing line on its own little card, tucked under the page corner.
+           The corner marks are CSS, the way photo corners hold a print. -->
       <div class="sb-note">
+        <span class="sb-corner sb-corner-tl"></span>
+        <span class="sb-corner sb-corner-br"></span>
         <p class="sb-note-text" id="ending-message"></p>
       </div>
+
+      <img class="sb-deco sb-deco-happy" src="assets/stickers/happy-place.webp" alt="" />
     </div>
   </section>
 
