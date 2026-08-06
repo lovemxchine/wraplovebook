@@ -19,9 +19,10 @@ const DATA = {
   photos: [],
   relationshipLabel: "", // e.g. "3 ปี 1 เดือนของเรา"
 
-  // Step 5: Our Song — paste any youtube.com/watch?v= or youtu.be/ link.
+  // Background music — paste any youtube.com/watch?v= or youtu.be/ link.
   // startSeconds: where playback begins. loop is always on (whole video, back to 0).
-  song: { title: "I love you 3000", artist: "", youtubeUrl: "https://www.youtube.com/watch?v=cPkE0IbDVs4", startSeconds: 0 },
+  // volume: 0-100, it's background music so it sits well under the shutter sound.
+  song: { title: "I love you 3000", artist: "", youtubeUrl: "https://www.youtube.com/watch?v=cPkE0IbDVs4", startSeconds: 0, volume: 35 },
 
   // Step 6: Voice Message
   voiceMessage: { from: "", src: "" },

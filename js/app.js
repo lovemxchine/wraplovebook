@@ -332,8 +332,18 @@ function startBgMusic() {
   const id = youtubeId(DATA.song.youtubeUrl || '');
   if (!id) return;
   const start = DATA.song.startSeconds || 0;
-  // loop=1 + playlist=<same id> is the documented way to loop a single youtube video
-  embed.innerHTML = `<iframe width="1" height="1" src="https://www.youtube.com/embed/${id}?start=${start}&autoplay=1&loop=1&playlist=${id}" title="background music" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+  // loop=1 + playlist=<same id> is the documented way to loop a single youtube video.
+  // enablejsapi=1 is what makes the setVolume command below reachable.
+  embed.innerHTML = `<iframe width="1" height="1" src="https://www.youtube.com/embed/${id}?start=${start}&autoplay=1&loop=1&playlist=${id}&enablejsapi=1" title="background music" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
+
+  // The volume can only be set once the player is ready, and there's no ready
+  // callback without pulling in the whole IFrame API — so just send the command
+  // a few times over the first seconds. Extra sends after it lands are no-ops.
+  const iframe = embed.querySelector('iframe');
+  const setVolume = () => iframe.contentWindow.postMessage(JSON.stringify({
+    event: 'command', func: 'setVolume', args: [DATA.song.volume ?? 100],
+  }), 'https://www.youtube.com');
+  for (let i = 1; i <= 6; i++) setTimeout(setVolume, i * 700);
 }
 
 // --- Voice (paused) ---

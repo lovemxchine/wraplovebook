@@ -898,23 +898,31 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 1px;
 }
 /* camera shutter flash on tap — plain white overlay that pops then fades */
-/* Shutter flash covers the whole viewport, not just the camera — a flash
-   confined to the camera body read as the camera lighting up rather than a
-   photo being taken. position:fixed, so it escapes the button's box. */
+/* Shutter flash — a burst of light coming OUT of the camera, not a full-screen
+   whiteout. Sized larger than the button and centred on it, so the glow spills
+   past the camera body and falls off into the page. */
 .camera-frame .flash {
-  position: fixed;
-  inset: 0;
-  z-index: 900; /* over everything except the photo modal (999) */
-  background: #fff;
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200%; height: 200%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.95) 0%,
+    rgba(255,255,255,0.8) 22%,
+    rgba(255,255,255,0.35) 45%,
+    rgba(255,255,255,0) 68%);
   opacity: 0;
   pointer-events: none;
+  z-index: -1; /* behind the camera, so the body stays readable through the burst */
 }
 .camera-frame .flash.fire {
   animation: camera-flash 0.42s ease-out;
 }
+/* scales up slightly as it fades — reads as light travelling outward */
 @keyframes camera-flash {
-  0%   { opacity: 0.92; }
-  100% { opacity: 0; }
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.75); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.15); }
 }
 
 /* One photo comes out per camera tap and lands in this pile — no grid of
