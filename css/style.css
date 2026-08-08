@@ -1485,24 +1485,21 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   from { opacity: 0; transform: translateY(8px) scale(0.97); }
   to { opacity: 1; transform: none; }
 }
-/* the sender — left, soft pink (a dusty tint of --pink, so it stays in the
-   kraft/maroon palette rather than reading as a stock chat blue) */
+/* the sender — left, and the one wearing the accent pink */
 .chat-msg.chat-me {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--chat-line);
-  color: var(--chat-ink);
+  background: var(--chat-accent);
+  border: 1px solid var(--chat-accent);
+  color: #fff;
   border-bottom-left-radius: 7px;
 }
 /* the recipient — right, the accent colour, because these are her words */
 .chat-msg.chat-her {
   align-self: flex-end;
   margin-left: auto; /* belt and braces — pushes the bubble right even where align-self is overridden */
-  /* a deeper rose rather than another pale pink: the two sides have to stay
-     tellable apart at a glance, and colour is the only thing separating them */
-  background: var(--chat-accent);
-  border: 1px solid var(--chat-accent);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--chat-line);
+  color: var(--chat-ink);
   border-bottom-right-radius: 7px;
 }
 
@@ -1515,8 +1512,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   gap: 4px;
   margin-top: 8px;
   padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.72); /* matches the sender's bubble — it's the same person about to speak */
-  border: 1px solid var(--chat-line);
+  background: var(--chat-accent); /* matches the sender's bubble — it's the same person about to speak */
+  border: 1px solid var(--chat-accent);
   border-radius: 20px 20px 20px 7px;
   box-shadow: 0 6px 18px rgba(255, 111, 160, 0.14);
 }
@@ -1524,7 +1521,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .chat-typing span {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--chat-dim);
+  background: rgba(255, 255, 255, 0.85); /* on the accent bubble now, so the dots have to be light */
   animation: chat-dot 1.1s ease-in-out infinite;
 }
 .chat-typing span:nth-child(2) { animation-delay: 0.16s; }
