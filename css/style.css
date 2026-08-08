@@ -1449,6 +1449,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 .chat-scroll {
   flex: 1;
+  position: relative;
+  z-index: 1; /* same trick as .card — the floating .bg-heart stickers sit at 0 and would drift over the bubbles */
   min-height: 0; /* lets the flex child shrink, which is what makes it scroll */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -1490,7 +1492,9 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 /* three dots, staggered — the pause that sells it as someone typing */
 .chat-typing {
-  align-self: flex-start;
+  /* .chat-scroll is a plain block, so align-self does nothing here — the bubble
+     has to size itself to its three dots or it stretches the full width */
+  width: fit-content;
   display: flex;
   gap: 4px;
   margin-top: 8px;
@@ -1513,30 +1517,44 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   30% { opacity: 1; transform: translateY(-3px); }
 }
 
-/* her replies — pinned to the bottom of the screen, where a keyboard would be.
-   .chat-scroll takes flex:1 above it, so this row never moves no matter how
+/* her replies — a visual-novel choice panel across the bottom of the screen.
+   .chat-scroll takes flex:1 above it, so the panel never moves no matter how
    long the conversation gets. */
 .chat-options {
   flex: none;
   position: sticky;
   bottom: 0;
+  z-index: 1; /* keeps the floating .bg-heart stickers behind the panel */
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 7px;
+  gap: 8px;
   margin-top: 12px;
+  padding: 12px 8px 4px;
 }
+.chat-options:empty { display: none; } /* no panel chrome while it's his turn */
+
 .chat-option {
-  max-width: 82%;
-  padding: 9px 16px 10px;
+  width: 100%;
+  padding: 12px 16px 13px;
   font-family: inherit;
-  font-size: 0.94rem;
+  font-size: 0.96rem;
   line-height: 1.4;
+  text-align: center;
   color: var(--pink);
-  background: transparent;
-  border: 1.5px dashed var(--pink);
-  border-radius: 18px;
+  background: rgba(255, 253, 248, 0.92);
+  border: 1.5px solid rgba(138, 59, 63, 0.35);
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(122, 32, 37, 0.10);
   cursor: pointer;
-  animation: chat-pop 0.28s ease;
+  animation: chat-pop 0.28s ease backwards;
 }
-.chat-option:active { transform: scale(0.97); background: rgba(138,59,63,0.07); }
+/* stagger them in, so the panel deals itself out like a hand of cards */
+.chat-option:nth-child(2) { animation-delay: 0.07s; }
+.chat-option:nth-child(3) { animation-delay: 0.14s; }
+.chat-option:nth-child(4) { animation-delay: 0.21s; }
+.chat-option:active {
+  transform: scale(0.985);
+  background: var(--pink);
+  border-color: var(--pink);
+  color: #fff8ef;
+}
