@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=45" />
+<link rel="stylesheet" href="css/style.css?v=46" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -126,14 +126,14 @@
   -->
 
   <!-- Step 6: The notebook — the scrapbook page and the timeline merged into
-       one screen. Grid paper + spiral binding stay pinned; the entries scroll
-       inside .spread-scroll (html/body lock scrolling site-wide, so scrolling
-       must stay inside a box). Roughly three entries fill the page, the rest
+       one screen. The paper (grid lines + spiral binding) is drawn on the
+       scroller with background-attachment: local, so it scrolls along with the
+       entries — one long sheet moving past the window. Scrolling stays inside
+       .spread-scroll because html/body lock scrolling site-wide. Roughly three entries fill the page, the rest
        come in on scroll. Entries are DATA.timeline, each paired with the photo
        of the same index from DATA.photos. See renderSpread() in app.js. -->
   <section class="step" data-step="6">
     <div class="spread" id="spread">
-      <span class="sp-spiral"></span>
       <div class="spread-scroll" id="spread-scroll">
         <p class="sp-heading">เรื่องราวของเรา</p>
         <div class="sp-entries" id="spread-entries"></div>

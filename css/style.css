@@ -1301,10 +1301,9 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    fixed layout at every viewport width now (#app stays 480px, see above). */
 
 /* ---- Step 6: the notebook -------------------------------------------------
-   The scrapbook page and the timeline in one screen. The paper and its spiral
-   binding are pinned; only .spread-scroll scrolls, because html/body lock
-   scrolling site-wide (see the note on html,body above) and a page-level
-   scroll breaks that on iOS. */
+   The scrapbook page and the timeline in one screen. html/body lock scrolling
+   site-wide (see the note on html,body above), so the scrolling happens inside
+   .spread-scroll, never on the page. */
 .step[data-step="6"] { padding: 0; justify-content: flex-start; } /* full-bleed — the paper IS the screen here */
 
 .spread {
@@ -1315,34 +1314,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   min-height: 0; /* lets the flex child actually shrink, which is what makes it scroll */
   margin: 0 auto;
   overflow: hidden;
-  /* grid paper: two thin blue line sets over an off-white sheet */
-  background:
-    repeating-linear-gradient(0deg, rgba(120,155,190,0.25) 0 1px, transparent 1px 16px),
-    repeating-linear-gradient(90deg, rgba(120,155,190,0.25) 0 1px, transparent 1px 16px),
-    #f6f4ee;
-}
-
-/* spiral binding down the left edge — chunky rings crossing the margin, plus
-   the punched holes they pass through */
-.sp-spiral {
-  position: absolute;
-  top: 0; bottom: 0; left: 0;
-  width: 26px;
-  background: repeating-linear-gradient(180deg,
-    transparent 0 34px,
-    #34302c 34px 47px,
-    transparent 47px 52px);
-  z-index: 6;
-  pointer-events: none;
-}
-.sp-spiral::before {
-  content: "";
-  position: absolute;
-  inset: 0 3px 0 17px;
-  background: repeating-linear-gradient(180deg,
-    transparent 0 36px,
-    rgba(255,255,255,0.85) 36px 45px,
-    transparent 45px 52px);
+  background: #f6f4ee; /* base tint only — the paper itself is drawn on the scroller below */
 }
 
 /* the red lace trim pinned along the bottom edge, over the scrolling entries */
@@ -1360,12 +1332,31 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   pointer-events: none;
 }
 
+/* The paper — grid lines and spiral binding — is painted on the SCROLLER, with
+   background-attachment: local, so it travels with the entries instead of
+   sitting still behind them. That is the whole trick: one long sheet moving
+   past the window, not a window onto a fixed sheet. (A background on a scroll
+   container is glued to its border box by default; `local` is what unglues it.)
+   The spiral is two of these layers rather than an element, because an element
+   would need a wrapper as tall as the content to scroll along. */
 .spread-scroll {
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 18px 16px 0 40px; /* left padding clears the spiral */
   scrollbar-width: none; /* the scrollbar reads as a browser chrome artifact on a paper page */
+  background-image:
+    /* the punched holes the rings pass through */
+    repeating-linear-gradient(180deg, transparent 0 36px, rgba(255,255,255,0.85) 36px 45px, transparent 45px 52px),
+    /* the rings themselves */
+    repeating-linear-gradient(180deg, transparent 0 34px, #34302c 34px 47px, transparent 47px 52px),
+    /* grid paper */
+    repeating-linear-gradient(0deg, rgba(120,155,190,0.25) 0 1px, transparent 1px 16px),
+    repeating-linear-gradient(90deg, rgba(120,155,190,0.25) 0 1px, transparent 1px 16px);
+  background-position: 17px 0, 0 0, 0 0, 0 0;
+  background-size: 6px 52px, 26px 52px, auto, auto;
+  background-repeat: repeat-y, repeat-y, repeat, repeat;
+  background-attachment: local;
 }
 .spread-scroll::-webkit-scrollbar { display: none; }
 .sp-heading {
