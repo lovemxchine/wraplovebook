@@ -1,7 +1,7 @@
 // State machine: step N is "unlocked" once step N-1 is completed.
 // Progress is in-memory only — a reload always restarts from the cover, so the
 // surprise opens the same way every time (was persisted to localStorage).
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 let state = { step: 1 };
 
@@ -25,11 +25,12 @@ function renderDots(n) {
 
 function onEnterStep(n) {
   if (n === 2) resetMissionPin();
-  if (n === 3) startQuestions();
+  if (n === 3) startChat();
   if (n === 4) setTimeout(() => goToStep(5), 2800); // matches .journey-text's fade animation duration
   if (n === 5) renderGallery();
-  if (n === 6) renderSpread();
-  if (n === 7) { renderLetter(); renderEnding(); }
+  if (n === 6) startQuestions();
+  if (n === 7) renderSpread();
+  if (n === 8) { renderLetter(); renderEnding(); }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -101,7 +102,76 @@ function checkMission(digits) {
   }
 }
 
-// --- Step 3: Questions ---
+// --- Step 3: Chat ---
+// One fixed script. The sender's lines play themselves; the recipient's turns
+// are a row of replies to tap, and whichever she taps just becomes her bubble
+// — it never changes what comes next (see CONTEXT.md). The last entry in the
+// script is hers, and tapping it advances the step.
+let chatIndex = 0;
+// Bumped on every (re-)entry. The timers below capture it and bail if it has
+// moved on, so re-entering the step can't leave an old script still typing
+// into the new one.
+let chatRun = 0;
+
+function startChat() {
+  chatIndex = 0;
+  chatRun++;
+  document.getElementById('chat-log').innerHTML = '';
+  document.getElementById('chat-options').innerHTML = '';
+  document.getElementById('chat-typing').hidden = true;
+  chatNext();
+}
+
+function chatScrollToEnd() {
+  const box = document.getElementById('chat-scroll');
+  box.scrollTop = box.scrollHeight;
+}
+
+function chatBubble(from, text) {
+  const el = document.createElement('div');
+  el.className = `chat-msg chat-${from}`;
+  el.textContent = text;
+  document.getElementById('chat-log').appendChild(el);
+  chatScrollToEnd();
+}
+
+function chatNext() {
+  const line = DATA.chat[chatIndex];
+  if (!line) return;
+  if (line.from === 'her') { // her turn: hand it over and wait for a tap
+    document.getElementById('chat-options').innerHTML = line.options
+      .map((o, i) => `<button class="chat-option" data-action="chat-reply" data-index="${i}">${o}</button>`)
+      .join('');
+    return;
+  }
+  const run = chatRun;
+  const typing = document.getElementById('chat-typing');
+  typing.hidden = false;
+  chatScrollToEnd();
+  setTimeout(() => {
+    if (run !== chatRun) return;
+    typing.hidden = true;
+    chatBubble('me', line.text);
+    chatIndex++;
+    setTimeout(() => { if (run === chatRun) chatNext(); }, 380);
+  }, 900);
+}
+
+function chatReply(btn) {
+  const line = DATA.chat[chatIndex];
+  const wasLast = chatIndex === DATA.chat.length - 1;
+  document.getElementById('chat-options').innerHTML = '';
+  chatBubble('her', line.options[Number(btn.dataset.index)]);
+  chatIndex++;
+  const run = chatRun;
+  setTimeout(() => {
+    if (run !== chatRun) return;
+    if (wasLast) goToStep(4); // the last reply is the way out — no separate button
+    else chatNext();
+  }, wasLast ? 700 : 500);
+}
+
+// --- Step 6: Questions ---
 // No fail state by design (see CONTEXT.md's mini-game decision) — any option
 // advances. It's a keepsake, not a test.
 let questionIndex = 0;
@@ -510,6 +580,7 @@ document.addEventListener('click', (e) => {
   if (action === 'reveal-photos') revealNextPhoto();
   if (action === 'open-photo-modal') openPhotoModal();
   if (action === 'answer-question') answerQuestion(btn);
+  if (action === 'chat-reply') chatReply(btn);
 });
 
 // --- init ---

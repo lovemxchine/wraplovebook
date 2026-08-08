@@ -6,7 +6,25 @@ const DATA = {
   // Step 2: Mission — the date they first met, checked against these 3 selects.
   metDate: { day: 1, month: 4, year: 2569 }, // pin = 010469
 
-  // Step 3a: Love Quiz — each question needs exactly one correctIndex.
+  // Step 3: Chat — one fixed script, played top to bottom.
+  //   { from: "me",  text: "..." }        a message that arrives on its own
+  //   { from: "her", options: [...] }     her turn: she taps one, it becomes her bubble
+  // Which option she taps never changes what comes next (see CONTEXT.md), so
+  // write them as different ways of feeling the same moment, not as branches.
+  // The LAST entry must be one of hers — tapping it is what advances the step.
+  chat: [
+    { from: "me", text: "อยู่ไหม" },
+    { from: "me", text: "มีเรื่องอยากบอก รอมานานแล้วอะ" },
+    { from: "her", options: ["เรื่องอะไรอะ", "บอกมาเลย", "ทำไมต้องรอด้วย"] },
+    { from: "me", text: "คือวันนี้เราคิดถึงเธอมากเลย" },
+    { from: "me", text: "คิดถึงตั้งแต่ตื่นมาแล้ว" },
+    { from: "her", options: ["คิดถึงเหมือนกัน", "นิดเดียวเหรอ", "งั้นมาหาสิ"] },
+    { from: "me", text: "เลยทำอะไรให้อย่างนึง" },
+    { from: "me", text: "อยากให้ดูด้วยกันน้า" },
+    { from: "her", options: ["ไปดูกันเลย"] },
+  ],
+
+  // Step 6: Love Quiz — each question needs exactly one correctIndex.
   // ponytail: any answer advances (no fail state), so correctIndex is unused
   // by the UI — kept only in case a scored version is ever wanted.
   quiz: [
