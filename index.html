@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=42" />
+<link rel="stylesheet" href="css/style.css?v=44" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -125,61 +125,31 @@
   </section>
   -->
 
-  <!-- Step 6: Scrapbook spread — a notebook-page photo collage, modelled on
-       the moodboard the user supplied (grid paper, spiral binding, taped
-       polaroids, cut-out text strips). Photos come from DATA.photos via
-       renderSpread(); the strip/dictionary text comes from DATA.spread.
-       Every piece is placed by hand in style.css (.sp-* rules) — the flow has
-       no page scroll, so the collage is sized to fit the viewport, not to
-       grow. -->
+  <!-- Step 6: The notebook — the scrapbook page and the timeline merged into
+       one screen. Grid paper + spiral binding stay pinned; the entries scroll
+       inside .spread-scroll (html/body lock scrolling site-wide, so scrolling
+       must stay inside a box). Roughly three entries fill the page, the rest
+       come in on scroll. Entries are DATA.timeline, each paired with the photo
+       of the same index from DATA.photos. See renderSpread() in app.js. -->
   <section class="step" data-step="6">
     <div class="spread" id="spread">
       <span class="sp-spiral"></span>
-
-      <!-- four polaroids, zigzagging left-right down the page — the same four
-           photos the camera ejects in Step 5 (DATA.photos, see galleryPhotoList) -->
-      <div class="sp-item sp-frame sp-polaroid sp-p0"><span class="sp-clip"></span><img class="sp-img" data-photo="0" alt="" /></div>
-      <div class="sp-item sp-frame sp-polaroid sp-p1"><span class="sp-tape sp-tape-a"></span><img class="sp-img" data-photo="1" alt="" /></div>
-      <div class="sp-item sp-frame sp-polaroid sp-p2"><span class="sp-tape sp-tape-b"></span><img class="sp-img" data-photo="2" alt="" /></div>
-      <div class="sp-item sp-frame sp-polaroid sp-p3"><span class="sp-tape sp-tape-a"></span><img class="sp-img" data-photo="3" alt="" /></div>
-
-      <img class="sp-flower" src="assets/stickers/flower/1.webp" alt="" />
-      <span class="sp-heart sp-heart-1 icon-heart"></span>
-      <span class="sp-heart sp-heart-2 icon-heart"></span>
-
-      <div class="sp-item sp-dict sp-dict-1">
-        <b id="spread-dict-word"></b>
-        <span id="spread-dict-note"></span>
+      <div class="spread-scroll" id="spread-scroll">
+        <p class="sp-heading">เรื่องราวของเรา</p>
+        <div class="sp-entries" id="spread-entries"></div>
+        <button class="btn-transparent spread-continue" data-action="next">ไปต่อ</button>
       </div>
-
-      <div class="sp-item sp-strip sp-strip-1" id="spread-strip-1"></div>
-      <div class="sp-item sp-strip dark sp-strip-2" id="spread-strip-2"></div>
-
-      <span class="sp-item sp-lace sp-lace-1"></span>
-    </div>
-    <button class="btn-transparent spread-continue" data-action="next">ไปต่อ</button>
-  </section>
-
-  <!-- Step 7: Timeline — the one screen in the flow that scrolls. The rest of
-       the site locks scrolling (html/body overflow:hidden), so the scrolling
-       happens inside .timeline-scroll, never on the page itself. The "ไปต่อ"
-       button is the last item in the scroller, so reaching it means having
-       scrolled the whole timeline — no separate gate needed. -->
-  <section class="step" data-step="7">
-    <p class="eyebrow tl-eyebrow">เรื่องราวของเรา</p>
-    <div class="timeline-scroll" id="timeline-scroll">
-      <div class="timeline" id="timeline"></div>
-      <button class="btn-transparent tl-continue" data-action="next">ไปต่อ</button>
+      <span class="sp-lace"></span>
     </div>
   </section>
 
-  <!-- Step 8: The Letter — the closing scrapbook spread. Layered paper +
+  <!-- Step 7: The Letter — the closing scrapbook spread. Layered paper +
        washi tape around a handwritten note, per the love-scrapbook asset
        rules (reuse existing PNGs, build depth, no flat layout).
        ponytail: decoration is deliberately sparse right now — the user is
        preparing new sticker assets; drop them into .scrapbook as more
        .sb-deco elements and give each one a position rule. -->
-  <section class="step" data-step="8">
+  <section class="step" data-step="7">
     <div class="scrapbook">
       <!-- floating decorations, layered behind/around the note -->
       <img class="sb-deco sb-deco-flower1" src="assets/stickers/flower/1.webp" alt="" />
@@ -210,6 +180,6 @@
 
 </div>
 
-<script src="js/data.js?v=12"></script><script src="js/app.js?v=14"></script>
+<script src="js/data.js?v=13"></script><script src="js/app.js?v=15"></script>
 </body>
 </html>

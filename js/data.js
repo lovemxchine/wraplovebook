@@ -19,16 +19,8 @@ const DATA = {
   photos: [],
   relationshipLabel: "", // e.g. "3 ปี 1 เดือนของเรา"
 
-  // Step 6: Scrapbook spread — the cut-out text pasted onto the collage.
-  // Photos are the first 4 of `photos` above (same set Step 5 ejects) — no separate list.
-  spread: {
-    dictWord: "lover:",
-    dictNote: "(บุคคลอันเป็นที่รัก) n.",
-    strip1: "cause i'm a fool for you",
-    strip2: "อยากอยู่ใกล้ๆ แบบนี้ตลอดไป",
-  },
-
-  // Step 7: Timeline — the milestones, oldest first. `note` is optional.
+  // Step 6: The notebook — the milestones, oldest first. `note` is optional.
+  // Entry i is paired with photos[i], so keep the two lists in the same order.
   timeline: [
     { date: "1 เม.ย. 2569", title: "วันที่เจอกันครั้งแรก", note: "ยังจำได้เลยว่าใส่เสื้ออะไร" },
     { date: "เดือนถัดมา", title: "เดตแรกของเรา", note: "กินกันจนอิ่มแล้วเดินเล่นต่อ" },

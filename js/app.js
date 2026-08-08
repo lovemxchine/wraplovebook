@@ -1,7 +1,7 @@
 // State machine: step N is "unlocked" once step N-1 is completed.
 // Progress is in-memory only — a reload always restarts from the cover, so the
 // surprise opens the same way every time (was persisted to localStorage).
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 7;
 
 let state = { step: 1 };
 
@@ -29,8 +29,7 @@ function onEnterStep(n) {
   if (n === 4) setTimeout(() => goToStep(5), 2800); // matches .journey-text's fade animation duration
   if (n === 5) renderGallery();
   if (n === 6) renderSpread();
-  if (n === 7) renderTimeline();
-  if (n === 8) { renderLetter(); renderEnding(); }
+  if (n === 7) { renderLetter(); renderEnding(); }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -383,48 +382,41 @@ function renderVoice() {
 }
 
 // --- Step 6: Letter ---
-// --- Step 7: Timeline ---
-// Entries fade in as they scroll into the window. IntersectionObserver is the
-// native way to do that — no scroll handler, no library.
-function renderTimeline() {
-  const box = document.getElementById('timeline');
-  box.innerHTML = DATA.timeline.map(t => `
-    <div class="tl-item">
-      <span class="tl-date">${t.date}</span>
-      <p class="tl-title">${t.title}</p>
-      ${t.note ? `<p class="tl-note">${t.note}</p>` : ''}
-    </div>`).join('');
-  document.getElementById('timeline-scroll').scrollTop = 0; // re-entering starts at the top
+// --- Step 6: The notebook ---
+// One entry per milestone: a polaroid on one side, the words on the other,
+// alternating sides down the page. Entries fade in as they scroll into the
+// box — IntersectionObserver rather than a scroll handler, and each entry is
+// unobserved once shown so scrolling back up doesn't replay it.
+function renderSpread() {
+  const box = document.getElementById('spread-entries');
+  box.innerHTML = DATA.timeline.map((t, i) => {
+    const photo = DATA.photos[i];
+    return `
+    <div class="sp-entry">
+      <div class="sp-frame sp-polaroid">
+        <span class="sp-tape"></span>
+        ${photo
+          ? `<img class="sp-img" src="${photo.src}" alt="${photo.caption || ''}">`
+          : '<img class="sp-img empty" alt="">'}
+      </div>
+      <div class="sp-words">
+        <span class="tl-date">${t.date}</span>
+        <p class="tl-title">${t.title}</p>
+        ${t.note ? `<p class="tl-note">${t.note}</p>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const scroller = document.getElementById('spread-scroll');
+  scroller.scrollTop = 0; // re-entering the step starts at the top again
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(e => {
       if (!e.isIntersecting) return;
       e.target.classList.add('in');
-      obs.unobserve(e.target); // fade in once, don't fade back out on scroll-up
+      obs.unobserve(e.target);
     });
-  }, { root: document.getElementById('timeline-scroll'), threshold: 0.25 });
-  box.querySelectorAll('.tl-item').forEach(el => io.observe(el));
-}
-
-// --- Step 6: Scrapbook spread ---
-// The collage layout is fixed in markup/CSS; this only fills in the photos and
-// the cut-out text. Slots with no photo keep the empty placeholder look.
-function renderSpread() {
-  const sp = DATA.spread || {};
-  document.getElementById('spread-dict-word').textContent = sp.dictWord || '';
-  document.getElementById('spread-dict-note').textContent = sp.dictNote || '';
-  document.getElementById('spread-strip-1').textContent = sp.strip1 || '';
-  document.getElementById('spread-strip-2').textContent = sp.strip2 || '';
-  document.querySelectorAll('#spread .sp-img').forEach(img => {
-    const photo = DATA.photos[Number(img.dataset.photo)];
-    if (photo) {
-      img.src = photo.src;
-      img.alt = photo.caption || '';
-      img.classList.remove('empty');
-    } else {
-      img.removeAttribute('src'); // no broken-image icon on an empty slot
-      img.classList.add('empty');
-    }
-  });
+  }, { root: scroller, threshold: 0.2 });
+  box.querySelectorAll('.sp-entry').forEach(el => io.observe(el));
 }
 
 function renderLetter() {

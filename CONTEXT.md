@@ -4,7 +4,7 @@ Single source of truth for architecture decisions and domain glossary for this
 project. AI-agent-agnostic — any coding agent should be able to read this file
 + README.md and be productive.
 
-Last updated: 2026-08-07 (timeline inserted as Step 7 — 8 steps now)
+Last updated: 2026-08-07 (timeline merged into the notebook page — 7 steps)
 
 ---
 
@@ -15,7 +15,7 @@ not a SaaS, not a reusable template with an editing UI. All content (photos,
 music, messages, dates) lives directly in the site's code/data as a static
 site. No backend, no database, no accounts.
 
-The visitor experience is a **linear, locked 8-step flow**:
+The visitor experience is a **linear, locked 7-step flow**:
 
 | Step | Screen | Advances when |
 |---|---|---|
@@ -24,9 +24,8 @@ The visitor experience is a **linear, locked 8-step flow**:
 | 3 | Questions | every question answered, then the score summary's "ไปต่อ" |
 | 4 | Journey text | auto-advances after the line fades |
 | 5 | Memory Gallery (camera) | the photo modal has been opened and closed once |
-| 6 | Scrapbook spread (photo collage) | "ไปต่อ" |
-| 7 | Timeline (scrollable milestones) | "ไปต่อ" at the end of the list |
-| 8 | The Letter (closing scrapbook spread) | — end of flow |
+| 6 | The notebook (scrollable photo timeline) | "ไปต่อ" at the end of the list |
+| 7 | The Letter (closing scrapbook spread) | — end of flow |
 
 Each step unlocks only after the previous one is completed — no skipping
 ahead. `?page=N` jumps straight to a step, for testing only.
@@ -165,9 +164,8 @@ user to fill in later.
 | **Questions** | Step 3 — a short quiz. Always completable: any answer advances, and the score summary praises the recipient regardless. Score is counted but never blocks. |
 | **Memory Gallery** | Step 5 — the camera screen. Tapping the camera ejects one photo per tap onto a pile; tapping the completed pile opens the Photo Viewer. |
 | **Photo Viewer** | Step 5's modal — the photos enlarged one at a time over a blurred backdrop, tapping the front one sends it to the back, looping. Opening and closing it once is what reveals the "ไปต่อ" button. |
-| **Spread** | Step 6 — a notebook-page photo collage: grid paper, spiral binding, three polaroids zigzagging down the page, and cut-out text strips. Every piece is hand-placed in CSS (`.sp-*`); it is sized to fit the viewport because the flow has no page scroll. |
-| **Timeline** | Step 7 — the milestones of the relationship in a scrollable column. The only screen in the flow that scrolls, and it scrolls inside its own box (`.timeline-scroll`), never the page. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item, so reaching it means having scrolled the whole thing. |
-| **Scrapbook spread** | Step 8's layout — layered paper sheets, washi tape, and stickers around the letter. The visual language the whole site aims for. |
+| **The notebook** | Step 6 — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
+| **Scrapbook spread** | Step 7's layout — layered paper sheets, washi tape, and stickers around the letter. The visual language the whole site aims for. |
 
 ## Sources
 - Design reference: two mockup images provided by user (9-step and 8-step
