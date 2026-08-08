@@ -1349,6 +1349,21 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
     transparent 45px 52px);
 }
 
+/* the red lace trim pinned along the bottom edge, over the scrolling entries */
+.sp-lace {
+  position: absolute;
+  bottom: 0; left: 26px; right: 0;
+  height: 20px;
+  z-index: 5;
+  background: #a3252b;
+  /* scalloped top edge, cut out with a mask so the notches show the page
+     through instead of painting over it */
+  -webkit-mask: radial-gradient(circle at 8px 0, transparent 0 6px, #000 6.5px) 0 0 / 16px 20px repeat-x;
+  mask: radial-gradient(circle at 8px 0, transparent 0 6px, #000 6.5px) 0 0 / 16px 20px repeat-x;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
 .spread-scroll {
   height: 100%;
   overflow-y: auto;
