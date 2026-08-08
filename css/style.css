@@ -1445,7 +1445,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    A messaging-app conversation. Only .chat-scroll scrolls (html/body lock
    scrolling site-wide); the replies sit under it in a fixed row, the way a
    keyboard would. */
-.step[data-step="3"] { padding: 20px 14px 14px; justify-content: flex-end; }
+.step[data-step="3"] { padding: 20px 14px 14px; justify-content: flex-start; }
 
 .chat-scroll {
   flex: 1;
@@ -1453,9 +1453,6 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* an empty conversation starts at the bottom, like a real thread */
 }
 .chat-scroll::-webkit-scrollbar { display: none; }
 
@@ -1515,9 +1512,13 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   30% { opacity: 1; transform: translateY(-3px); }
 }
 
-/* her replies, waiting to be tapped */
+/* her replies — pinned to the bottom of the screen, where a keyboard would be.
+   .chat-scroll takes flex:1 above it, so this row never moves no matter how
+   long the conversation gets. */
 .chat-options {
   flex: none;
+  position: sticky;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
