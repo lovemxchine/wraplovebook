@@ -21,7 +21,8 @@ const DATA = {
     { from: "her", options: ["คิดถึงเหมือนกัน", "นิดเดียวเหรอ", "งั้นมาหาสิ"] },
     { from: "me", text: "เลยทำอะไรให้อย่างนึง" },
     { from: "me", text: "อยากให้ดูด้วยกันน้า" },
-    { from: "her", options: ["ไปดูกันเลย"] },
+    // three replies here too — whichever she taps is the way out of the step
+    { from: "her", options: ["ไปดูกันเลย", "อยากเห็นแล้ว", "ทำอะไรให้อะ"] },
   ],
 
   // Step 6: Love Quiz — each question needs exactly one correctIndex.
