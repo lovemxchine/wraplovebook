@@ -4,7 +4,7 @@ Single source of truth for architecture decisions and domain glossary for this
 project. AI-agent-agnostic — any coding agent should be able to read this file
 + README.md and be productive.
 
-Last updated: 2026-08-07 (timeline merged into the notebook page — 7 steps)
+Last updated: 2026-08-07 (Chat added as Step 3, Questions moved after the camera — 8 steps)
 
 ---
 
@@ -15,17 +15,18 @@ not a SaaS, not a reusable template with an editing UI. All content (photos,
 music, messages, dates) lives directly in the site's code/data as a static
 site. No backend, no database, no accounts.
 
-The visitor experience is a **linear, locked 7-step flow**:
+The visitor experience is a **linear, locked 8-step flow**:
 
 | Step | Screen | Advances when |
 |---|---|---|
 | 1 | Cover | tapping the notepad |
 | 2 | Unlock Mission (6-digit pin) | the pin matches `DATA.metDate` |
-| 3 | Questions | every question answered, then the score summary's "ไปต่อ" |
+| 3 | Chat | the last reply in the conversation, which doubles as the advance |
 | 4 | Journey text | auto-advances after the line fades |
 | 5 | Memory Gallery (camera) | the photo modal has been opened and closed once |
-| 6 | The notebook (scrollable photo timeline) | "ไปต่อ" at the end of the list |
-| 7 | The Letter (closing scrapbook spread) | — end of flow |
+| 6 | Questions | every question answered, then the score summary's "ไปต่อ" |
+| 7 | The notebook (scrollable photo timeline) | "ไปต่อ" at the end of the list |
+| 8 | The Letter (closing scrapbook spread) | — end of flow |
 
 Each step unlocks only after the previous one is completed — no skipping
 ahead. `?page=N` jumps straight to a step, for testing only.
@@ -67,6 +68,21 @@ surprise, skipping the build-up the pacing depends on.
 
 **Supersedes**: an earlier decision to persist progress to `localStorage`
 (key `lovememo-progress`) so a reload resumed where it left off.
+
+### Decision: The Chat's replies are flavour, not branches
+**Choice**: Every reply the recipient can tap leads to the same next message.
+The conversation is one fixed script; the choice only decides which words
+appear in her own bubble.
+
+**Why**: This is opened once. A branching conversation means most of what the
+sender writes is never read by the one person it was written for — the
+authoring cost lands almost entirely on content nobody sees. A single script
+means every line written is a line delivered, and the recipient still gets to
+answer in her own voice.
+
+**Trade-offs accepted**: Re-reading reveals the choices were cosmetic. Judged
+worth it — nobody replays a letter looking for alternate endings. Adding real
+branches later is additive, so this is not a door that closes.
 
 ### Decision: Mini-games are always winnable — no fail state
 **Choice**: All 3 mini-games (Love Quiz, Memory Match, Heart Hunt) unlock the
@@ -159,13 +175,14 @@ user to fill in later.
 
 | Term | Meaning |
 |---|---|
-| **Step** | One of the 6 sequential screens in the flow (see the table above). The unit of locked progression — a Step is either locked, active, or completed. |
+| **Step** | One of the 8 sequential screens in the flow (see the table above). The unit of locked progression — a Step is either locked, active, or completed. |
 | **Mission** | Step 2's unlock puzzle — a 6-digit pin (`DDMMYY` of the date the couple met) that must match to proceed. Correctness is checked against a fixed answer, unlike Questions. |
-| **Questions** | Step 3 — a short quiz. Always completable: any answer advances, and the score summary praises the recipient regardless. Score is counted but never blocks. |
+| **Chat** | Step 3 — a conversation between the sender and the recipient, in the shape of a messaging app. The sender asks; the recipient answers by tapping one of several replies, which then appears as her own message. The replies are feelings, not facts: there is no right one, no score, and the choice does not change what comes next — the same scripted conversation continues either way. Distinct from Questions, which tests memory of the past and does have correct answers. |
+| **Questions** | Step 6 — a short quiz. Always completable: any answer advances, and the score summary praises the recipient regardless. Score is counted but never blocks. |
 | **Memory Gallery** | Step 5 — the camera screen. Tapping the camera ejects one photo per tap onto a pile; tapping the completed pile opens the Photo Viewer. |
 | **Photo Viewer** | Step 5's modal — the photos enlarged one at a time over a blurred backdrop, tapping the front one sends it to the back, looping. Opening and closing it once is what reveals the "ไปต่อ" button. |
-| **The notebook** | Step 6 — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
-| **Scrapbook spread** | Step 7's layout — layered paper sheets, washi tape, and stickers around the letter. The visual language the whole site aims for. |
+| **The notebook** | Step 7 — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
+| **Scrapbook spread** | Step 8's layout — layered paper sheets, washi tape, and stickers around the letter. The visual language the whole site aims for. |
 
 ## Sources
 - Design reference: two mockup images provided by user (9-step and 8-step
