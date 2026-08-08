@@ -1441,6 +1441,17 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* last item in the scroller, so reaching it means having scrolled the lot */
 .spread-continue { display: block; margin: 4px auto 34px; }
 
+/* Palette lifted from LoveMemo's starry-night template (the "question" feature
+   there is the same fake-chat idea) — a dreamy pastel pink that reads sweeter
+   than this site's kraft/maroon. Scoped to the chat only; the rest of the
+   site keeps its own palette. */
+.step[data-step="3"] {
+  --chat-ink: #5b3a4a;
+  --chat-dim: #b98aa0;
+  --chat-accent: #ff6fa0;
+  --chat-line: rgba(255, 111, 160, 0.25);
+}
+
 /* ---- Step 3: the chat ------------------------------------------------------
    A messaging-app conversation. Only .chat-scroll scrolls (html/body lock
    scrolling site-wide); the replies sit under it in a fixed row, the way a
@@ -1462,11 +1473,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 .chat-msg {
   max-width: 78%;
-  padding: 9px 14px 11px;
-  border-radius: 18px;
+  padding: 10px 15px 12px;
+  border-radius: 20px;
   font-size: 0.98rem;
   line-height: 1.45;
-  box-shadow: 0 2px 6px rgba(122,32,37,0.10);
+  box-shadow: 0 6px 18px rgba(255, 111, 160, 0.14);
   animation: chat-pop 0.28s ease;
   overflow-wrap: anywhere; /* Thai has no spaces to break at */
 }
@@ -1478,17 +1489,21 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    kraft/maroon palette rather than reading as a stock chat blue) */
 .chat-msg.chat-me {
   align-self: flex-start;
-  background: #f3dcdd;
-  color: #5a3336;
-  border-bottom-left-radius: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--chat-line);
+  color: var(--chat-ink);
+  border-bottom-left-radius: 7px;
 }
 /* the recipient — right, the accent colour, because these are her words */
 .chat-msg.chat-her {
   align-self: flex-end;
   margin-left: auto; /* belt and braces — pushes the bubble right even where align-self is overridden */
-  background: var(--pink);
-  color: #fff8ef;
-  border-bottom-right-radius: 6px;
+  /* a deeper rose rather than another pale pink: the two sides have to stay
+     tellable apart at a glance, and colour is the only thing separating them */
+  background: var(--chat-accent);
+  border: 1px solid var(--chat-accent);
+  color: #fff;
+  border-bottom-right-radius: 7px;
 }
 
 /* three dots, staggered — the pause that sells it as someone typing */
@@ -1500,15 +1515,16 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   gap: 4px;
   margin-top: 8px;
   padding: 12px 14px;
-  background: #f3dcdd; /* matches the sender's bubble — it's the same person about to speak */
-  border-radius: 18px 18px 18px 6px;
-  box-shadow: 0 2px 6px rgba(122,32,37,0.10);
+  background: rgba(255, 255, 255, 0.72); /* matches the sender's bubble — it's the same person about to speak */
+  border: 1px solid var(--chat-line);
+  border-radius: 20px 20px 20px 7px;
+  box-shadow: 0 6px 18px rgba(255, 111, 160, 0.14);
 }
 .chat-typing[hidden] { display: none; } /* an author display rule beats the UA [hidden] rule otherwise */
 .chat-typing span {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: #b98a8d;
+  background: var(--chat-dim);
   animation: chat-dot 1.1s ease-in-out infinite;
 }
 .chat-typing span:nth-child(2) { animation-delay: 0.16s; }
@@ -1541,11 +1557,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   font-size: 0.96rem;
   line-height: 1.4;
   text-align: center;
-  color: var(--pink);
-  background: rgba(255, 253, 248, 0.92);
-  border: 1.5px solid rgba(138, 59, 63, 0.35);
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(122, 32, 37, 0.10);
+  color: var(--chat-ink);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 111, 160, 0.35);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(255, 111, 160, 0.14);
   cursor: pointer;
   animation: chat-pop 0.28s ease backwards;
 }
@@ -1555,7 +1571,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .chat-option:nth-child(4) { animation-delay: 0.21s; }
 .chat-option:active {
   transform: scale(0.985);
-  background: var(--pink);
-  border-color: var(--pink);
-  color: #fff8ef;
+  background: var(--chat-accent);
+  border-color: var(--chat-accent);
+  color: #fff;
 }
