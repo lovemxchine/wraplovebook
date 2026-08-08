@@ -1305,7 +1305,12 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    binding are pinned; only .spread-scroll scrolls, because html/body lock
    scrolling site-wide (see the note on html,body above) and a page-level
    scroll breaks that on iOS. */
-.step[data-step="6"] { padding: 0; justify-content: flex-start; } /* full-bleed — the paper IS the screen here */
+/* Full-bleed, and deliberately breaking out of #app's 540px frame: this step
+   is the paper, so cream margins either side of it defeat the point. #app has
+   no transform/filter, so position:fixed genuinely escapes its overflow:hidden.
+   Every other step stays inside the frame. */
+.step[data-step="6"] { padding: 0; justify-content: flex-start; }
+.step[data-step="6"].active { position: fixed; inset: 0; height: auto; z-index: 2; } /* above the floating .bg-heart stickers (z-index 0), which belong behind the paper */
 
 .spread {
   position: relative;
@@ -1313,7 +1318,6 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   flex: 1;
   width: 100%;
   min-height: 0; /* lets the flex child actually shrink, which is what makes it scroll */
-  margin: 0 auto;
   overflow: hidden;
   /* grid paper: two thin blue line sets over an off-white sheet */
   background:
