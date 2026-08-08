@@ -1,7 +1,7 @@
 // State machine: step N is "unlocked" once step N-1 is completed.
 // Progress is in-memory only — a reload always restarts from the cover, so the
 // surprise opens the same way every time (was persisted to localStorage).
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 let state = { step: 1 };
 
@@ -29,7 +29,8 @@ function onEnterStep(n) {
   if (n === 4) setTimeout(() => goToStep(5), 2800); // matches .journey-text's fade animation duration
   if (n === 5) renderGallery();
   if (n === 6) renderSpread();
-  if (n === 7) { renderLetter(); renderEnding(); }
+  if (n === 7) renderTimeline();
+  if (n === 8) { renderLetter(); renderEnding(); }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -382,6 +383,28 @@ function renderVoice() {
 }
 
 // --- Step 6: Letter ---
+// --- Step 7: Timeline ---
+// Entries fade in as they scroll into the window. IntersectionObserver is the
+// native way to do that — no scroll handler, no library.
+function renderTimeline() {
+  const box = document.getElementById('timeline');
+  box.innerHTML = DATA.timeline.map(t => `
+    <div class="tl-item">
+      <span class="tl-date">${t.date}</span>
+      <p class="tl-title">${t.title}</p>
+      ${t.note ? `<p class="tl-note">${t.note}</p>` : ''}
+    </div>`).join('');
+  document.getElementById('timeline-scroll').scrollTop = 0; // re-entering starts at the top
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      obs.unobserve(e.target); // fade in once, don't fade back out on scroll-up
+    });
+  }, { root: document.getElementById('timeline-scroll'), threshold: 0.25 });
+  box.querySelectorAll('.tl-item').forEach(el => io.observe(el));
+}
+
 // --- Step 6: Scrapbook spread ---
 // The collage layout is fixed in markup/CSS; this only fills in the photos and
 // the cut-out text. Slots with no photo keep the empty placeholder look.

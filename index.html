@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=40" />
+<link rel="stylesheet" href="css/style.css?v=42" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -160,13 +160,26 @@
     <button class="btn-transparent spread-continue" data-action="next">ไปต่อ</button>
   </section>
 
-  <!-- Step 7: The Letter — the closing scrapbook spread. Layered paper +
+  <!-- Step 7: Timeline — the one screen in the flow that scrolls. The rest of
+       the site locks scrolling (html/body overflow:hidden), so the scrolling
+       happens inside .timeline-scroll, never on the page itself. The "ไปต่อ"
+       button is the last item in the scroller, so reaching it means having
+       scrolled the whole timeline — no separate gate needed. -->
+  <section class="step" data-step="7">
+    <p class="eyebrow tl-eyebrow">เรื่องราวของเรา</p>
+    <div class="timeline-scroll" id="timeline-scroll">
+      <div class="timeline" id="timeline"></div>
+      <button class="btn-transparent tl-continue" data-action="next">ไปต่อ</button>
+    </div>
+  </section>
+
+  <!-- Step 8: The Letter — the closing scrapbook spread. Layered paper +
        washi tape around a handwritten note, per the love-scrapbook asset
        rules (reuse existing PNGs, build depth, no flat layout).
        ponytail: decoration is deliberately sparse right now — the user is
        preparing new sticker assets; drop them into .scrapbook as more
        .sb-deco elements and give each one a position rule. -->
-  <section class="step" data-step="7">
+  <section class="step" data-step="8">
     <div class="scrapbook">
       <!-- floating decorations, layered behind/around the note -->
       <img class="sb-deco sb-deco-flower1" src="assets/stickers/flower/1.webp" alt="" />
@@ -197,6 +210,6 @@
 
 </div>
 
-<script src="js/data.js?v=10"></script><script src="js/app.js?v=13"></script>
+<script src="js/data.js?v=12"></script><script src="js/app.js?v=14"></script>
 </body>
 </html>

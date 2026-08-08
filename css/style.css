@@ -1093,8 +1093,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   color: var(--text);
 }
 
-/* ---- Step 7: the letter ---- */
-.step[data-step="7"] { padding: 20px 16px; justify-content: center; }
+/* ---- Step 8: the letter ---- */
+.step[data-step="8"] { padding: 20px 16px; justify-content: center; }
 .scrapbook {
   position: relative;
   width: 100%;
@@ -1468,3 +1468,95 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .sp-tape-b { bottom: -7px; right: -14px; transform: rotate(-28deg); }
 
 .spread-continue { flex: none; margin: 6px auto 10px; }
+
+/* ---- Step 7: the timeline ------------------------------------------------
+   The only scrolling screen in the flow. Scrolling is confined to
+   .timeline-scroll — html/body stay locked, so this never turns into a page
+   scroll on iOS. */
+.step[data-step="7"] { padding: 20px 16px 0; justify-content: flex-start; }
+.tl-eyebrow { flex: none; text-align: center; margin: 0 0 10px; }
+
+.timeline-scroll {
+  flex: 1;
+  z-index: 1; /* same as .card/.spread — keeps the floating .bg-heart stickers behind the entries */
+  min-height: 0; /* without this the flex child refuses to shrink and scroll */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 4px 0;
+  /* fade the top/bottom edges so entries look like they run past the window */
+  -webkit-mask: linear-gradient(180deg, transparent 0, #000 18px, #000 calc(100% - 26px), transparent 100%);
+  mask: linear-gradient(180deg, transparent 0, #000 18px, #000 calc(100% - 26px), transparent 100%);
+}
+
+.timeline {
+  position: relative;
+  padding: 6px 0 6px 34px;
+}
+/* the spine the entries hang off */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 10px; bottom: 10px; left: 11px;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, var(--pink) 0 6px, transparent 6px 12px);
+  opacity: 0.45;
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 18px;
+  padding: 12px 14px 13px;
+  background: #fffdf8;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(122,32,37,0.10), 0 1px 3px rgba(122,32,37,0.08);
+  /* start hidden — .in is added by the observer as each entry scrolls in */
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.tl-item.in { opacity: 1; transform: none; }
+/* the dot on the spine */
+.tl-item::before {
+  content: "";
+  position: absolute;
+  top: 18px; left: -28px;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--pink);
+  box-shadow: 0 0 0 3px var(--cream);
+}
+/* a bit of washi tape, alternating sides so the column isn't uniform */
+.tl-item:nth-child(odd)::after,
+.tl-item:nth-child(even)::after {
+  content: "";
+  position: absolute;
+  top: -7px;
+  width: 40px; height: 14px;
+  background: repeating-linear-gradient(135deg, #d9c49a, #d9c49a 4px, #e6dbbd 4px, #e6dbbd 8px);
+  opacity: 0.9;
+}
+.tl-item:nth-child(odd)::after  { right: 16px; transform: rotate(4deg); }
+.tl-item:nth-child(even)::after { left: 16px;  transform: rotate(-5deg); }
+
+.tl-date {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--purple);
+  margin-bottom: 2px;
+}
+.tl-title {
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  color: var(--pink);
+  margin: 0;
+}
+.tl-note {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.tl-continue { margin: 10px auto 28px; }

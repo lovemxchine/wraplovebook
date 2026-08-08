@@ -28,6 +28,16 @@ const DATA = {
     strip2: "อยากอยู่ใกล้ๆ แบบนี้ตลอดไป",
   },
 
+  // Step 7: Timeline — the milestones, oldest first. `note` is optional.
+  timeline: [
+    { date: "1 เม.ย. 2569", title: "วันที่เจอกันครั้งแรก", note: "ยังจำได้เลยว่าใส่เสื้ออะไร" },
+    { date: "เดือนถัดมา", title: "เดตแรกของเรา", note: "กินกันจนอิ่มแล้วเดินเล่นต่อ" },
+    { date: "วันนั้น", title: "วันที่เป็นแฟนกัน", note: "" },
+    { date: "ทริปแรก", title: "ไปเที่ยวด้วยกันครั้งแรก", note: "หลงทางแต่ก็สนุกดี" },
+    { date: "ปีที่ผ่านมา", title: "ผ่านมาด้วยกันทุกเรื่อง", note: "" },
+    { date: "วันนี้", title: "ยังอยู่ด้วยกันนะ", note: "และจะอยู่ต่อไปเรื่อยๆ" },
+  ],
+
   // Background music — paste any youtube.com/watch?v= or youtu.be/ link.
   // startSeconds: where playback begins. loop is always on (whole video, back to 0).
   // volume: 0-100, it's background music so it sits well under the shutter sound.
