@@ -1305,7 +1305,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    binding are pinned; only .spread-scroll scrolls, because html/body lock
    scrolling site-wide (see the note on html,body above) and a page-level
    scroll breaks that on iOS. */
-.step[data-step="6"] { padding: 10px 10px 0; justify-content: flex-start; }
+.step[data-step="6"] { padding: 0; justify-content: flex-start; } /* full-bleed — the paper IS the screen here */
 
 .spread {
   position: relative;
@@ -1314,14 +1314,12 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   width: 100%;
   min-height: 0; /* lets the flex child actually shrink, which is what makes it scroll */
   margin: 0 auto;
-  border-radius: 3px;
   overflow: hidden;
   /* grid paper: two thin blue line sets over an off-white sheet */
   background:
     repeating-linear-gradient(0deg, rgba(120,155,190,0.25) 0 1px, transparent 1px 16px),
     repeating-linear-gradient(90deg, rgba(120,155,190,0.25) 0 1px, transparent 1px 16px),
     #f6f4ee;
-  box-shadow: 0 8px 22px rgba(60,45,30,0.22);
 }
 
 /* spiral binding down the left edge — chunky rings crossing the margin, plus
@@ -1366,7 +1364,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 12px 14px 0 38px; /* left padding clears the spiral */
+  padding: 18px 16px 0 40px; /* left padding clears the spiral */
   scrollbar-width: none; /* the scrollbar reads as a browser chrome artifact on a paper page */
 }
 .spread-scroll::-webkit-scrollbar { display: none; }
