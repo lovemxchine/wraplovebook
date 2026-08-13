@@ -247,7 +247,12 @@ body.dev-mode .progress-dots { display: flex; }
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
 }
-.cover-title { font-size: clamp(2rem, 9vw, 2.8rem); margin: 0; }
+.cover-title {
+  font-size: clamp(2.2rem, 10vw, 3rem);
+  font-family: 'Charmonman', 'Sriracha', cursive; /* cute Thai handwritten */
+  margin: 0;
+  letter-spacing: 0.03em;
+}
 .cover-hint { margin: 0; display: flex; justify-content: center; }
 
 .envelope {
