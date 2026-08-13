@@ -57,9 +57,16 @@ const DATA = {
   // Step 6: Voice Message
   voiceMessage: { from: "", src: "" },
 
-  // Step 6: The Letter
+  // Step 6: The Letter — kept but unused; Step 8 is now the Wish Jar (see wishes below).
   letter: { to: "", body: "", from: "" },
-
-  // Ending (shown together with the letter)
   ending: { message: "ขอบคุณที่เป็นคนพิเศษของเรานะ" },
+
+  // Step 8: Wish Jar — one message per paper crane. Tapping a crane reveals it.
+  wishes: [
+    "ขอบคุณที่อยู่ด้วยกันมาถึงวันนี้นะ",
+    "ขอให้เราเป็นแบบนี้ไปเรื่อยๆ ไม่มีเปลี่ยน",
+    "รักที่ผ่านมาทุกวัน และรักที่จะผ่านไปด้วยกัน",
+    "ขอบคุณที่เลือกเดินทางนี้ร่วมกับเรานะ",
+    "สุขสันต์วันครบรอบนะที่รัก ❤",
+  ],
 };

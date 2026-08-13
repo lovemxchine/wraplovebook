@@ -7,12 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=79" />
+<link rel="stylesheet" href="css/style.css?v=108" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
 <link rel="preload" as="image" href="assets/bg/image/paper-2.webp" />
 <link rel="preload" as="image" href="assets/stickers/pin-slot.webp" />
+<link rel="preload" as="image" href="assets/stickers/letter/close.png" />
+<link rel="preload" as="image" href="assets/stickers/letter/open.png" />
 </head>
 <body>
 <!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
@@ -26,44 +28,26 @@
          the two flower stickers tucked behind it. The whole envelope is the
          "open" trigger; the flap lifts on hover/press so it reads as openable. -->
     <div class="cover" data-action="open">
-      <!-- flowers — swap src when user provides watercolor daffodil/hydrangea -->
-      <img class="cover-deco cover-deco-1" src="assets/stickers/flower/1.webp" alt="" />
-      <img class="cover-deco cover-deco-2" src="assets/stickers/flower/2.webp" alt="" />
-      <!-- CSS stars & hearts scattered around envelope -->
-      <span class="cv-deco cv-star-g1" aria-hidden="true">★</span>
-      <span class="cv-deco cv-star-g2" aria-hidden="true">★</span>
-      <span class="cv-deco cv-star-g3" aria-hidden="true">★</span>
-      <span class="cv-deco cv-star-b1" aria-hidden="true">✦</span>
-      <span class="cv-deco cv-star-b2" aria-hidden="true">✦</span>
-      <span class="cv-deco cv-heart-1" aria-hidden="true">♥</span>
-      <p class="script script-hero cover-title">ถึงเธอ <span class="icon-heart"></span></p>
+      <!-- <p class="script script-hero cover-title">ถึงเธอ <span class="icon-heart"></span></p> -->
+      <!-- Envelope rebuild: two photographed-paper PNGs (closed/open) cross-
+           fade on tap instead of a CSS 3D flap-fold — a flat photo can't be
+           folded convincingly, so the "opening" is a fade + the letter
+           rising up from behind the open envelope's pocket notch. -->
       <div class="envelope">
-        <!-- the letter peeking out from behind, so it reads as a real object
-             with something inside rather than a flat rectangle -->
-        <span class="env-note">
-          <span class="env-note-lines"></span>
-          <span class="env-note-text script">วันนี้มีอะไรจะบอกด้วยหล่ะ</span>
+        <img class="env-img env-closed" src="assets/stickers/letter/close.png" alt="ซองจดหมาย" />
+        <img class="env-img env-back" src="assets/stickers/letter/back.png" alt="" />
+        <span class="env-letter">
+          <img class="env-letter-paper" src="assets/stickers/letter/letter-paper.png" alt="" />
         </span>
-        <span class="env-body"></span>
-        <!-- mask sits above the note (z-index 3 > 2) so the note is hidden
-             while still inside the envelope — only the portion that has risen
-             above the envelope top edge becomes visible, giving a true
-             "sliding out from inside" look -->
-        <span class="env-interior-mask" aria-hidden="true"></span>
-        <span class="env-stamp"><span class="icon-heart"></span></span>
-        <span class="env-flap"></span>
-        <span class="env-seal"><span class="icon-heart"></span></span>
-        <span class="env-tape"></span>
-      </div>
-      <p class="hint cover-hint">
-        <span class="click-letters">
+        <img class="env-img env-front" src="assets/stickers/letter/front.png" alt="ซองจดหมายเปิด" />
+        <span class="click-letters cover-hint">
           <img src="assets/alphabet/C.webp" alt="C" />
           <img src="assets/alphabet/L.webp" alt="L" />
           <img src="assets/alphabet/i.webp" alt="I" />
           <img src="assets/alphabet/C.webp" alt="C" />
           <img src="assets/alphabet/K.webp" alt="K" />
         </span>
-      </p>
+      </div>
     </div>
   </section>
 
@@ -91,7 +75,8 @@
        becomes her own bubble. The replies are feelings, not facts — none is
        "right" and none changes what comes next (see CONTEXT.md). The last
        reply in the script doubles as the advance, so there is no separate
-       "ไปต่อ" button. See startChat() in app.js. -->
+       "ไปต่อ" button. See startChat() in app.js. Hands off straight into the
+       quiz (step 4) — journey/camera now come after the quiz instead of before. -->
   <section class="step" data-step="3">
     <div class="chat-scroll" id="chat-scroll">
       <div class="chat-log" id="chat-log"></div>
@@ -100,19 +85,19 @@
     <div class="chat-options" id="chat-options"></div>
   </section>
 
-  <!-- Step 4: no card, no button — just a line of text that fades in and
-       out, then auto-advances into the Memory Gallery/camera (Step 5).
+  <!-- Step 5: no card, no button — just a line of text that fades in and
+       out, then auto-advances into the Memory Gallery/camera (Step 6).
        See runJourneyText() in app.js. -->
-  <section class="step" data-step="4">
+  <section class="step" data-step="5">
     <p class="journey-text">ไปถ่ายรูปกัน</p>
   </section>
 
-  <!-- Step 5: Memory Gallery -->
+  <!-- Step 6: Memory Gallery -->
   <!-- no card background here on purpose — camera + photo pile sit directly
        on the page background; tapping the pile itself is the "next" action,
        so there's no separate button either -->
-  <section class="step center" data-step="5">
-    <p class="eyebrow">ถ่ายรูปกันน</p>
+  <section class="step center" data-step="6">
+    <!-- <p class="eyebrow">ถ่ายรูปกันน</p> -->
     <h2 class="script">ยิ้มหน่อยยย </h2>
     <p class="relationship-label" id="relationship-label"></p>
     <!-- The camera is drawn in CSS (no image asset) — see .cam-* rules in
@@ -134,12 +119,20 @@
           <span class="cam-rainbow"></span>
         </span>
       </span>
+      <!-- curved motion arrow top-left + a few small stars scattered around
+           the camera, all jiggling on the same beat as the camera itself -->
+      <span class="cam-fx" aria-hidden="true">
+        <img class="cam-arrow" src="assets/stickers/arrow.png" alt="" />
+        <i class="cam-star cam-star-1">✦</i>
+        <i class="cam-star cam-star-2">✦</i>
+        <i class="cam-star cam-star-3">✦</i>
+      </span>
     </button>
     <div class="photo-stack" id="photo-stack" data-action="open-photo-modal"></div>
     <button class="btn-transparent" id="gallery-continue" data-action="next" hidden>ไปต่อ</button>
   </section>
 
-  <!-- Step 4's photo viewer — opens once the camera pile is complete (see
+  <!-- Step 6's photo viewer — opens once the camera pile is complete (see
        openPhotoModal() in app.js). Tapping a card sends it to the back of
        the stack so the next one shows; loops indefinitely. -->
   <div class="photo-modal" id="photo-modal" hidden>
@@ -147,11 +140,11 @@
     <div class="photo-modal-stack" id="photo-modal-stack"></div>
   </div>
 
-  <!-- Step 6: Question — a short quiz after the camera, always
+  <!-- Step 4: Question — a short quiz right after the chat, always
        "winnable" (no fail state, see CONTEXT.md's mini-game decision).
        Tapping any option just advances to the next question. See
        renderQuestion()/answerQuestion() in app.js. -->
-  <section class="step" data-step="6">
+  <section class="step" data-step="4">
     <div class="card">
       <p class="eyebrow" id="question-progress"></p>
       <h2 class="script" id="question-text"></h2>
@@ -181,6 +174,55 @@
   <section class="step" data-step="7">
     <div class="spread" id="spread">
       <div class="spread-scroll" id="spread-scroll">
+        <!-- alt collage layout — hidden by default, the old scrolling
+             timeline below is Step 7 now. Only shown when #spread has
+             .spread-alt, which app.js adds for ?page=7-1. -->
+        <div class="sp-collage">
+          <div class="sp-col sp-col-left">
+            <span class="sp-love-hearts">♡ ♡ ♡</span>
+            <img class="sp-love-title" src="assets/stickers/love.png" alt="love" />
+            <span class="sp-tag">หน้าตี๋ๆ</span>
+            <span class="sp-tag">หัวเราะดัง</span>
+            <span class="sp-tag">ความทรงจำที่ชอบสุด</span>
+            <span class="sp-doodle-star">★</span>
+            <span class="sp-doodle-heart">♥</span>
+            <div class="sp-sticky">
+              <p>ทำให้ทุกวันดีขึ้น 10 เท่า<br>ขอบคุณที่เป็นคนพิเศษของเรานะ ♥</p>
+            </div>
+            <div class="sp-ticket">
+              <span>ADMIT ONE</span>
+              <small>ทริปของเรา ♥</small>
+            </div>
+            <div class="sp-tag-label">เธอ + ฉัน<br>= magic</div>
+          </div>
+
+          <div class="sp-col sp-col-mid">
+            <div class="sp-booth">
+              <span class="sp-tape sp-booth-tape"></span>
+              <p class="sp-booth-label">LOVE BUG ♥</p>
+              <div class="sp-booth-frame"><img class="sp-img empty" alt="" /></div>
+              <div class="sp-booth-frame"><img class="sp-img empty" alt="" /></div>
+              <div class="sp-booth-frame"><img class="sp-img empty" alt="" /></div>
+              <div class="sp-booth-frame"><img class="sp-img empty" alt="" /></div>
+              <p class="sp-booth-label">แบบเรานี่แหละ</p>
+            </div>
+            <p class="sp-love-forever">รักเธอตลอดไป ♥</p>
+          </div>
+
+          <div class="sp-col sp-col-right">
+            <div class="sp-bubble">เรารักที่เราเป็นตัวเองได้ 100% เวลาอยู่ด้วยกัน ♥</div>
+            <span class="sp-doodle-star">★</span>
+            <div class="sp-note-scrap">
+              <span class="sp-tape sp-note-tape"></span>
+              เธอคือแค่คู่หูสายฮาที่ใช่ที่สุด ♥
+            </div>
+            <span class="sp-doodle-heart">♥</span>
+            <div class="sp-bubble">เธอคือแจ้งเตือนที่ชอบที่สุดของเรา ♥</div>
+          </div>
+        </div>
+
+        <!-- timeline list kept in the DOM (renderSpread() in app.js still
+             fills it) but hidden — the collage above is the whole page now. -->
         <p class="sp-heading">เรื่องราวของเรา</p>
         <div class="sp-entries" id="spread-entries"></div>
         <button class="btn-transparent spread-continue" data-action="next">ไปต่อ</button>
@@ -189,55 +231,21 @@
     </div>
   </section>
 
-  <!-- Step 8: The Letter — the closing scrapbook spread. Layered paper +
-       washi tape around a handwritten note, per the love-scrapbook asset
-       rules (reuse existing PNGs, build depth, no flat layout).
-       ponytail: decoration is deliberately sparse right now — the user is
-       preparing new sticker assets; drop them into .scrapbook as more
-       .sb-deco elements and give each one a position rule. -->
-  <section class="step" data-step="8">
-    <div class="scrapbook">
-      <!-- floating decorations, layered behind/around the note -->
-      <img class="sb-deco sb-deco-string" src="assets/stickers/couple-heart-string.webp" alt="" />
-      <img class="sb-deco sb-deco-flower1" src="assets/stickers/flower/1.webp" alt="" />
-      <img class="sb-deco sb-deco-flower2" src="assets/stickers/flower/2.webp" alt="" />
-      <img class="sb-deco sb-deco-stk1" src="assets/bg/sticker-3.webp" alt="" />
-      <img class="sb-deco sb-deco-stk2" src="assets/bg/sticker-6.webp" alt="" />
-
-      <!-- postage stamp, drops in from above when letter opens -->
-      <div class="sb-stamp" aria-hidden="true">
-        <span class="sb-stamp-icon">✉️</span>
-        <span class="sb-stamp-label">ส่งด้วย<br>รัก</span>
-      </div>
-
-      <!-- the note itself: torn-paper page, taped down, handwritten -->
-      <div class="sb-paper">
-        <span class="sb-tape sb-tape-tl"></span>
-        <span class="sb-tape sb-tape-br"></span>
-        <span class="sb-tape sb-tape-top"></span>
-        <span class="sb-tape sb-tape-left"></span>
-        <!-- date in top-right like a real letter -->
-        <span class="sb-letter-date" id="sb-letter-date"></span>
-        <p class="sb-eyebrow">คำในใจที่อยากบอก</p>
-        <div class="letter" id="letter-body"></div>
-        <!-- wax seal stamps in after the paper unfolds -->
-        <div class="sb-wax-seal" aria-hidden="true">♥</div>
-      </div>
-
-      <!-- closing line on its own little card, tucked under the page corner.
-           The corner marks are CSS, the way photo corners hold a print. -->
-      <div class="sb-note">
-        <span class="sb-corner sb-corner-tl"></span>
-        <span class="sb-corner sb-corner-br"></span>
-        <p class="sb-note-text" id="ending-message"></p>
-      </div>
-
-      <img class="sb-deco sb-deco-hearts" src="assets/stickers/heart-star-duo.webp" alt="" />
+  <!-- Step 8: Wish Jar — a glass jar of folded paper cranes. Tap the jar to
+       open it — the cranes fly out and fan below; tap each crane to reveal
+       its wish. See renderWishJar() in app.js. Replaces the old
+       letter+closing-note scrapbook spread — see CONTEXT.md "Step 8 ending
+       is a Wish Jar, not a letter+note spread". -->
+  <section class="step center" data-step="8">
+    <h2 class="script">เปิดโหลนี้สิ</h2>
+    <div class="wish-jar" id="wish-jar" data-action="open-jar">
+      <img class="wj-glass" src="assets/stickers/paper-bird/glass.png" alt="โหลแก้ว" />
+      <div class="wj-cranes" id="wj-cranes"></div>
     </div>
   </section>
 
 </div>
 
-<script src="js/data.js?v=15"></script><script src="js/app.js?v=18"></script>
+<script src="js/data.js?v=16"></script><script src="js/app.js?v=25"></script>
 </body>
 </html>

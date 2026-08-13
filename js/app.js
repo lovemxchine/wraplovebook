@@ -26,16 +26,11 @@ function renderDots(n) {
 function onEnterStep(n) {
   if (n === 2) resetMissionPin();
   if (n === 3) startChat();
-  if (n === 4) setTimeout(() => goToStep(5), 2800); // matches .journey-text's fade animation duration
-  if (n === 5) renderGallery();
-  if (n === 6) startQuestions();
+  if (n === 4) startQuestions();
+  if (n === 5) setTimeout(() => goToStep(6), 2800); // matches .journey-text's fade animation duration
+  if (n === 6) renderGallery();
   if (n === 7) renderSpread();
-  if (n === 8) {
-    renderLetter(); renderEnding();
-    // stamp the date on the letter in Thai locale — feels like a real letter header
-    const el = document.getElementById('sb-letter-date');
-    if (el) el.textContent = new Date().toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
-  }
+  if (n === 8) renderWishJar();
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -92,7 +87,7 @@ function checkMission(digits) {
     digits.forEach(d => d.blur()); // drop focus so the 6th digit's image + caret aren't fighting for attention
     const successEl = document.getElementById('mission-success');
     successEl.hidden = false;
-    setTimeout(() => { successEl.hidden = true; goToStep(3); }, 1200); // let all 6 digits + "ถูกต้อง" actually be seen before advancing
+    setTimeout(() => { successEl.hidden = true; goToStep(3); }, 1200); // let all 6 digits + "ถูกต้อง" actually be seen before advancing — mission is step 2, hands off to step 3 (chat)
   } else {
     errEl.hidden = false;
     const app = document.getElementById('app'); // shake the whole screen, not just the card — feels more "wrong"
@@ -171,7 +166,7 @@ function chatReply(btn) {
   const run = chatRun;
   setTimeout(() => {
     if (run !== chatRun) return;
-    if (wasLast) goToStep(4); // the last reply is the way out — no separate button
+    if (wasLast) goToStep(4); // the last reply is the way out — no separate button; chat is step 3, hands off straight into step 4 (quiz)
     else chatNext();
   }, wasLast ? 700 : 500);
 }
@@ -267,12 +262,28 @@ function unlockShutter() {
 // the visitor happens to land on.
 document.addEventListener('pointerdown', () => {
   unlockShutter();
+  unlockSwap();
   startBgMusic();
 }, { once: true });
 
 function playShutter() {
   const s = shutterSound.cloneNode(); // already cached, so no extra request
   s.play().catch(() => {}); // never let a blocked sound break the reveal
+}
+
+// Polaroid swap sound — same clone-per-tap pattern as the shutter, so rapid
+// taps through the pile never cut each other off.
+const swapSound = new Audio('assets/sounds/swap_image.mp3');
+swapSound.preload = 'auto';
+function unlockSwap() {
+  swapSound.play().then(() => {
+    swapSound.pause();
+    swapSound.currentTime = 0;
+  }).catch(() => {});
+}
+function playSwap() {
+  const s = swapSound.cloneNode();
+  s.play().catch(() => {});
 }
 
 // tap the camera -> exactly one photo streams out of its bottom slot and
@@ -407,6 +418,7 @@ function cyclePhotoModal() {
   if (modalOrder.length < 2) return;
   modalOrder.push(modalOrder.shift());
   applyModalDepths(false);
+  playSwap();
 }
 
 function closePhotoModal() {
@@ -516,8 +528,25 @@ function renderLetter() {
 }
 
 // --- Step 6: Ending (shown together with the letter) ---
+// ponytail: unused since Step 8 became the Wish Jar (see CONTEXT.md) — kept
+// in case the letter content gets repurposed later.
 function renderEnding() {
   document.getElementById('ending-message').textContent = DATA.ending.message;
+}
+
+// --- Step 8: Wish Jar — one paper crane per DATA.wishes entry. Tapping the
+// jar (data-action="open-jar") flies them out into a small scattered fan;
+// tapping a crane (data-action="reveal-wish") reveals its message. ---
+const WISH_BIRDS = ['bird-1.png', 'bird-2.png', 'bird-3.png', 'bird-4.png', 'bird-5.png', 'bird-6.png'];
+function renderWishJar() {
+  const wrap = document.getElementById('wj-cranes');
+  if (wrap.dataset.rendered) return; // built once — re-entering the step shouldn't reshuffle/reset it
+  wrap.dataset.rendered = '1';
+  wrap.innerHTML = DATA.wishes.map((msg, i) => `
+    <button class="wj-crane" data-action="reveal-wish" style="--i:${i}; --flip:${i % 2 ? -1 : 1}">
+      <img src="assets/stickers/paper-bird/${WISH_BIRDS[i % WISH_BIRDS.length]}" alt="" />
+      <span class="wj-msg">${msg}</span>
+    </button>`).join('');
 }
 
 // --- background floating shapes (decorative, all steps) ---
@@ -535,7 +564,7 @@ const BG_STICKERS = [
 const BG_STICKER_POOL = BG_STICKERS.flatMap(s => Array(s.weight).fill(s.file));
 // three movement styles so it's not just "float straight up" every time
 const BG_ANIMS = ['floatUp', 'floatDrift', 'floatWobble'];
-function spawnBgHeart() {
+function spawnBgHeart(midAir) {
   const h = document.createElement('img');
   h.src = `assets/bg/effect-background/${BG_STICKER_POOL[Math.floor(Math.random() * BG_STICKER_POOL.length)]}`;
   h.className = 'bg-heart';
@@ -544,10 +573,16 @@ function spawnBgHeart() {
   h.style.setProperty('--o', 0.3 + Math.random() * 0.35);
   h.style.setProperty('--sway', `${(Math.random() - 0.5) * 100}px`);
   h.style.setProperty('--anim', BG_ANIMS[Math.floor(Math.random() * BG_ANIMS.length)]);
-  h.style.animationDuration = `${7 + Math.random() * 5}s`;
+  const duration = 7 + Math.random() * 5;
+  h.style.animationDuration = `${duration}s`;
+  // midAir: seed a few on page load already partway through their rise
+  // (negative delay), so it doesn't look like an empty sky for the first
+  // few seconds — the visitor might tap the envelope right away.
+  if (midAir) h.style.animationDelay = `-${Math.random() * duration}s`;
   document.body.appendChild(h);
   h.addEventListener('animationend', () => h.remove());
 }
+for (let i = 0; i < 4; i++) spawnBgHeart(true); // pre-seed some mid-flight on load
 setInterval(spawnBgHeart, 900);
 
 // --- dev bypass: add ?dev to the URL to show a "skip step" button for testing ---
@@ -580,18 +615,25 @@ document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
-  // The cover plays its opening first: flap lifts, then the letter slides up
-  // out of the envelope. Only after that does the step change. Timings live in
-  // the .cover.opening rules in style.css — keep the 1500ms in sync with them.
+  // The cover plays its opening first: flap fades in (0.5s), then the letter
+  // slides up out of the envelope (2.4s), then holds a beat before the step
+  // change. Keep this in sync with .env-letter's transition in style.css.
   if (action === 'open' && !btn.classList.contains('opening')) {
     btn.classList.add('opening');
-    setTimeout(() => goToStep(2), 1500);
+    setTimeout(() => goToStep(2), 3900);
   }
   if (action === 'next') goToStep(state.step + 1);
   if (action === 'reveal-photos') revealNextPhoto();
   if (action === 'open-photo-modal') openPhotoModal();
   if (action === 'answer-question') answerQuestion(btn);
   if (action === 'chat-reply') chatReply(btn);
+  // one crane per tap of the jar, in order, instead of all flying out at once
+  if (action === 'open-jar') {
+    btn.classList.add('open');
+    const next = btn.querySelector('.wj-crane:not(.popped)');
+    if (next) next.classList.add('popped');
+  }
+  if (action === 'reveal-wish') btn.classList.add('revealed');
 });
 
 // --- init ---
@@ -603,6 +645,10 @@ function preloadDigits() {
 }
 preloadDigits();
 initMissionPin();
-// ?page=N jumps straight to step N (testing/sharing a specific step), clamped to valid range
-const pageParam = Number(new URLSearchParams(location.search).get('page'));
-goToStep(pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : 1);
+// ?page=N jumps straight to step N (testing/sharing a specific step), clamped to valid range.
+// ?page=7-1 is the one exception: same step 7, but shows the old collage
+// layout (see .spread-alt in style.css) instead of the scrolling timeline.
+const pageParamRaw = new URLSearchParams(location.search).get('page');
+if (pageParamRaw === '7-1') document.getElementById('spread').classList.add('spread-alt');
+const pageParam = Number(pageParamRaw);
+goToStep(pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : (pageParamRaw === '7-1' ? 7 : 1));
