@@ -273,18 +273,25 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .env-note-lines {
   position: absolute;
-  inset: 14px 16px 14px;
-  /* ruled lines the whole way down the sheet — a written-on page, not a header */
-  background: repeating-linear-gradient(180deg, rgba(122,32,37,0.20) 0 2px, transparent 2px 13px);
+  inset: 10px 14px 10px;
+  /* ruled lines — lighter so the centered text sits cleanly on top */
+  background: repeating-linear-gradient(180deg, rgba(122,32,37,0.12) 0 1.5px, transparent 1.5px 13px);
   border-radius: 2px;
 }
-/* the "what's up" line, written on the page itself instead of floating below */
+/* handwritten text centered on the note paper */
 .env-note-text {
   position: absolute;
-  inset: 14px 16px auto;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px 14px;
   color: #8a5560;
-  font-size: 1.3rem;
-  line-height: 1.4;
+  font-family: 'Caveat', 'Sriracha', cursive;
+  font-size: clamp(0.78rem, 3.2vw, 1rem);
+  line-height: 1.55;
+  letter-spacing: 0.01em;
 }
 .env-body {
   position: absolute;
