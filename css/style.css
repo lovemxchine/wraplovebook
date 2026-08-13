@@ -230,56 +230,60 @@ body.dev-mode .progress-dots { display: flex; }
 
 .card.center { text-align: center; }
 
-/* Step 1 cover, 2026-08-10 redesign: the page1-element.webp note art is gone.
-   The cover is now a CSS envelope — no image asset, so it scales cleanly and
-   its flap can animate. Whole .cover is the "open" trigger. */
+/* Step 1 cover — redesigned to match reference: envelope floats on grid paper,
+   watercolor flowers flanking, CSS stars & hearts scattered around.
+   No card background — everything sits directly on the page texture. */
 .cover {
   position: relative;
-  z-index: 1; /* the floating .bg-heart stickers sit at 0 */
+  width: 100%; height: 100%; /* full step area so absolute decos reach corners */
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   cursor: pointer;
   animation: cover-float 5s ease-in-out infinite;
-  padding: 28px 20px 22px;
-}
-/* paper card behind the whole cover — envelope sits on parchment, not floating in space */
-.cover::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: #fdf8ef;
-  border-radius: 18px 14px 20px 16px;
-  border: 1px solid rgba(122,32,37,0.10);
-  box-shadow: 0 12px 32px rgba(122,32,37,0.14), 0 3px 8px rgba(0,0,0,0.06);
-  transform: rotate(0.8deg);
-  z-index: -2;
-}
-/* washi tape strip holding the card to the page */
-.cover::after {
-  content: '';
-  position: absolute;
-  top: -13px; left: 50%;
-  transform: translateX(-50%) rotate(-2.5deg);
-  width: 92px; height: 24px;
-  background: repeating-linear-gradient(135deg, #f3c9cf, #f3c9cf 5px, #fbe6e9 5px, #fbe6e9 10px);
-  opacity: 0.88;
-  border-radius: 3px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-  z-index: -1;
 }
 @keyframes cover-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
 }
+/* grid paper overlay — only on step 1, adds the notebook-paper feel from the reference */
+.step[data-step="1"] {
+  background-image:
+    linear-gradient(rgba(170,195,225,0.20) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(170,195,225,0.20) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
 .cover-title {
-  font-size: clamp(2.5rem, 10vw, 3.2rem);
-  font-family: 'Charmonman', 'Sriracha', cursive; /* cute Thai handwritten */
-  margin: 0 0 2px;
+  font-size: clamp(2.4rem, 10vw, 3rem);
+  font-family: 'Charmonman', 'Sriracha', cursive;
+  margin: 0 0 4px;
   letter-spacing: 0.04em;
 }
 .cover-hint { margin: 0; display: flex; justify-content: center; }
+
+/* ── scattered CSS stars & hearts ── */
+.cv-deco {
+  position: absolute;
+  pointer-events: none;
+  font-style: normal;
+  animation: cv-twinkle 3s ease-in-out infinite;
+}
+@keyframes cv-twinkle {
+  0%, 100% { opacity: 0.5; transform: scale(0.9) rotate(var(--rot,0deg)); }
+  50%       { opacity: 1;   transform: scale(1.15) rotate(calc(var(--rot,0deg) + 20deg)); }
+}
+/* gold/yellow filled stars */
+.cv-star-g1 { font-size: 24px; color: #d4a92a; top: 9%; left: 42%; --rot: 10deg; animation-delay: 0s; }
+.cv-star-g2 { font-size: 18px; color: #d4a92a; top: 18%; right: 6%;  --rot: -8deg; animation-delay: 0.7s; }
+.cv-star-g3 { font-size: 20px; color: #d4a92a; bottom: 22%; left: 6%; --rot: 5deg;  animation-delay: 1.2s; }
+/* blue outline stars (✦ feels more open/airy) */
+.cv-star-b1 { font-size: 18px; color: #8faec8; top: 44%; right: 5%;  --rot: -12deg; animation-delay: 0.4s; }
+.cv-star-b2 { font-size: 14px; color: #8faec8; bottom: 12%; left: 12%; --rot: 8deg; animation-delay: 1.6s; }
+/* small dusty-pink heart */
+.cv-heart-1 { font-size: 18px; color: #c69aa0; top: 50%; right: 7%;  --rot: -6deg; animation-delay: 0.9s; }
 
 .envelope {
   position: relative;
@@ -327,16 +331,15 @@ body.dev-mode .progress-dots { display: flex; }
 .env-body {
   position: absolute;
   inset: 0;
-  /* uneven radii = a cut-by-hand edge instead of a UI card */
   z-index: 1;
   border-radius: 10px 8px 12px 7px;
-  background: #fdf6e8;
-  border: 1px solid rgba(122, 32, 37, 0.16);
-  /* the two seam lines of a real envelope back, plus a soft paper grain */
+  background: #f4dede; /* soft pink body matching reference */
+  border: 1px solid rgba(200,140,140,0.25);
+  /* X-fold seam lines (4 triangles) — slightly pink-tinted */
   background-image:
-    linear-gradient(to top right, rgba(122,32,37,0.07) 49.6%, transparent 50%),
-    linear-gradient(to top left, rgba(122,32,37,0.07) 49.6%, transparent 50%),
-    radial-gradient(circle at 22% 28%, rgba(255,255,255,0.9), transparent 60%);
+    linear-gradient(to top right, rgba(180,100,100,0.09) 49.6%, transparent 50%),
+    linear-gradient(to top left,  rgba(180,100,100,0.09) 49.6%, transparent 50%),
+    radial-gradient(circle at 22% 28%, rgba(255,255,255,0.7), transparent 55%);
 }
 /* interior mask: sits above the rising note (z-index 3 > 2) so the note is
    hidden while still inside the envelope. Only the part that has cleared the
@@ -351,14 +354,11 @@ body.dev-mode .progress-dots { display: flex; }
   inset: 1px;
   z-index: 3;
   pointer-events: none;
-  background: #fdf6e8;
+  background: #f4dede; /* match env-body soft pink */
   background-image:
-    linear-gradient(to top right, rgba(122,32,37,0.07) 49.6%, transparent 50%),
-    linear-gradient(to top left,  rgba(122,32,37,0.07) 49.6%, transparent 50%),
-    radial-gradient(circle at 22% 28%, rgba(255,255,255,0.9), transparent 60%);
-  /* V-notch at top matching the flap triangle (apex at 50%, 62% of height):
-     covers left/right sides + bottom, leaves the triangular flap opening clear
-     so the note is visible through it when the flap lifts */
+    linear-gradient(to top right, rgba(180,100,100,0.09) 49.6%, transparent 50%),
+    linear-gradient(to top left,  rgba(180,100,100,0.09) 49.6%, transparent 50%),
+    radial-gradient(circle at 22% 28%, rgba(255,255,255,0.7), transparent 55%);
   clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%);
 }
 
@@ -378,12 +378,12 @@ body.dev-mode .progress-dots { display: flex; }
   -webkit-mask: radial-gradient(circle at 0 0, transparent 0 3px, #000 3.5px) 0 0 / 8px 8px;
   mask: radial-gradient(circle at 0 0, transparent 0 3px, #000 3.5px) 0 0 / 8px 8px;
 }
-/* the flap: a triangle via clip-path, hinged at the top so it can lift */
+/* the flap: cream/yellow triangle — contrasts with the pink body like the reference */
 .env-flap {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 62%;
-  background: linear-gradient(#faf0da, #f3e6c9);
+  background: linear-gradient(#f5f0d8, #e8ddb8);
   z-index: 4; /* above the rising note until the note has cleared it, see note-rise */
   border-radius: 10px 8px 0 0;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
@@ -441,12 +441,12 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   opacity: 0.95;
   pointer-events: none;
-  z-index: 5; /* above envelope so stickers feel like they're on top */
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.13));
+  z-index: 5;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
 }
-.cover-deco-1 { width: 72px; top: -20px; left: -20px; transform: rotate(-16deg); }
-.cover-deco-2 { width: 74px; bottom: -14px; right: -18px; transform: rotate(13deg); }
-.cover-deco-3 { width: 58px; top: -14px; right: -12px; transform: rotate(10deg); }
+/* flowers flanking the envelope — positioned in the middle-left/right area */
+.cover-deco-1 { width: 100px; top: 30%; left: 0;  transform: rotate(-5deg); }
+.cover-deco-2 { width: 100px; bottom: 20%; right: 0; transform: rotate(5deg); }
 .click-letters {
   display: inline-flex;
   align-items: center;
