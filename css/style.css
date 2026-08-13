@@ -334,16 +334,17 @@ body.dev-mode .progress-dots { display: flex; }
    the note stays tucked under the flap (z-index below it) while it's still
    low, and only pops above the flap once it's mostly emerged. */
 .cover.opening { animation: none; } /* stop the idle float so the letter rises straight */
-.cover.opening .env-flap { transform: rotateX(165deg); }
+.cover.opening .env-flap {
+  transform: rotateX(165deg);
+  z-index: 1; /* drop to same as env-body the moment opening starts — note (z-index 2 in keyframe) rises cleanly above it, no sudden z-index jump mid-animation */
+}
 .cover.opening .env-seal { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(0.7); }
 .cover.opening .env-note {
-  animation: note-rise 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) 0.35s forwards; /* delay waits for the flap */
+  animation: note-rise 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) 0.35s forwards; /* delay waits for the flap to begin rotating */
 }
 @keyframes note-rise {
-  0%   { transform: translateY(0) rotate(1.5deg) scale(1); z-index: 2; }
-  55%  { z-index: 2; }
-  56%  { z-index: 5; }
-  100% { transform: translateY(-78%) rotate(1.5deg) scale(1.04); z-index: 5; }
+  from { transform: translateY(0)   rotate(1.5deg) scale(1);    z-index: 2; }
+  to   { transform: translateY(-78%) rotate(1.5deg) scale(1.04); z-index: 2; }
 }
 .cover.opening .cover-hint { opacity: 0; transition: opacity 0.3s ease; }
 .env-seal {
