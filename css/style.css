@@ -258,7 +258,7 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .cover-title {
   font-size: clamp(2.4rem, 10vw, 3rem);
-  font-family: 'Charmonman', 'Sriracha', cursive;
+  font-family: 'Itim', 'Mali', cursive;
   margin: 0 0 4px;
   letter-spacing: 0.04em;
 }
