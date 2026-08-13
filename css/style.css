@@ -248,7 +248,6 @@ body.dev-mode .progress-dots { display: flex; }
   50% { transform: translateY(-7px); }
 }
 .cover-title { font-size: clamp(2rem, 9vw, 2.8rem); margin: 0; }
-.cover-sub { margin: 0; color: #8a5560; font-size: 1.5rem; transform: rotate(-1.5deg); }
 .cover-hint { margin: 0; display: flex; justify-content: center; }
 
 .envelope {
@@ -270,7 +269,6 @@ body.dev-mode .progress-dots { display: flex; }
   transform: rotate(1.5deg);
   box-shadow: 0 2px 6px rgba(122,32,37,0.14);
   z-index: 0; /* tucked behind the envelope body until the opening plays */
-  transition: transform 0.9s cubic-bezier(0.22, 0.9, 0.3, 1);
 }
 .env-note-lines {
   position: absolute;
@@ -278,6 +276,14 @@ body.dev-mode .progress-dots { display: flex; }
   /* ruled lines the whole way down the sheet — a written-on page, not a header */
   background: repeating-linear-gradient(180deg, rgba(122,32,37,0.20) 0 2px, transparent 2px 13px);
   border-radius: 2px;
+}
+/* the "what's up" line, written on the page itself instead of floating below */
+.env-note-text {
+  position: absolute;
+  inset: 14px 16px auto;
+  color: #8a5560;
+  font-size: 1.3rem;
+  line-height: 1.4;
 }
 .env-body {
   position: absolute;
@@ -314,7 +320,7 @@ body.dev-mode .progress-dots { display: flex; }
   top: 0; left: 0; right: 0;
   height: 62%;
   background: linear-gradient(#faf0da, #f3e6c9);
-  z-index: 2;
+  z-index: 4; /* above the rising note until the note has cleared it, see note-rise */
   border-radius: 10px 8px 0 0;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top center;
@@ -323,14 +329,21 @@ body.dev-mode .progress-dots { display: flex; }
 .cover:active .env-flap { transform: rotateX(20deg); } /* a nudge on press, the full lift is .opening */
 
 /* The opening: flap first, then the letter rises out of the envelope, and only
-   then does app.js change the step (1500ms — keep the two in sync). */
+   then does app.js change the step (1500ms — keep the two in sync). z-index
+   isn't animatable, so note-rise steps it partway through the keyframes —
+   the note stays tucked under the flap (z-index below it) while it's still
+   low, and only pops above the flap once it's mostly emerged. */
 .cover.opening { animation: none; } /* stop the idle float so the letter rises straight */
 .cover.opening .env-flap { transform: rotateX(165deg); }
 .cover.opening .env-seal { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(0.7); }
 .cover.opening .env-note {
-  z-index: 3; /* now in front of the envelope body */
-  transform: translateY(-78%) rotate(1.5deg) scale(1.04);
-  transition-delay: 0.35s; /* waits for the flap */
+  animation: note-rise 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) 0.35s forwards; /* delay waits for the flap */
+}
+@keyframes note-rise {
+  0%   { transform: translateY(0) rotate(1.5deg) scale(1); z-index: 2; }
+  55%  { z-index: 2; }
+  56%  { z-index: 5; }
+  100% { transform: translateY(-78%) rotate(1.5deg) scale(1.04); z-index: 5; }
 }
 .cover.opening .cover-hint { opacity: 0; transition: opacity 0.3s ease; }
 .env-seal {
@@ -343,7 +356,7 @@ body.dev-mode .progress-dots { display: flex; }
   place-items: center;
   border-radius: 47% 53% 44% 56% / 52% 45% 55% 48%;
   background: radial-gradient(circle at 34% 28%, #e0737c, #a3252b 70%);
-  z-index: 3;
+  z-index: 6; /* always above the note, closed or mid-rise */
   color: #ffe3e6;
   font-size: 1.1rem;
   transition: opacity 0.35s ease, transform 0.35s ease;
