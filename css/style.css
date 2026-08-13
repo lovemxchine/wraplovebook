@@ -261,6 +261,9 @@ body.dev-mode .progress-dots { display: flex; }
   font-family: 'Itim', 'Mali', cursive;
   margin: 0 0 4px;
   letter-spacing: 0.04em;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
 }
 .cover-hint { margin: 0; display: flex; justify-content: center; }
 
