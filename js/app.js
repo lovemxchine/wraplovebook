@@ -575,7 +575,13 @@ document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
-  if (action === 'open') goToStep(2); // music already started on the pointerdown above
+  // The cover plays its opening first: flap lifts, then the letter slides up
+  // out of the envelope. Only after that does the step change. Timings live in
+  // the .cover.opening rules in style.css — keep the 1500ms in sync with them.
+  if (action === 'open' && !btn.classList.contains('opening')) {
+    btn.classList.add('opening');
+    setTimeout(() => goToStep(2), 1500);
+  }
   if (action === 'next') goToStep(state.step + 1);
   if (action === 'reveal-photos') revealNextPhoto();
   if (action === 'open-photo-modal') openPhotoModal();

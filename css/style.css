@@ -267,6 +267,8 @@ body.dev-mode .progress-dots { display: flex; }
   border-radius: 3px 3px 0 0;
   transform: rotate(1.5deg);
   box-shadow: 0 2px 6px rgba(122,32,37,0.14);
+  z-index: 0; /* tucked behind the envelope body until the opening plays */
+  transition: transform 0.9s cubic-bezier(0.22, 0.9, 0.3, 1);
 }
 .env-note-lines {
   position: absolute;
@@ -280,6 +282,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   inset: 0;
   /* uneven radii = a cut-by-hand edge instead of a UI card */
+  z-index: 1;
   border-radius: 10px 8px 12px 7px;
   background: #fdf6e8;
   border: 1px solid rgba(122, 32, 37, 0.16);
@@ -310,12 +313,25 @@ body.dev-mode .progress-dots { display: flex; }
   top: 0; left: 0; right: 0;
   height: 62%;
   background: linear-gradient(#faf0da, #f3e6c9);
+  z-index: 2;
   border-radius: 10px 8px 0 0;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top center;
-  transition: transform 0.45s ease;
+  transition: transform 0.5s ease;
 }
-.cover:active .env-flap { transform: rotateX(155deg); }
+.cover:active .env-flap { transform: rotateX(20deg); } /* a nudge on press, the full lift is .opening */
+
+/* The opening: flap first, then the letter rises out of the envelope, and only
+   then does app.js change the step (1500ms — keep the two in sync). */
+.cover.opening { animation: none; } /* stop the idle float so the letter rises straight */
+.cover.opening .env-flap { transform: rotateX(165deg); }
+.cover.opening .env-seal { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(0.7); }
+.cover.opening .env-note {
+  z-index: 3; /* now in front of the envelope body */
+  transform: translateY(-58%) rotate(1.5deg) scale(1.04);
+  transition-delay: 0.35s; /* waits for the flap */
+}
+.cover.opening .cover-hint { opacity: 0; transition: opacity 0.3s ease; }
 .env-seal {
   position: absolute;
   top: 54%; left: 50%;
@@ -326,8 +342,10 @@ body.dev-mode .progress-dots { display: flex; }
   place-items: center;
   border-radius: 47% 53% 44% 56% / 52% 45% 55% 48%;
   background: radial-gradient(circle at 34% 28%, #e0737c, #a3252b 70%);
+  z-index: 3;
   color: #ffe3e6;
   font-size: 1.1rem;
+  transition: opacity 0.35s ease, transform 0.35s ease;
   box-shadow: 0 3px 7px rgba(122,32,37,0.35), inset 0 -2px 4px rgba(0,0,0,0.18);
 }
 /* a strip of washi tape holding the envelope to the page */
