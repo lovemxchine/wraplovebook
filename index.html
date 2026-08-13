@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=57" />
+<link rel="stylesheet" href="css/style.css?v=58" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -30,11 +30,16 @@
       <img class="cover-deco cover-deco-2" src="assets/stickers/flower/2.webp" alt="" />
       <p class="script script-hero cover-title">ถึงเธอ <span class="icon-heart"></span></p>
       <div class="envelope">
+        <!-- the letter peeking out from behind, so it reads as a real object
+             with something inside rather than a flat rectangle -->
+        <span class="env-note"><span class="env-note-lines"></span></span>
         <span class="env-body"></span>
+        <span class="env-stamp"><span class="icon-heart"></span></span>
         <span class="env-flap"></span>
         <span class="env-seal"><span class="icon-heart"></span></span>
+        <span class="env-tape"></span>
       </div>
-      <p class="cover-sub">วันนี้มีอะไรจะบอกด้วยหล่ะ</p>
+      <p class="cover-sub script">วันนี้มีอะไรจะบอกด้วยหล่ะ</p>
       <p class="hint cover-hint">
         <span class="click-letters">
           <img src="assets/alphabet/C.webp" alt="C" />
