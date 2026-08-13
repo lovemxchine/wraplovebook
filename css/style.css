@@ -260,15 +260,16 @@ body.dev-mode .progress-dots { display: flex; }
 /* the paper inside, poking out above the envelope */
 .env-note {
   position: absolute;
-  /* tucked fully inside the envelope — z-index 0 keeps it behind .env-body,
-     so nothing shows until .opening slides it up */
+  /* z-index 2: above env-body (1) so it shows in the open space, but below
+     env-pocket/mask (3) so the portion still inside the envelope is hidden —
+     the "sliding out" effect comes from the pocket clipping its lower half */
   top: 6%; left: 8%; right: 8%;
   height: 86%;
   background: #fffdf6;
   border-radius: 3px 3px 0 0;
   transform: rotate(1.5deg);
   box-shadow: 0 2px 6px rgba(122,32,37,0.14);
-  z-index: 0; /* tucked behind the envelope body until the opening plays */
+  z-index: 2;
 }
 .env-note-lines {
   position: absolute;
@@ -302,21 +303,22 @@ body.dev-mode .progress-dots { display: flex; }
 /* interior mask: sits above the rising note (z-index 3 > 2) so the note is
    hidden while still inside the envelope. Only the part that has cleared the
    envelope's top edge is visible — this gives the "paper sliding out" look. */
+/* env-pocket: the FRONT face of the envelope, always visible at z-index 3.
+   The rising note (z-index 2) is hidden while still below this pocket's top
+   edge, and visible once it has cleared it — same pattern as the reference.
+   Carries the same seam lines as env-body so it looks like one continuous
+   envelope face (not a separate layer). */
 .env-interior-mask {
   position: absolute;
   inset: 1px;
   z-index: 3;
-  background: #fdf6e8;
   border-radius: 9px 7px 11px 6px;
   pointer-events: none;
-  opacity: 0; /* invisible in closed state — seam lines on env-body still show */
-}
-.cover.opening .env-interior-mask {
-  opacity: 1;
-  /* ruled lines so the interior looks like letter paper, not a blank box */
-  background:
-    repeating-linear-gradient(180deg, rgba(122,32,37,0.14) 0 1.5px, transparent 1.5px 13px),
-    #fffdf6;
+  background: #fdf6e8;
+  background-image:
+    linear-gradient(to top right, rgba(122,32,37,0.07) 49.6%, transparent 50%),
+    linear-gradient(to top left,  rgba(122,32,37,0.07) 49.6%, transparent 50%),
+    radial-gradient(circle at 22% 28%, rgba(255,255,255,0.9), transparent 60%);
 }
 
 /* postage stamp, perforated with a dotted mask */
@@ -364,8 +366,8 @@ body.dev-mode .progress-dots { display: flex; }
   animation: note-rise 0.9s cubic-bezier(0.22, 0.9, 0.3, 1) 0.35s forwards; /* delay waits for the flap to begin rotating */
 }
 @keyframes note-rise {
-  from { transform: translateY(0)   rotate(1.5deg) scale(1);    z-index: 2; }
-  to   { transform: translateY(-78%) rotate(1.5deg) scale(1.04); z-index: 2; }
+  from { transform: translateY(0)    rotate(1.5deg) scale(1); }
+  to   { transform: translateY(-78%) rotate(1.5deg) scale(1.04); }
 }
 .cover.opening .cover-hint { opacity: 0; transition: opacity 0.3s ease; }
 .env-seal {
