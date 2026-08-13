@@ -121,7 +121,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/paper-2.webp') center / cover no-repeat;
+  background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url('../assets/bg/image/paper-2.webp') center / cover no-repeat;
   pointer-events: none;
 }
 
@@ -1347,7 +1347,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   to { left: 130%; }
 }
 
-/* floating background decoration — img now (assets/stickers/effect-background/), was a CSS-drawn icon */
+/* floating background decoration — img now (assets/bg/effect-background/), was a CSS-drawn icon */
 .bg-heart {
   position: fixed;
   bottom: -10%;

@@ -517,7 +517,7 @@ function renderEnding() {
 
 // --- background floating shapes (decorative, all steps) ---
 // 2026-07-21: swapped the CSS-drawn heart/star icons for the hand-drawn
-// stickers in assets/stickers/effect-background/. Weighted so the pink ones
+// stickers in assets/bg/effect-background/. Weighted so the pink ones
 // (1, 2, 5) show up less — clashes with the kraft-paper background otherwise.
 const BG_STICKERS = [
   { file: 'sticker-5.webp', weight: 1 }, 
@@ -532,7 +532,7 @@ const BG_STICKER_POOL = BG_STICKERS.flatMap(s => Array(s.weight).fill(s.file));
 const BG_ANIMS = ['floatUp', 'floatDrift', 'floatWobble'];
 function spawnBgHeart() {
   const h = document.createElement('img');
-  h.src = `assets/stickers/effect-background/${BG_STICKER_POOL[Math.floor(Math.random() * BG_STICKER_POOL.length)]}`;
+  h.src = `assets/bg/effect-background/${BG_STICKER_POOL[Math.floor(Math.random() * BG_STICKER_POOL.length)]}`;
   h.className = 'bg-heart';
   h.style.left = `${Math.random() * 100}%`;
   h.style.setProperty('--size', `${1.1 + Math.random() * 1.6}rem`);
