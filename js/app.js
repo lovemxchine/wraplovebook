@@ -30,7 +30,12 @@ function onEnterStep(n) {
   if (n === 5) renderGallery();
   if (n === 6) startQuestions();
   if (n === 7) renderSpread();
-  if (n === 8) { renderLetter(); renderEnding(); }
+  if (n === 8) {
+    renderLetter(); renderEnding();
+    // stamp the date on the letter in Thai locale — feels like a real letter header
+    const el = document.getElementById('sb-letter-date');
+    if (el) el.textContent = new Date().toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 

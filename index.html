@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=63" />
+<link rel="stylesheet" href="css/style.css?v=64" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -188,14 +188,27 @@
       <img class="sb-deco sb-deco-string" src="assets/stickers/couple-heart-string.webp" alt="" />
       <img class="sb-deco sb-deco-flower1" src="assets/stickers/flower/1.webp" alt="" />
       <img class="sb-deco sb-deco-flower2" src="assets/stickers/flower/2.webp" alt="" />
+      <img class="sb-deco sb-deco-stk1" src="assets/bg/sticker-3.webp" alt="" />
+      <img class="sb-deco sb-deco-stk2" src="assets/bg/sticker-6.webp" alt="" />
+
+      <!-- postage stamp, drops in from above when letter opens -->
+      <div class="sb-stamp" aria-hidden="true">
+        <span class="sb-stamp-icon">✉️</span>
+        <span class="sb-stamp-label">ส่งด้วย<br>รัก</span>
+      </div>
 
       <!-- the note itself: torn-paper page, taped down, handwritten -->
       <div class="sb-paper">
         <span class="sb-tape sb-tape-tl"></span>
         <span class="sb-tape sb-tape-br"></span>
         <span class="sb-tape sb-tape-top"></span>
+        <span class="sb-tape sb-tape-left"></span>
+        <!-- date in top-right like a real letter -->
+        <span class="sb-letter-date" id="sb-letter-date"></span>
         <p class="sb-eyebrow">คำในใจที่อยากบอก</p>
         <div class="letter" id="letter-body"></div>
+        <!-- wax seal stamps in after the paper unfolds -->
+        <div class="sb-wax-seal" aria-hidden="true">♥</div>
       </div>
 
       <!-- closing line on its own little card, tucked under the page corner.
@@ -212,6 +225,6 @@
 
 </div>
 
-<script src="js/data.js?v=15"></script><script src="js/app.js?v=17"></script>
+<script src="js/data.js?v=15"></script><script src="js/app.js?v=18"></script>
 </body>
 </html>
