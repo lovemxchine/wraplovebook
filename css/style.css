@@ -239,19 +239,45 @@ body.dev-mode .progress-dots { display: flex; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
   cursor: pointer;
   animation: cover-float 5s ease-in-out infinite;
+  padding: 28px 20px 22px;
+}
+/* paper card behind the whole cover — envelope sits on parchment, not floating in space */
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fdf8ef;
+  border-radius: 18px 14px 20px 16px;
+  border: 1px solid rgba(122,32,37,0.10);
+  box-shadow: 0 12px 32px rgba(122,32,37,0.14), 0 3px 8px rgba(0,0,0,0.06);
+  transform: rotate(0.8deg);
+  z-index: -2;
+}
+/* washi tape strip holding the card to the page */
+.cover::after {
+  content: '';
+  position: absolute;
+  top: -13px; left: 50%;
+  transform: translateX(-50%) rotate(-2.5deg);
+  width: 92px; height: 24px;
+  background: repeating-linear-gradient(135deg, #f3c9cf, #f3c9cf 5px, #fbe6e9 5px, #fbe6e9 10px);
+  opacity: 0.88;
+  border-radius: 3px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  z-index: -1;
 }
 @keyframes cover-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
 }
 .cover-title {
-  font-size: clamp(2.2rem, 10vw, 3rem);
+  font-size: clamp(2.5rem, 10vw, 3.2rem);
   font-family: 'Charmonman', 'Sriracha', cursive; /* cute Thai handwritten */
-  margin: 0;
-  letter-spacing: 0.03em;
+  margin: 0 0 2px;
+  letter-spacing: 0.04em;
 }
 .cover-hint { margin: 0; display: flex; justify-content: center; }
 
@@ -413,21 +439,21 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .cover-deco {
   position: absolute;
-  width: 90px;
-  opacity: 0.9;
+  opacity: 0.95;
   pointer-events: none;
-  z-index: -1; /* tucked behind the envelope */
+  z-index: 5; /* above envelope so stickers feel like they're on top */
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.13));
 }
-/* kept inside the frame — #app clips anything hanging past its edge */
-.cover-deco-1 { top: 8%; left: 2%; transform: rotate(-14deg); }
-.cover-deco-2 { bottom: 6%; right: 2%; transform: rotate(12deg); }
+.cover-deco-1 { width: 72px; top: -20px; left: -20px; transform: rotate(-16deg); }
+.cover-deco-2 { width: 74px; bottom: -14px; right: -18px; transform: rotate(13deg); }
+.cover-deco-3 { width: 58px; top: -14px; right: -12px; transform: rotate(10deg); }
 .click-letters {
   display: inline-flex;
   align-items: center;
   animation: click-shake 1.6s ease-in-out infinite;
 }
 .click-letters img {
-  height: 26px;
+  height: 30px;
   width: auto;
 }
 @keyframes click-shake {
