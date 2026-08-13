@@ -307,9 +307,11 @@ body.dev-mode .progress-dots { display: flex; }
   inset: 1px;
   z-index: 3;
   background: #fdf6e8;
-  border-radius: 9px 7px 11px 6px; /* matches env-body's uneven radii */
+  border-radius: 9px 7px 11px 6px;
   pointer-events: none;
+  opacity: 0; /* invisible in closed state — seam lines on env-body still show */
 }
+.cover.opening .env-interior-mask { opacity: 1; } /* activates the moment opening starts */
 
 /* postage stamp, perforated with a dotted mask */
 .env-stamp {
