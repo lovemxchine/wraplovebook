@@ -261,8 +261,10 @@ body.dev-mode .progress-dots { display: flex; }
 /* the paper inside, poking out above the envelope */
 .env-note {
   position: absolute;
-  top: -18%; left: 8%; right: 8%;
-  height: 70%;
+  /* tucked fully inside the envelope — z-index 0 keeps it behind .env-body,
+     so nothing shows until .opening slides it up */
+  top: 6%; left: 8%; right: 8%;
+  height: 86%;
   background: #fffdf6;
   border-radius: 3px 3px 0 0;
   transform: rotate(1.5deg);
@@ -272,10 +274,9 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .env-note-lines {
   position: absolute;
-  inset: 12px 14px auto;
-  height: 34px;
-  /* three ruled lines of "writing" — enough to suggest a letter, not fake text */
-  background: repeating-linear-gradient(180deg, rgba(122,32,37,0.22) 0 2px, transparent 2px 12px);
+  inset: 14px 16px 14px;
+  /* ruled lines the whole way down the sheet — a written-on page, not a header */
+  background: repeating-linear-gradient(180deg, rgba(122,32,37,0.20) 0 2px, transparent 2px 13px);
   border-radius: 2px;
 }
 .env-body {
@@ -328,7 +329,7 @@ body.dev-mode .progress-dots { display: flex; }
 .cover.opening .env-seal { opacity: 0; transform: translate(-50%, -50%) rotate(-8deg) scale(0.7); }
 .cover.opening .env-note {
   z-index: 3; /* now in front of the envelope body */
-  transform: translateY(-58%) rotate(1.5deg) scale(1.04);
+  transform: translateY(-78%) rotate(1.5deg) scale(1.04);
   transition-delay: 0.35s; /* waits for the flap */
 }
 .cover.opening .cover-hint { opacity: 0; transition: opacity 0.3s ease; }
