@@ -508,6 +508,22 @@ body.dev-mode .progress-dots { display: flex; }
   max-width: 420px;
   height: auto;
   pointer-events: none;
+  filter: drop-shadow(0 8px 16px rgba(122,32,37,0.18));
+}
+/* slide the whole pin sprite in from below on step enter */
+.step[data-step="2"].active .pin-inputs {
+  animation: pin-slide-in 0.6s cubic-bezier(0.22, 0.9, 0.3, 1) 0.1s both;
+}
+.step[data-step="2"].active .step2-unlock-img {
+  animation: unlock-drop 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) 0.35s both;
+}
+@keyframes pin-slide-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(24px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes unlock-drop {
+  from { opacity: 0; transform: translate(-50%, -120%); }
+  to   { opacity: 1; transform: translate(-50%, -100%); }
 }
 /* tip text, positioned below the whole pin-slot sprite (not just slot 1) so
    it never overlaps the sprite's own bottom decorations (button/tag art) —
