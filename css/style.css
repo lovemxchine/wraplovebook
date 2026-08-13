@@ -249,13 +249,6 @@ body.dev-mode .progress-dots { display: flex; }
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-7px); }
 }
-/* grid paper overlay — only on step 1, adds the notebook-paper feel from the reference */
-.step[data-step="1"] {
-  background-image:
-    linear-gradient(rgba(170,195,225,0.20) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(170,195,225,0.20) 1px, transparent 1px);
-  background-size: 26px 26px;
-}
 .cover-title {
   font-size: clamp(2.4rem, 10vw, 3rem);
   font-family: 'Itim', 'Mali', cursive;
