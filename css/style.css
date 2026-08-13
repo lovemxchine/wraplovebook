@@ -312,13 +312,16 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   inset: 1px;
   z-index: 3;
-  border-radius: 9px 7px 11px 6px;
   pointer-events: none;
   background: #fdf6e8;
   background-image:
     linear-gradient(to top right, rgba(122,32,37,0.07) 49.6%, transparent 50%),
     linear-gradient(to top left,  rgba(122,32,37,0.07) 49.6%, transparent 50%),
     radial-gradient(circle at 22% 28%, rgba(255,255,255,0.9), transparent 60%);
+  /* V-notch at top matching the flap triangle (apex at 50%, 62% of height):
+     covers left/right sides + bottom, leaves the triangular flap opening clear
+     so the note is visible through it when the flap lifts */
+  clip-path: polygon(0 0, 50% 62%, 100% 0, 100% 100%, 0 100%);
 }
 
 /* postage stamp, perforated with a dotted mask */
