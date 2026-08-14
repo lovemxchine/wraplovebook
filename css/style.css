@@ -1757,7 +1757,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   margin-left: auto; /* belt and braces — pushes the bubble right even where align-self is overridden */
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid var(--chat-line);
-  color: #e08fa3;
+  color: #c98a97;
   border-bottom-right-radius: 7px;
 }
 
