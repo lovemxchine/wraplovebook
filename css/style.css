@@ -276,10 +276,11 @@ body.dev-mode .progress-dots { display: flex; }
 .cover-hint {
   position: absolute;
   /* .envelope's box is taller than the closed envelope graphic (room for the
-     open flap standing up), so the visible envelope's own center sits lower
-     than the container's 50% — 72% is where the closed graphic centers */
-  left: 50%; top: 72%;
-  transform: translate(-50%, -50%);
+     open flap standing up) — the graphic's own top edge sits at ~44% of the
+     container, so anchoring the hint's bottom there (with a small gap) puts
+     it just above the envelope instead of floating mid-container. */
+  left: 50%; top: 40%;
+  transform: translate(-50%, -100%);
   margin: 0;
   z-index: 6;
   display: flex;
