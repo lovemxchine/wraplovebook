@@ -1706,7 +1706,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .step[data-step="3"] {
   --chat-ink: #5b3a4a;
   --chat-dim: #b98aa0;
-  --chat-accent: #ff8fb8;
+  --chat-accent: #ffb3d1;
   --chat-line: rgba(255, 111, 160, 0.25);
 }
 
@@ -1748,7 +1748,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   align-self: flex-start;
   background: var(--chat-accent);
   border: 1px solid var(--chat-accent);
-  color: #fff;
+  color: var(--chat-ink);
   border-bottom-left-radius: 7px;
 }
 /* the recipient — right, the accent colour, because these are her words */
