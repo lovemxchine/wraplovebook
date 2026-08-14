@@ -691,7 +691,7 @@ body.dev-mode .progress-dots { display: flex; }
 .quiz-praise {
   text-align: center;
   font-family: 'Caveat', 'JaoCherry', cursive;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   line-height: 1.5;
   color: var(--purple);
   margin: 4px 0 0;
