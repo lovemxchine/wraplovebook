@@ -1828,7 +1828,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   transform: scale(0.985);
   background: var(--chat-accent);
   border-color: var(--chat-accent);
-  color: #fff;
+  color: var(--chat-ink);
 }
 
 /* curved motion arrow, tucked close to the camera's top-right corner so its
