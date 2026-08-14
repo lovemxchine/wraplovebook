@@ -9,6 +9,10 @@
   font-weight: 100 700;
   font-style: normal;
   font-display: swap;
+  /* the only weight available is Thin — its strokes read noticeably smaller
+     than Caveat's at the same declared size, so bump it up here once instead
+     of hand-tuning every font-size that pairs the two */
+  size-adjust: 118%;
 }
 
 /* ---- hand-drawn icon set (CSS shapes, no emoji/image assets) ---- */
