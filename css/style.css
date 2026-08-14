@@ -275,8 +275,11 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .cover-hint {
   position: absolute;
-  left: 50%; bottom: -40px;
-  transform: translateX(-50%);
+  /* .envelope's box is taller than the closed envelope graphic (room for the
+     open flap standing up), so the visible envelope's own center sits lower
+     than the container's 50% — 72% is where the closed graphic centers */
+  left: 50%; top: 72%;
+  transform: translate(-50%, -50%);
   margin: 0;
   z-index: 6;
   display: flex;
