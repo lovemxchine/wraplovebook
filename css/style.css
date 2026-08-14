@@ -275,12 +275,9 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .cover-hint {
   position: absolute;
-  /* .envelope's box is taller than the closed envelope graphic (room for the
-     open flap standing up) — the graphic's own top edge sits at ~44% down
-     the container. Centered horizontally over the envelope, with a gap
-     above it instead of sitting flush against the top edge. */
-  left: 50%; top: 40%;
-  transform: translate(-50%, -160%);
+  /* pinned to .cover's own top-right corner — independent of .envelope's
+     rotation and position, so it stays upright with the envelope below it */
+  top: 8%; right: 6%;
   margin: 0;
   z-index: 6;
   display: flex;
@@ -292,7 +289,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: relative;
   width: min(70vw, 260px);
   aspect-ratio: 612 / 757; /* tall enough for the open envelope's standing flap */
-  margin-top: -180px; /* shift the whole envelope higher in the centered .cover column */
+  margin-top: -20px; /* CLICK now lives outside this column (pinned to .cover's corner instead), so this only needs a small nudge, not the big offset that used to make room for it */
   transform: rotate(-2deg); /* nothing hand-placed sits perfectly square */
   filter: drop-shadow(0 16px 22px rgba(0,0,0,0.22));
 }
