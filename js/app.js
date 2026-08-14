@@ -616,13 +616,18 @@ document.addEventListener('click', (e) => {
   if (!btn) return;
   const action = btn.dataset.action;
   // The cover plays its opening first: flap fades in (0.5s), then the letter
-  // slides up out of the envelope (2.4s), then holds a beat before the step
-  // change. Keep this in sync with .env-letter's transition in style.css.
+  // slides up out of the envelope (2.4s). It then just sits there — tapping
+  // the letter paper itself (see .env-letter[data-action="next"]) is what
+  // moves on to step 2, not a timer.
   if (action === 'open' && !btn.classList.contains('opening')) {
     btn.classList.add('opening');
-    setTimeout(() => goToStep(2), 3900);
   }
-  if (action === 'next') goToStep(state.step + 1);
+  if (action === 'next') {
+    // guard: the letter sits inside .cover, which is still "open"-actionable
+    // while closed — only advance once the opening animation has run
+    if (btn.classList.contains('env-letter') && !btn.closest('.cover').classList.contains('opening')) return;
+    goToStep(state.step + 1);
+  }
   if (action === 'reveal-photos') revealNextPhoto();
   if (action === 'open-photo-modal') openPhotoModal();
   if (action === 'answer-question') answerQuestion(btn);
