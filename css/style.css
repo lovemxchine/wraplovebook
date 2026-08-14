@@ -1767,7 +1767,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 }
 
 /* curved motion arrow, tucked close to the camera's top-right corner so its
-   tip reads as pointing straight at it — arrow.png has a white (not
+   tip reads as pointing straight at it — arrow.webp has a white (not
    transparent) background, multiply blends it away against the cream page */
 .cam-fx { position: absolute; inset: 0; pointer-events: none; }
 .cam-arrow {

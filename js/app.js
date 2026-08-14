@@ -537,7 +537,7 @@ function renderEnding() {
 // --- Step 8: Wish Jar — one paper crane per DATA.wishes entry. Tapping the
 // jar (data-action="open-jar") flies them out into a small scattered fan;
 // tapping a crane (data-action="reveal-wish") reveals its message. ---
-const WISH_BIRDS = ['bird-1.png', 'bird-2.png', 'bird-3.png', 'bird-4.png', 'bird-5.png', 'bird-6.png'];
+const WISH_BIRDS = ['bird-1.webp', 'bird-2.webp', 'bird-3.webp', 'bird-4.webp', 'bird-5.webp', 'bird-6.webp'];
 function renderWishJar() {
   const wrap = document.getElementById('wj-cranes');
   if (wrap.dataset.rendered) return; // built once — re-entering the step shouldn't reshuffle/reset it

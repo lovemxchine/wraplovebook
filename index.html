@@ -7,14 +7,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Sriracha&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=108" />
+<link rel="stylesheet" href="css/style.css?v=109" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
 <link rel="preload" as="image" href="assets/bg/image/paper-2.webp" />
 <link rel="preload" as="image" href="assets/stickers/pin-slot.webp" />
-<link rel="preload" as="image" href="assets/stickers/letter/close.png" />
-<link rel="preload" as="image" href="assets/stickers/letter/open.png" />
+<link rel="preload" as="image" href="assets/stickers/letter/close.webp" />
+<link rel="preload" as="image" href="assets/stickers/letter/back.webp" />
+<link rel="preload" as="image" href="assets/stickers/letter/front.webp" />
 </head>
 <body>
 <!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
@@ -34,12 +35,12 @@
            folded convincingly, so the "opening" is a fade + the letter
            rising up from behind the open envelope's pocket notch. -->
       <div class="envelope">
-        <img class="env-img env-closed" src="assets/stickers/letter/close.png" alt="ซองจดหมาย" />
-        <img class="env-img env-back" src="assets/stickers/letter/back.png" alt="" />
+        <img class="env-img env-closed" src="assets/stickers/letter/close.webp" alt="ซองจดหมาย" />
+        <img class="env-img env-back" src="assets/stickers/letter/back.webp" alt="" />
         <span class="env-letter">
-          <img class="env-letter-paper" src="assets/stickers/letter/letter-paper.png" alt="" />
+          <img class="env-letter-paper" src="assets/stickers/letter/letter-paper.webp" alt="" />
         </span>
-        <img class="env-img env-front" src="assets/stickers/letter/front.png" alt="ซองจดหมายเปิด" />
+        <img class="env-img env-front" src="assets/stickers/letter/front.webp" alt="ซองจดหมายเปิด" />
         <span class="click-letters cover-hint">
           <img src="assets/alphabet/C.webp" alt="C" />
           <img src="assets/alphabet/L.webp" alt="L" />
@@ -122,7 +123,7 @@
       <!-- curved motion arrow top-left + a few small stars scattered around
            the camera, all jiggling on the same beat as the camera itself -->
       <span class="cam-fx" aria-hidden="true">
-        <img class="cam-arrow" src="assets/stickers/arrow.png" alt="" />
+        <img class="cam-arrow" src="assets/stickers/arrow.webp" alt="" />
         <i class="cam-star cam-star-1">✦</i>
         <i class="cam-star cam-star-2">✦</i>
         <i class="cam-star cam-star-3">✦</i>
@@ -180,7 +181,7 @@
         <div class="sp-collage">
           <div class="sp-col sp-col-left">
             <span class="sp-love-hearts">♡ ♡ ♡</span>
-            <img class="sp-love-title" src="assets/stickers/love.png" alt="love" />
+            <img class="sp-love-title" src="assets/stickers/love.webp" alt="love" />
             <span class="sp-tag">หน้าตี๋ๆ</span>
             <span class="sp-tag">หัวเราะดัง</span>
             <span class="sp-tag">ความทรงจำที่ชอบสุด</span>
@@ -239,13 +240,13 @@
   <section class="step center" data-step="8">
     <h2 class="script">เปิดโหลนี้สิ</h2>
     <div class="wish-jar" id="wish-jar" data-action="open-jar">
-      <img class="wj-glass" src="assets/stickers/paper-bird/glass.png" alt="โหลแก้ว" />
+      <img class="wj-glass" src="assets/stickers/paper-bird/glass.webp" alt="โหลแก้ว" />
       <div class="wj-cranes" id="wj-cranes"></div>
     </div>
   </section>
 
 </div>
 
-<script src="js/data.js?v=18"></script><script src="js/app.js?v=26"></script>
+<script src="js/data.js?v=18"></script><script src="js/app.js?v=27"></script>
 </body>
 </html>
