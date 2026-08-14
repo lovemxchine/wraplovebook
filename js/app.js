@@ -441,6 +441,11 @@ function youtubeId(url) {
 function startBgMusic() {
   const embed = document.getElementById('bg-music');
   if (embed.dataset.started) return; // only start once
+  // Step 1 (cover) doesn't wait on DATA_READY, so the very first tap — the
+  // one that opens the envelope and is also this function's only gesture to
+  // ride along with — can land before basics.json (DATA.song) has loaded.
+  // Retry once it's actually there instead of throwing and giving up for good.
+  if (!DATA.song) { DATA_READY.then(startBgMusic); return; }
   embed.dataset.started = '1';
   const id = youtubeId(DATA.song.youtubeUrl || '');
   if (!id) return;
