@@ -284,6 +284,7 @@ body.dev-mode .progress-dots { display: flex; }
   align-items: center;
   justify-content: center;
 }
+.cover-hint[hidden] { display: none; } /* the author `display: flex` above beats the UA [hidden] rule otherwise */
 
 .envelope {
   position: relative;
