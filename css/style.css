@@ -290,7 +290,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: relative;
   width: min(70vw, 260px);
   aspect-ratio: 612 / 757; /* tall enough for the open envelope's standing flap */
-  margin-top: -20px; /* CLICK now lives outside this column (pinned to .cover's corner instead), so this only needs a small nudge, not the big offset that used to make room for it */
+  margin-top: -160px; /* CLICK now lives outside this column (pinned to .cover's corner instead), so this only needs a small nudge, not the big offset that used to make room for it */
   transform: rotate(-2deg); /* nothing hand-placed sits perfectly square */
   filter: drop-shadow(0 16px 22px rgba(0,0,0,0.22));
 }
@@ -325,7 +325,7 @@ body.dev-mode .progress-dots { display: flex; }
   transition: transform 2.4s cubic-bezier(0.22,0.9,0.3,1) 0.5s;
 }
 .cover.opening .env-letter {
-  transform: translate(-50%, -110%) rotate(1.5deg);
+  transform: translate(-50%, -90%) rotate(1.5deg);
 }
 .env-letter-paper {
   display: block;
@@ -335,6 +335,38 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .cover.opening { animation: none; } /* stop the idle float once opening starts */
 .cover.opening .cover-hint { opacity: 0; transition: opacity 0.3s ease; }
+
+/* "เปิดสิๆ" + a down arrow, centered above the closed envelope — the
+   envelope graphic's own top edge sits at ~44% down .cover, same anchor
+   point .cover-hint used to use before it moved to the corner. */
+.cover-open-hint {
+  position: absolute;
+  left: 50%; top: 40%;
+  transform: translate(-50%, -100%);
+  margin: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  pointer-events: none;
+  animation: cover-open-hint-bounce 1.4s ease-in-out infinite;
+}
+.cover-open-text {
+  font-size: 1.6rem;
+  color: var(--pink);
+  margin: 0;
+}
+.cover-open-arrow {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--pink);
+}
+.cover.opening .cover-open-hint { opacity: 0; transition: opacity 0.3s ease; }
+@keyframes cover-open-hint-bounce {
+  0%, 100% { transform: translate(-50%, -100%); }
+  50% { transform: translate(-50%, -80%); }
+}
 .cover-deco {
   position: absolute;
   opacity: 0.95;
