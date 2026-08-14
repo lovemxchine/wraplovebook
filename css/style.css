@@ -1,5 +1,16 @@
 * { box-sizing: border-box; }
 
+/* self-hosted — a Thai handwriting font, replaces Sriracha as the Thai half
+   of the handwritten/script pairing (real handwriting, not a marker font).
+   weight range covers the single Thin file regardless of requested weight. */
+@font-face {
+  font-family: 'JaoCherry';
+  src: url('../assets/fonts/JaoCherry-Thin.ttf') format('truetype');
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ---- hand-drawn icon set (CSS shapes, no emoji/image assets) ---- */
 .icon-heart {
   position: relative;
@@ -160,7 +171,7 @@ body.dev-mode .progress-dots { display: flex; }
 .progress-dots span.current { width: 18px; border-radius: 4px; background: linear-gradient(90deg, var(--pink), var(--purple)); }
 
 .script {
-  font-family: 'Caveat', 'Sriracha', cursive; /* Caveat has no Thai glyphs — falls through to Sriracha, a casual Thai handwritten/marker font, closer to Caveat's playful feel */
+  font-family: 'Caveat', 'JaoCherry', cursive; /* Caveat has no Thai glyphs — falls through to JaoCherry, a real Thai handwriting font */
   font-size: 2.4rem;
   margin: 0.2em 0;
   color: var(--pink);
@@ -273,7 +284,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: relative;
   width: min(70vw, 260px);
   aspect-ratio: 612 / 757; /* tall enough for the open envelope's standing flap */
-  margin-top: -130px; /* shift the whole envelope higher in the centered .cover column */
+  margin-top: -180px; /* shift the whole envelope higher in the centered .cover column */
   transform: rotate(-2deg); /* nothing hand-placed sits perfectly square */
   filter: drop-shadow(0 16px 22px rgba(0,0,0,0.22));
 }
@@ -476,7 +487,7 @@ body.dev-mode .progress-dots { display: flex; }
   left: 2%;
   top: 106%;
   margin: 0;
-  font-family: 'Mali', sans-serif; /* smaller/cleaner Thai than the Sriracha script fallback, reads better this tiny */
+  font-family: 'Mali', sans-serif; /* smaller/cleaner Thai than the JaoCherry script fallback, reads better this tiny */
   font-size: 0.7rem;
   color: var(--text);
   opacity: 0.45;
@@ -515,7 +526,7 @@ body.dev-mode .progress-dots { display: flex; }
 /* Step 3: plain fade in/out text, no card — a brief "next chapter" beat
    between the mission unlock and the camera. Auto-advances, see app.js. */
 .journey-text {
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 2rem;
   color: var(--pink);
   text-align: center;
@@ -625,7 +636,7 @@ body.dev-mode .progress-dots { display: flex; }
 .quiz-option.chosen { background: var(--pink); color: #fff; } /* brief tap feedback before the next question */
 .quiz-praise {
   text-align: center;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 1.5rem;
   line-height: 1.5;
   color: var(--purple);
@@ -1164,7 +1175,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* Letter — inside the closing scrapbook spread, so no box of its own:
    the .sb-paper page underneath already IS the paper. */
 .letter {
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 1.25rem;
   line-height: 1.6;
   white-space: pre-wrap;
@@ -1251,7 +1262,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   border-radius: 10px;
   padding: 8px 10px;
   margin-bottom: 8px;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 0.95rem;
   line-height: 1.35;
   text-align: center;
@@ -1385,7 +1396,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .spread-scroll::-webkit-scrollbar { display: none; }
 .sp-heading {
   margin: 0 0 10px;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 1.5rem;
   color: var(--pink);
   text-align: center;
@@ -1425,7 +1436,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   display: inline-block;
   background: #2c2622;
   color: #fdf8ee;
-  font-family: 'Sriracha', cursive;
+  font-family: 'JaoCherry', cursive;
   font-size: 0.68rem;
   padding: 3px 8px;
   border-radius: 2px;
@@ -1445,7 +1456,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   position: relative;
   background: #fffdf8;
   padding: 10px 12px;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 0.95rem;
   line-height: 1.35;
   color: var(--purple);
@@ -1458,7 +1469,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   position: relative;
   background: #fff;
   padding: 10px 12px;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 0.95rem;
   color: var(--purple);
   box-shadow: 0 3px 8px rgba(60,45,30,0.2);
@@ -1488,11 +1499,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   transform: rotate(2deg);
   box-shadow: 0 3px 6px rgba(60,45,30,0.2);
 }
-.sp-ticket span { display: block; font-family: 'Sriracha', cursive; font-size: 0.72rem; font-weight: 700; }
+.sp-ticket span { display: block; font-family: 'JaoCherry', cursive; font-size: 0.72rem; font-weight: 700; }
 .sp-ticket small { font-size: 0.6rem; }
 
 .sp-tag-label {
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 0.95rem;
   color: var(--pink);
   background: #f2e6cf;
@@ -1514,7 +1525,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .sp-booth-tape { top: -9px; left: 50%; margin-left: -23px; transform: rotate(-3deg); }
 .sp-booth-label {
   margin: 0 0 6px;
-  font-family: 'Sriracha', cursive;
+  font-family: 'JaoCherry', cursive;
   font-size: 0.7rem;
   color: #fdf8ee;
   text-align: center;
@@ -1530,7 +1541,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .sp-booth .sp-img.empty { background: #4a443d; }
 .sp-love-forever {
   margin: 4px 0 0;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 1.05rem;
   color: var(--pink);
 }
@@ -1543,7 +1554,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   border: 1.5px solid #2c2622;
   border-radius: 16px;
   padding: 8px 10px;
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 0.92rem;
   line-height: 1.25;
   color: #2c2622;
@@ -1618,7 +1629,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   margin-bottom: 2px;
 }
 .tl-title {
-  font-family: 'Caveat', 'Sriracha', cursive;
+  font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 1.35rem;
   line-height: 1.15;
   color: var(--pink);
