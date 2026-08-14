@@ -651,4 +651,9 @@ initMissionPin();
 const pageParamRaw = new URLSearchParams(location.search).get('page');
 if (pageParamRaw === '7-1') document.getElementById('spread').classList.add('spread-alt');
 const pageParam = Number(pageParamRaw);
-goToStep(pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : (pageParamRaw === '7-1' ? 7 : 1));
+const targetStep = pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : (pageParamRaw === '7-1' ? 7 : 1);
+// Step 1 needs no DATA (the cover is static), so show it immediately instead
+// of waiting on the user_data/*.json fetches — only a deep link past it needs
+// to wait for DATA_READY (see data.js).
+if (targetStep === 1) goToStep(1);
+else DATA_READY.then(() => goToStep(targetStep));
