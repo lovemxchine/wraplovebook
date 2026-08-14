@@ -1317,8 +1317,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   padding: 8px 10px;
   margin-bottom: 8px;
   font-family: 'Caveat', 'JaoCherry', cursive;
-  font-size: 0.95rem;
-  line-height: 1.35;
+  font-size: 0.8rem;
+  line-height: 1.4;
   text-align: center;
   color: var(--text);
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
