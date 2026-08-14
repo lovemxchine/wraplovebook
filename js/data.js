@@ -15,19 +15,31 @@ let DATA = {
 };
 
 const DATA_SOURCES = [
-  { file: 'user_data/basics.json', spread: true }, // -> names, relationshipLabel, song
-  { file: 'user_data/mission.json', key: 'metDate' },
-  { file: 'user_data/chat.json', key: 'chat' },
-  { file: 'user_data/quiz.json', key: 'quiz' },
-  { file: 'user_data/camera.json', key: 'photos' },
-  { file: 'user_data/timeline.json', key: 'timeline' },
-  { file: 'user_data/wishes.json', key: 'wishes' },
+  { file: 'basics.json', spread: true }, // -> names, relationshipLabel, song
+  { file: 'mission.json', key: 'metDate' },
+  { file: 'chat.json', key: 'chat' },
+  { file: 'quiz.json', key: 'quiz' },
+  { file: 'camera.json', key: 'photos' },
+  { file: 'timeline.json', key: 'timeline' },
+  { file: 'wishes.json', key: 'wishes' },
 ];
+
+// ?lang=en tries user_data/en/<file> first and falls back to the default
+// user_data/<file> (Thai) for anything that doesn't have a translated
+// version yet — so a partial translation never breaks the site.
+const LANG = new URLSearchParams(location.search).get('lang');
+
+function loadUserData(file) {
+  const defaultPath = `user_data/${file}`;
+  if (!LANG) return fetch(defaultPath).then(r => r.json());
+  return fetch(`user_data/${LANG}/${file}`)
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .catch(() => fetch(defaultPath).then(r => r.json()));
+}
 
 const DATA_READY = Promise.all(
   DATA_SOURCES.map(({ file, key, spread }) =>
-    fetch(file)
-      .then(r => r.json())
+    loadUserData(file)
       .then(json => { if (spread) Object.assign(DATA, json); else DATA[key] = json; })
       .catch(err => console.error(`[data] failed to load ${file}`, err))
   )
