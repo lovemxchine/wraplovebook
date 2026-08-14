@@ -276,11 +276,11 @@ body.dev-mode .progress-dots { display: flex; }
 .cover-hint {
   position: absolute;
   /* .envelope's box is taller than the closed envelope graphic (room for the
-     open flap standing up) — the graphic's own top-right corner sits at
-     ~44% down / ~98% across the container. Anchored above-right of that,
-     with a real gap instead of sitting flush against the corner. */
-  left: 98%; top: 40%;
-  transform: translate(-70%, -160%);
+     open flap standing up) — the graphic's own top edge sits at ~44% down
+     the container. Centered horizontally over the envelope, with a gap
+     above it instead of sitting flush against the top edge. */
+  left: 50%; top: 40%;
+  transform: translate(-50%, -160%);
   margin: 0;
   z-index: 6;
   display: flex;
