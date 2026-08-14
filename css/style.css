@@ -1666,11 +1666,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   font-size: 0.76rem;
   letter-spacing: 0.04em;
   color: var(--purple);
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .tl-title {
   font-family: 'Caveat', 'JaoCherry', cursive;
-  font-size: 1rem;
+  font-size: 0.75rem;
   /* 1.15 was too tight for JaoCherry — its tall tone marks/ascenders from one
      line were overlapping into the line above it on multi-line titles */
   line-height: 1.6;
