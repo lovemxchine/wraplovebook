@@ -273,7 +273,7 @@ body.dev-mode .progress-dots { display: flex; }
   position: relative;
   width: min(70vw, 260px);
   aspect-ratio: 612 / 757; /* tall enough for the open envelope's standing flap */
-  margin-top: -60px; /* shift the whole envelope higher in the centered .cover column */
+  margin-top: -130px; /* shift the whole envelope higher in the centered .cover column */
   transform: rotate(-2deg); /* nothing hand-placed sits perfectly square */
   filter: drop-shadow(0 16px 22px rgba(0,0,0,0.22));
 }
