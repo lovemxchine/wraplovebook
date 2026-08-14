@@ -854,14 +854,14 @@ body.dev-mode .progress-dots { display: flex; }
 /* Step 4 runs tighter than other steps — a 200px camera + photo pile is tall,
    so this pulls the title block up and shrinks the gaps around it to avoid
    the page needing to scroll. */
-.step[data-step="6"] { padding-top: 12px; justify-content: flex-start; }
+.step[data-step="6"] { padding-top: 48px; justify-content: flex-start; }
 .step[data-step="6"] .script { margin: 0.05em 0 0; }
 .camera-frame {
   display: block;
   /* matches the old camera.webp's visible size — that image was a 240px square
      with transparent margin, so the artwork itself was only ~180px across */
   width: 180px;
-  margin: 14px auto 6px;
+  margin: 34px auto 6px;
   background: none;
   border: none;
   padding: 0;
