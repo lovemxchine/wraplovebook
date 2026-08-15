@@ -1162,11 +1162,9 @@ body.dev-mode .progress-dots { display: flex; }
 .photo-stack .photo-slot.revealed {
   opacity: 1;
 }
-/* stays a little blurred once settled, deliberately not a crisp focus-pull —
-   no grow/scale-in on the photo itself anymore, just the slot's own move. */
-.photo-stack .photo-inner {
-  filter: blur(1.5px);
-}
+/* was deliberately left blurred here (no grow/scale-in on the photo itself,
+   just the slot's own move) — with real photos in now it just reads as
+   broken, so dropped per user request. */
 /* polaroid look — shared by the camera pile (.photo-stack) and the photo
    viewer modal (.photo-modal-stack), no image asset needed */
 .photo-stack .photo-slot, .photo-modal-stack .photo-slot {
