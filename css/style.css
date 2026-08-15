@@ -717,12 +717,24 @@ body.dev-mode .progress-dots { display: flex; }
   transform: rotate(12deg);
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
-.q-sticker-love {
+/* L O V E as separate paper cut-outs, each tilted its own way so the word
+   reads as four scraps stuck down by hand rather than one printed label */
+.q-love-letters {
   bottom: 6%; left: 6%;
-  width: 32%;
-  transform: rotate(-6deg);
-  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  transform: rotate(-4deg);
 }
+.q-love-letters img {
+  height: 34px;
+  width: auto;
+  filter: drop-shadow(0 3px 6px rgba(60,45,30,0.3));
+}
+.q-love-letters img:nth-child(1) { transform: rotate(-7deg); }
+.q-love-letters img:nth-child(2) { transform: rotate(5deg) translateY(-2px); }
+.q-love-letters img:nth-child(3) { transform: rotate(-4deg) translateY(1px); }
+.q-love-letters img:nth-child(4) { transform: rotate(8deg) translateY(-1px); }
 /* pinned to the question card itself, corner peeking over the edge, rather
    than floating loose on the page like .q-sticker */
 .q-card-flower {
