@@ -1751,7 +1751,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   min-height: 0; /* lets the flex child actually shrink, which is what makes it scroll */
   margin: 0 auto;
   overflow: hidden;
-  background: #f6f4ee; /* base tint only — the paper itself is drawn on the scroller below */
+  background: #fdfbf7; /* base tint only — the paper itself is drawn on the scroller below */
 }
 
 /* The paper — grid lines and spiral binding — is painted on the SCROLLER, with
@@ -1769,9 +1769,12 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   scrollbar-width: none; /* the scrollbar reads as a browser chrome artifact on a paper page */
   background-image:
     /* faint cream ruling, warmer than the old blue grid — closer to a real journal page */
-    repeating-linear-gradient(0deg, rgba(150,120,90,0.14) 0 1px, transparent 1px 16px),
-    /* paper texture/grain underneath everything */
-    linear-gradient(rgba(255,252,244,0.55), rgba(255,252,244,0.55)), url('../assets/bg/image/paper.webp');
+    repeating-linear-gradient(0deg, rgba(150,120,90,0.16) 0 1px, transparent 1px 16px),
+    /* paper texture/grain underneath everything. The wash went 0.55 -> 0.80:
+       at 0.55 the paper.webp grain showed through as a muddy brown-beige,
+       noticeably dingier than the rest of the site. Ruling nudged up a touch
+       to stay visible against the lighter ground. */
+    linear-gradient(rgba(255,253,248,0.8), rgba(255,253,248,0.8)), url('../assets/bg/image/paper.webp');
   background-position: 0 0, center;
   background-size: auto, cover;
   background-repeat: repeat, no-repeat;
@@ -1993,11 +1996,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   width: 100%;
   aspect-ratio: 3 / 4; /* portrait — fills the taller row without going wide enough to squeeze .sp-words */
   object-fit: cover;
-  background: #ded5c4;
+  background: #e7e0d4; /* matched to the lighter paper — #ded5c4 became the darkest thing on the page */
 }
 /* placeholder — no photo filled in yet. A src-less <img> has no content, so the
    background colour alone stands in for the print. */
-.sp-frame .sp-img.empty { background: #ded5c4; }
+.sp-frame .sp-img.empty { background: #e7e0d4; }
 
 /* washi tape holding the print down */
 .sp-frame .sp-tape {
