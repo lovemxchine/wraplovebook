@@ -739,7 +739,7 @@ body.dev-mode .progress-dots { display: flex; }
 .q-card-flower {
   position: absolute;
   top: -14px; right: -10px;
-  width: 58px;
+  width: 90px;
   pointer-events: none;
   transform: rotate(10deg);
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
