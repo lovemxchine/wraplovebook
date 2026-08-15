@@ -1741,7 +1741,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    The scrapbook page and the timeline in one screen. html/body lock scrolling
    site-wide (see the note on html,body above), so the scrolling happens inside
    .spread-scroll, never on the page. */
-.step[data-step="7"] { padding: 0; justify-content: flex-start; } /* full-bleed — the paper IS the screen here */
+.step:has(> .spread) { padding: 0; justify-content: flex-start; } /* full-bleed — the paper IS the screen here. Keyed off .spread, not the step number, so renumbering steps can't hand this to a different screen. */
 
 .spread {
   position: relative;

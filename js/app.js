@@ -1,11 +1,15 @@
 // State machine: step N is "unlocked" once step N-1 is completed.
 // Progress is in-memory only — a reload always restarts from the cover, so the
 // surprise opens the same way every time (was persisted to localStorage).
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 7; // the notebook step was retired; the ending collage is step 7 now
 
 let state = { step: 1 };
 
 function goToStep(n) {
+  // Out of range leaves no .step.active at all — a blank screen, and on the
+  // last screen of a one-shot gift that is the final impression. Renumbering
+  // the steps by hand is exactly how you get here.
+  if (n < 1 || n > TOTAL_STEPS) return;
   state.step = n;
   document.querySelectorAll('.step').forEach(el => {
     el.classList.toggle('active', Number(el.dataset.step) === n);
@@ -29,8 +33,7 @@ function onEnterStep(n) {
   if (n === 4) startQuestions();
   if (n === 5) setTimeout(() => goToStep(6), 2800); // matches .journey-text's fade animation duration
   if (n === 6) renderGallery();
-  if (n === 7) renderSpread();
-  if (n === 8) renderCollageEnd();
+  if (n === 7) renderCollageEnd();
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -473,8 +476,11 @@ function renderVoice() {
   if (DATA.voiceMessage.src) player.src = DATA.voiceMessage.src;
 }
 
-// --- Step 6: Letter ---
-// --- Step 6: The notebook ---
+// --- The notebook (retired) ---
+// ponytail: kept, not called — its markup is commented out in index.html. It
+// reads #spread-entries/#spread-scroll, so calling it now throws on null. To
+// bring the step back: uncomment that section, restore TOTAL_STEPS and the
+// onEnterStep dispatch, and renumber the ending collage back to 8. ---
 // One entry per milestone: a polaroid on one side, the words on the other,
 // alternating sides down the page. Entries fade in as they scroll into the
 // box — IntersectionObserver rather than a scroll handler, and each entry is
@@ -689,12 +695,11 @@ function preloadDigits() {
 preloadDigits();
 initMissionPin();
 // ?page=N jumps straight to step N (testing/sharing a specific step), clamped to valid range.
-// ?page=7-1 is the one exception: same step 7, but shows the old collage
-// layout (see .spread-alt in style.css) instead of the scrolling timeline.
+// The old ?page=7-1 hook is gone with the notebook step it belonged to — it did
+// getElementById('spread'), which no longer exists.
 const pageParamRaw = new URLSearchParams(location.search).get('page');
-if (pageParamRaw === '7-1') document.getElementById('spread').classList.add('spread-alt');
 const pageParam = Number(pageParamRaw);
-const targetStep = pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : (pageParamRaw === '7-1' ? 7 : 1);
+const targetStep = pageParam >= 1 && pageParam <= TOTAL_STEPS ? pageParam : 1;
 // Step 1 needs no DATA (the cover is static), so show it immediately instead
 // of waiting on the user_data/*.json fetches — only a deep link past it needs
 // to wait for DATA_READY (see data.js).

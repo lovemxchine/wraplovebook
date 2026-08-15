@@ -4,7 +4,7 @@ Single source of truth for architecture decisions and domain glossary for this
 project. AI-agent-agnostic — any coding agent should be able to read this file
 + README.md and be productive.
 
-Last updated: 2026-08-15 (Step 8 changed from Closing Scrapbook to Photo Collage)
+Last updated: 2026-08-15 (notebook step retired — 7 steps, ending is the Photo Collage)
 
 ---
 
@@ -15,7 +15,7 @@ not a SaaS, not a reusable template with an editing UI. All content (photos,
 music, messages, dates) lives directly in the site's code/data as a static
 site. No backend, no database, no accounts.
 
-The visitor experience is a **linear, locked 8-step flow**:
+The visitor experience is a **linear, locked 7-step flow**:
 
 | Step | Screen | Advances when |
 |---|---|---|
@@ -25,13 +25,14 @@ The visitor experience is a **linear, locked 8-step flow**:
 | 4 | Journey text | auto-advances after the line fades |
 | 5 | Memory Gallery (camera) | the photo modal has been opened and closed once |
 | 6 | Questions | every question answered, then the score summary's "ไปต่อ" |
-| 7 | The notebook (scrollable photo timeline) | "ไปต่อ" at the end of the list |
-| 8 | Photo Collage (overlapping prints + closing message) | — end of flow |
+| 7 | Photo Collage (overlapping prints + closing message) | — end of flow |
 
 Each step unlocks only after the previous one is completed — no skipping
 ahead. `?page=N` jumps straight to a step, for testing only.
 
-Steps that existed earlier and were cut: Mini Games (replaced by the simpler
+Steps that existed earlier and were cut: the notebook (a scrollable photo
+timeline, was step 7 — its markup is commented out in `index.html` and
+`renderSpread()` is no longer called), Mini Games (replaced by the simpler
 Questions step), Our Song as its own screen (the song is now background music
 across the whole site), Reasons I Love You, Final Surprise, and a separate
 Ending screen (folded into the letter). Voice Message is written but paused —
@@ -217,13 +218,13 @@ user to fill in later.
 
 | Term | Meaning |
 |---|---|
-| **Step** | One of the 8 sequential screens in the flow (see the table above). The unit of locked progression — a Step is either locked, active, or completed. |
+| **Step** | One of the 7 sequential screens in the flow (see the table above). The unit of locked progression — a Step is either locked, active, or completed. |
 | **Mission** | Step 2's unlock puzzle — a 6-digit pin (`DDMMYY` of the date the couple met) that must match to proceed. Correctness is checked against a fixed answer, unlike Questions. |
 | **Chat** | Step 3 — a conversation between the sender and the recipient, in the shape of a messaging app. The sender asks; the recipient answers by tapping one of several replies, which then appears as her own message. The replies are feelings, not facts: there is no right one, no score, and the choice does not change what comes next — the same scripted conversation continues either way. Distinct from Questions, which tests memory of the past and does have correct answers. |
 | **Questions** | Step 6 — a short quiz. Always completable: any answer advances, and the score summary praises the recipient regardless. Score is counted but never blocks. |
 | **Memory Gallery** | Step 5 — the camera screen. Tapping the camera ejects one photo per tap onto a pile; tapping the completed pile opens the Photo Viewer. |
 | **Photo Viewer** | Step 5's modal — the photos enlarged one at a time over a blurred backdrop, tapping the front one sends it to the back, looping. Opening and closing it once is what reveals the "ไปต่อ" button. |
-| **The notebook** | Step 7 — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
+| **The notebook** | *Retired* (was Step 7; markup commented out, `renderSpread()` not called) — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
 | **Photo Collage** | Step 8's layout — four overlapping tilted prints with the closing message (`DATA.ending.message`) written across them, each line carrying its own white band behind it, and the met date written alongside. |
 | **Closing Scrapbook** | Step 8's *previous* layout, kept in the repo but not shown: a photo-booth strip, a calendar circling `DATA.metDate`, and the closing message on a torn scrap. Superseded by the Photo Collage. |
 

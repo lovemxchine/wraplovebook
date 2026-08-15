@@ -183,7 +183,7 @@
        .spread-scroll because html/body lock scrolling site-wide. Roughly three entries fill the page, the rest
        come in on scroll. Entries are DATA.timeline, each paired with the photo
        of the same index from DATA.photos. See renderSpread() in app.js. -->
-  <section class="step" data-step="7">
+  <!-- <section class="step" data-step="7">
     <div class="spread" id="spread">
       <div class="spread-scroll" id="spread-scroll">
         <div class="sp-collage">
@@ -229,22 +229,19 @@
             <div class="sp-bubble">เธอคือแจ้งเตือนที่ชอบที่สุดของเรา ♥</div>
           </div>
         </div>
-
-        <!-- timeline list kept in the DOM (renderSpread() in app.js still
-             fills it) but hidden — the collage above is the whole page now. -->
         <p class="sp-heading">เรื่องราวของเรา</p>
         <div class="sp-entries" id="spread-entries"></div>
         <button class="btn-transparent spread-continue" data-action="next">ไปต่อ</button>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- Step 8: Photo Collage — overlapping tilted prints with the closing
        message handwritten across them, each line on its own white band.
        See renderCollageEnd() in app.js. The paper-and-calendar layout that
        came before it is kept below but hidden — see CONTEXT.md "Step 8 ending
        is a Photo Collage". -->
-  <section class="step scrapbook-end" data-step="8">
+  <section class="step scrapbook-end" data-step="7">
     <!-- .pb-canvas: one fixed-ratio canvas that always fits inside the
          viewport, with every piece positioned in % of IT and sized in cqw, and
          a gutter so a rotated piece can't swing out past #app (which clips
@@ -303,6 +300,6 @@
 
 </div>
 
-<script src="js/data.js?v=19"></script><script src="js/app.js?v=33"></script>
+<script src="js/data.js?v=19"></script><script src="js/app.js?v=35"></script>
 </body>
 </html>
