@@ -702,6 +702,27 @@ body.dev-mode .progress-dots { display: flex; }
    Each option is a slightly crooked paper strip; the tilt alternates so a
    column of them reads hand-stuck instead of grid-aligned. */
 .step[data-step="4"] .card { transform: rotate(-1deg); border-radius: 18px 22px 18px 24px; }
+
+/* decorative stickers — assets/stickers/question/ (torn-paper question mark,
+   hand-drawn flower). question3.webp (glow heart) skipped: its baked-in
+   vignette reads as a smudge on the light card, not used here. */
+.q-sticker {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+.q-sticker-mark {
+  top: 4%; right: 8%;
+  width: 20%;
+  transform: rotate(12deg);
+  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
+}
+.q-sticker-flower {
+  bottom: 6%; left: 6%;
+  width: 16%;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
+}
 .step[data-step="4"] .card .script { text-align: center; line-height: 1.35; margin-top: 1.1em; font-size: 1.0rem; } /* extra clearance — JaoCherry's tone marks sit above the line box and were touching .eyebrow otherwise; smaller than the shared .script size because the question text runs longer than the other headings using that class */
 .step[data-step="4"] .eyebrow { text-align: center; }
 .quiz-option {
