@@ -67,6 +67,15 @@ function initMissionPin() {
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Backspace' && !input.value && digits[i - 1]) digits[i - 1].focus();
     });
+    // Tapping/tabbing straight into a later empty slot let you type digits
+    // out of order, leaving earlier slots blank. Bounce focus back to the
+    // first empty slot instead — but only when jumping past it (this only
+    // blocks skipping ahead; clicking back into an already-filled slot to
+    // fix a typo still works).
+    input.addEventListener('focus', () => {
+      const firstEmptyIndex = digits.findIndex(d => !d.value);
+      if (firstEmptyIndex !== -1 && i > firstEmptyIndex) digits[firstEmptyIndex].focus();
+    });
   });
 }
 
