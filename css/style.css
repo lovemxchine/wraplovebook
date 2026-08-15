@@ -1340,9 +1340,9 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    the photos, not behind them */
 .pc-star-a { top: -8%;  left: -10%;  width: 40%; transform: rotate(-14deg); z-index: 4; }
 /* scribble hearts on the open paper at the top right */
-.pc-heart-a { top: -11%;  left: 71%; width: 14%; transform: rotate(8deg);   z-index: 6; }
-.pc-heart-e { top: -3%; left: 66%; width: 8%; transform: rotate(-14deg); z-index: 6; }
-.pc-heart-b { top: 0%;  left: 76%; width: 7%; transform: rotate(-6deg);  z-index: 6; }
+.pc-heart-a { top: -8%;  left: 71%; width: 14%; transform: rotate(8deg);   z-index: 6; }
+.pc-heart-e { top: 0%; left: 66%; width: 8%; transform: rotate(-14deg); z-index: 6; }
+.pc-heart-b { top: 3%;  left: 76%; width: 7%; transform: rotate(-6deg);  z-index: 6; }
 /* the two small ones punctuate the handwriting */
 
 /* buttons: on top of the prints, half-off the photo edge like real ones */
@@ -1377,8 +1377,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   /* wider + bigger: at 66%/4.4cqw this was ~15px of Thai handwriting script,
      which is the smallest the page gets and the hardest thing on it to read.
      Widening first means the bigger type still wraps to the same 5 lines. */
-  width: 84%;
-  font-size: 6cqw;
+  width: 80%;
+  font-size: 5.4cqw;
   transform: rotate(-1.5deg);
 }
 .pc-date {
