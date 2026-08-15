@@ -738,7 +738,7 @@ body.dev-mode .progress-dots { display: flex; }
    than floating loose on the page like .q-sticker */
 .q-card-flower {
   position: absolute;
-  top: -14px; right: -10px;
+  top: -30px; right: -25px;
   width: 90px;
   pointer-events: none;
   transform: rotate(10deg);
