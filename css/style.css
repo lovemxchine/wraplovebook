@@ -726,7 +726,7 @@ body.dev-mode .progress-dots { display: flex; }
      still distorts it ("โดนบีบ"). Only a single explicit dimension is safe; the other
      stays auto and the browser is then forced to keep the intrinsic ratio. Same pattern
      as .q-card-flower below. */
-  height: 80px; width: auto;
+  height: 110px; width: auto;
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
 /* Two position variants per sticker slot (mirrored left/right), rotated per
