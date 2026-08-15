@@ -65,7 +65,22 @@ function initMissionPin() {
       if (digits.every(d => d.value)) checkMission(digits); // last digit filled -> auto-check
     });
     input.addEventListener('keydown', (e) => {
-      if (e.key === 'Backspace' && !input.value && digits[i - 1]) digits[i - 1].focus();
+      if (e.key !== 'Backspace') return;
+      if (input.value) {
+        // Clear it ourselves instead of leaving it to the browser's native
+        // delete + our 'input' handler rewriting .value right after — on some
+        // Android keyboards that combination (delete a char, then a script
+        // immediately overwrites .value and steals focus to the next field on
+        // every OTHER keystroke) leaves the IME thinking a digit is still
+        // committed, and Backspace stops doing anything ("กดลบไม่ได้ตรงเลข").
+        // preventDefault so the browser never attempts its own deletion here.
+        e.preventDefault();
+        input.value = '';
+        updateDigitImg(input);
+        document.getElementById('mission-error').hidden = true;
+      } else if (digits[i - 1]) {
+        digits[i - 1].focus();
+      }
     });
     // Tapping/tabbing straight into a later empty slot let you type digits
     // out of order, leaving earlier slots blank. Bounce focus back to the
