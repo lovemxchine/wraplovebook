@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=149" />
+<link rel="stylesheet" href="css/style.css?v=151" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -248,6 +248,11 @@
        app.js. Replaces the Wish Jar — see CONTEXT.md "Step 8 ending is a
        Closing Scrapbook, not a Wish Jar". -->
   <section class="step scrapbook-end" data-step="8">
+    <!-- One fixed-ratio canvas that always fits inside the viewport, with every
+         piece positioned in % of IT. Same trick as Step 6's camera: the whole
+         collage scales as a unit, so nothing lands outside #app (which clips
+         overflow) on a shorter or narrower screen. -->
+    <div class="pb-canvas">
     <!-- the big ruled sheet everything else is layered onto -->
     <div class="pb-note">
       <span class="pb-tape pb-tape-note"></span>
@@ -279,6 +284,7 @@
     <div class="pb-message">
       <span class="pb-clip"></span>
       <p class="pb-message-text" id="pb-message"></p>
+    </div>
     </div>
   </section>
 

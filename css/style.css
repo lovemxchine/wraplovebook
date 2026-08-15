@@ -1274,7 +1274,27 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    message layered over it. See CONTEXT.md "Step 8 ending is a Closing
    Scrapbook". Every piece is absolutely positioned in % of the step, so the
    whole collage scales with the viewport rather than breaking apart. ---- */
-.scrapbook-end { padding: 0; }
+.scrapbook-end { padding: 0; justify-content: center; }
+
+/* ROOT-CAUSE FIX for pieces getting clipped (the flower's petals, the strip's
+   bottom, the message's last line): the collage used to be positioned in % of
+   the step while its type, tape and paperclip were frozen in px, and the
+   flower deliberately hung outside on `right: -5%`. #app clips overflow, so on
+   any viewport shorter or narrower than the one it was tuned on, whatever
+   spilled past the edge was simply cut off.
+   Now the whole thing lives on one fixed-ratio canvas that always fits inside
+   the viewport — `min()` on both axes shrinks it to whichever axis runs out
+   first — and every piece is sized in cqw (% of the canvas's own width) so it
+   scales with the canvas instead of overflowing it. Nothing is positioned
+   outside the canvas any more, so there is nothing left to clip. */
+.pb-canvas {
+  position: relative;
+  /* 375 x 760 is the ratio the composition is laid out at */
+  width: min(100%, calc(100vh * 375 / 760));
+  height: min(100%, calc(100vw * 760 / 375));
+  margin: auto;
+  container-type: size; /* makes cqw below resolve against this box */
+}
 
 /* shared paper look for the three "cut out and stuck down" cards */
 .pb-note, .pb-strip, .pb-calendar, .pb-message {
@@ -1287,14 +1307,14 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pb-note {
   top: 5%; left: 25%;
   width: 72%; height: 56%;
-  background-image: repeating-linear-gradient(0deg, transparent 0 21px, rgba(150,120,90,0.22) 21px 22px);
+  background-image: repeating-linear-gradient(0deg, transparent 0 5.6cqw, rgba(150,120,90,0.22) 5.6cqw 5.87cqw);
   transform: rotate(1.5deg);
 }
 /* punched holes down the sheet's left edge */
 .pb-punch {
   position: absolute;
-  left: 7px;
-  width: 7px; height: 9px;
+  left: 1.9cqw;
+  width: 1.9cqw; height: 2.4cqw;
   border-radius: 2px;
   background: rgba(90,60,45,0.55);
 }
@@ -1305,18 +1325,18 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* washi tape holding a card down */
 .pb-tape {
   position: absolute;
-  width: 54px; height: 20px;
+  width: 14.4cqw; height: 5.3cqw;
   background: repeating-linear-gradient(135deg, rgba(196,164,116,0.55) 0 5px, rgba(226,202,160,0.55) 5px 10px);
 }
-.pb-tape-note { top: -10px; left: 32%; transform: rotate(-2deg); }
-.pb-tape-cal  { top: -9px; left: 18%; transform: rotate(-6deg); }
+.pb-tape-note { top: -2.7cqw; left: 32%; transform: rotate(-2deg); }
+.pb-tape-cal  { top: -2.4cqw; left: 18%; transform: rotate(-6deg); }
 
 .pb-happy {
   position: absolute;
   top: 8%; left: 14%;
   margin: 0;
   font-family: 'Yellowtail', cursive; /* already loaded — no extra font request for one heading */
-  font-size: 1.55rem;
+  font-size: 6.6cqw;
   font-weight: 700;
   color: var(--pink);
 }
@@ -1344,15 +1364,15 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pb-heart-doodle {
   position: absolute;
   top: 19%; right: 13%;
-  font-size: 22px;
+  font-size: 5.9cqw;
   opacity: 0.5;
   transform: rotate(-10deg);
 }
 
 /* --- photo-booth strip --- */
 .pb-strip {
-  top: 16%; left: 1%;
-  width: 35%;
+  top: 11%; left: 1%;
+  width: 34%;
   padding: 7px 6px 5px;
   text-align: center;
   transform: rotate(-2.5deg);
@@ -1376,8 +1396,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   font-family: Georgia, 'Times New Roman', serif; /* system serif — nothing new to download */
   color: var(--text);
 }
-.pb-strip-top { font-size: 0.6rem; letter-spacing: 0.02em; padding: 2px 0 6px; }
-.pb-strip-bottom { font-size: 0.85rem; font-weight: 700; padding: 6px 0 2px; }
+.pb-strip-top { font-size: 2.56cqw; letter-spacing: 0.02em; padding: 2px 0 6px; }
+.pb-strip-bottom { font-size: 3.6cqw; font-weight: 700; padding: 6px 0 2px; }
 .pb-shot + .pb-shot { margin-top: 5px; }
 .pb-img {
   display: block;
@@ -1393,8 +1413,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* the little heart tucked beside the strip's bottom caption */
 .pb-heart-strip {
   position: absolute;
-  bottom: 20.5%; left: 33%;
-  font-size: 16px;
+  bottom: 24%; left: 32%;
+  font-size: 4.3cqw;
   transform: rotate(9deg);
   z-index: 2;
 }
@@ -1410,21 +1430,21 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pb-cal-year {
   display: block;
   font-family: Georgia, 'Times New Roman', serif; /* system serif — nothing new to download */
-  font-size: 0.6rem;
+  font-size: 2.56cqw;
   color: var(--text);
 }
 .pb-cal-month {
   display: block;
   font-family: Georgia, 'Times New Roman', serif; /* system serif — nothing new to download */
-  font-size: 1.1rem;
+  font-size: 4.7cqw;
   color: var(--text);
-  margin-bottom: 6px;
+  margin-bottom: 1.6cqw;
 }
 .pb-cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px 0;
-  font-size: 0.5rem;
+  gap: 0.5cqw 0;
+  font-size: 2.13cqw;
   color: var(--text);
 }
 .pb-cal-head { opacity: 0.65; padding-bottom: 3px; }
@@ -1445,8 +1465,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 .pb-flower {
   position: absolute;
-  bottom: 13%; right: -5%;
-  width: 33%;
+  bottom: 12%; right: 0;
+  width: 34%;
   /* the reference's flowers are dried/bleached — desaturating the daffodil
      asset gets it into the same washed-out family as the paper */
   filter: sepia(0.45) saturate(0.5) brightness(1.05) drop-shadow(0 5px 9px rgba(60,45,30,0.3));
@@ -1456,13 +1476,15 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 /* --- the closing message, on its own torn-off scrap --- */
 .pb-message {
-  bottom: 2%; left: 19%;
-  width: 64%;
-  padding: 14px 14px 16px 24px;
+  bottom: 2%; left: 22%;
+  width: 62%;
+  font-size: 3.84cqw; /* the text inherits this, so the em-based ruling below tracks it */
+  padding: 1em 1em 1.1em 1.7em;
   transform: rotate(-1.5deg);
-  /* ruling under the text, plus a torn bottom edge */
-  background-image: repeating-linear-gradient(0deg, transparent 0 25px, rgba(150,120,90,0.25) 25px 26px);
-  background-position: 0 10px;
+  /* ruling under the text, plus a torn bottom edge. In em, so the lines stay
+     locked to the text's line-height at every canvas scale. */
+  background-image: repeating-linear-gradient(0deg, transparent 0 1.73em, rgba(150,120,90,0.25) 1.73em 1.8em);
+  background-position: 0 0.7em;
   -webkit-mask-image: radial-gradient(circle 5px at 6px 100%, transparent 5px, #000 5.5px);
   mask-image: radial-gradient(circle 5px at 6px 100%, transparent 5px, #000 5.5px);
   -webkit-mask-size: 12px 100%;
@@ -1474,16 +1496,16 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pb-message-text {
   margin: 0;
   font-family: 'Caveat', 'JaoCherry', cursive;
-  font-size: 0.9rem;
-  line-height: 26px; /* matches the ruling above so the text sits ON the lines */
+  font-size: 1em;
+  line-height: 1.8; /* matches the ruling above so the text sits ON the lines */
   text-align: center;
   color: var(--text);
 }
 /* paperclip on the scrap's left edge */
 .pb-clip {
   position: absolute;
-  top: 12px; left: -3px;
-  width: 11px; height: 34px;
+  top: 3.2cqw; left: -0.8cqw;
+  width: 2.9cqw; height: 9.1cqw;
   border: 2px solid #c9a86a;
   border-radius: 6px;
   transform: rotate(-6deg);
@@ -1492,8 +1514,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pb-clip::before {
   content: "";
   position: absolute;
-  top: 5px; left: 1px;
-  width: 5px; height: 22px;
+  top: 1.3cqw; left: 0.3cqw;
+  width: 1.3cqw; height: 5.9cqw;
   border: 2px solid #c9a86a;
   border-top: 0;
   border-radius: 0 0 4px 4px;
