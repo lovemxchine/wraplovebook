@@ -1765,21 +1765,17 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 18px 16px 0 40px; /* left padding clears the spiral */
+  padding: 18px 18px 0; /* was `0 40px` on the left to clear the spiral binding, which is gone */
   scrollbar-width: none; /* the scrollbar reads as a browser chrome artifact on a paper page */
   background-image:
-    /* the punched holes the rings pass through */
-    repeating-linear-gradient(180deg, transparent 0 36px, rgba(255,255,255,0.85) 36px 45px, transparent 45px 52px),
-    /* the rings themselves */
-    repeating-linear-gradient(180deg, transparent 0 34px, #34302c 34px 47px, transparent 47px 52px),
     /* faint cream ruling, warmer than the old blue grid — closer to a real journal page */
     repeating-linear-gradient(0deg, rgba(150,120,90,0.14) 0 1px, transparent 1px 16px),
     /* paper texture/grain underneath everything */
     linear-gradient(rgba(255,252,244,0.55), rgba(255,252,244,0.55)), url('../assets/bg/image/paper.webp');
-  background-position: 17px 0, 0 0, 0 0, center;
-  background-size: 6px 52px, 26px 52px, auto, cover;
-  background-repeat: repeat-y, repeat-y, repeat, no-repeat;
-  background-attachment: local, local, local, local;
+  background-position: 0 0, center;
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
+  background-attachment: local, local;
 }
 .spread-scroll::-webkit-scrollbar { display: none; }
 .sp-heading {
@@ -1963,8 +1959,15 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .sp-entry {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  /* Exactly two entries per screenful, then scroll for the next two. Sized off
+     the viewport rather than in px so it holds on any phone; a % of the
+     scroller can't work here because .sp-entries' own height is auto, which
+     makes a percentage indefinite. svh, not vh, so the mobile URL bar
+     collapsing doesn't reflow the page mid-scroll. */
+  min-height: 44vh;
+  min-height: 44svh;
+  margin-bottom: 8px;
   /* start hidden — .in is added by the observer as the entry scrolls in */
   opacity: 0;
   transform: translateY(14px);
@@ -1976,7 +1979,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* the polaroid print */
 .sp-frame {
   flex: none;
-  width: 46%;
+  width: 50%; /* balance — wider prints squeeze .sp-words until Thai titles break badly */
   background: #fffdf8;
   padding: 5px 5px 7px;
   box-shadow: 0 3px 8px rgba(60,45,30,0.28);
@@ -1988,7 +1991,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .sp-frame .sp-img {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4; /* portrait — fills the taller row without going wide enough to squeeze .sp-words */
   object-fit: cover;
   background: #ded5c4;
 }
@@ -2066,11 +2069,15 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .chat-log { display: flex; flex-direction: column; gap: 8px; }
 
 .chat-msg {
-  max-width: 78%;
-  padding: 10px 15px 12px;
-  border-radius: 20px;
-  font-size: 0.98rem;
-  line-height: 1.45;
+  /* Sized against the typing indicator below, which is the reference: its
+     three 6px dots in 12px/14px padding make a ~32px pill, while the bubbles
+     at 0.98rem/1.45 in 10px/15px padding came out ~47px and read as a
+     different, much heavier scale next to it. */
+  max-width: 72%;
+  padding: 8px 13px 9px;
+  border-radius: 17px;
+  font-size: 0.88rem;
+  line-height: 1.4;
   box-shadow: 0 6px 18px rgba(255, 111, 160, 0.14);
   animation: chat-pop 0.28s ease;
   overflow-wrap: anywhere; /* Thai has no spaces to break at */
@@ -2085,7 +2092,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   background: var(--chat-accent);
   border: 1px solid var(--chat-accent);
   color: var(--chat-ink);
-  border-bottom-left-radius: 7px;
+  border-bottom-left-radius: 6px;
 }
 /* the recipient — right, the accent colour, because these are her words */
 .chat-msg.chat-her {
@@ -2094,7 +2101,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid var(--chat-line);
   color: var(--chat-ink);
-  border-bottom-right-radius: 7px;
+  border-bottom-right-radius: 6px;
 }
 
 /* three dots, staggered — the pause that sells it as someone typing */
@@ -2108,7 +2115,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   padding: 12px 14px;
   background: var(--chat-accent); /* matches the sender's bubble — it's the same person about to speak */
   border: 1px solid var(--chat-accent);
-  border-radius: 20px 20px 20px 7px;
+  border-radius: 17px 17px 17px 6px; /* same corner language as the bubbles */
   box-shadow: 0 6px 18px rgba(255, 111, 160, 0.14);
 }
 .chat-typing[hidden] { display: none; } /* an author display rule beats the UA [hidden] rule otherwise */
@@ -2143,9 +2150,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 .chat-option {
   width: 100%;
-  padding: 12px 16px 13px;
+  /* kept in step with .chat-msg above — the bubbles came down to 0.88rem and
+     these were left looking like the heavier element in the same conversation */
+  padding: 10px 14px 11px;
   font-family: inherit;
-  font-size: 0.96rem;
+  font-size: 0.88rem;
   line-height: 1.4;
   text-align: center;
   color: var(--chat-ink);
