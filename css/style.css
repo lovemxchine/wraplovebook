@@ -701,7 +701,7 @@ body.dev-mode .progress-dots { display: flex; }
 .quiz-option.chosen { background: var(--pink); color: #fff; } /* brief tap feedback before the next question */
 .quiz-praise {
   text-align: center;
-  font-family: 'Caveat', 'JaoCherry', cursive;
+  font-family: 'JaoTomato', 'Mali', sans-serif; /* matches step 7's .pc-note, per request */
   font-size: 1.1rem;
   line-height: 1.5;
   color: var(--purple);
