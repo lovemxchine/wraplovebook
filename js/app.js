@@ -260,14 +260,21 @@ function unlockShutter() {
     shutterSound.currentTime = 0;
   }).catch(() => {});
 }
-// The first tap anywhere is the gesture that lets audio play — use it for both
-// the shutter and the background music, so the song starts on whatever step
-// the visitor happens to land on.
-document.addEventListener('pointerdown', () => {
+// A tap is the gesture that lets audio play — use it for both the shutter and
+// the background music, so the song starts on whatever step the visitor
+// happens to land on.
+// NOT { once: true }: if the very first tap lands before basics.json has
+// loaded, DATA.song isn't there yet and the music can't start. Retrying later
+// from DATA_READY.then() doesn't work either — by then we're outside the
+// gesture, and iOS only allows playback started synchronously inside one. So
+// keep listening and try again on the NEXT tap, which is a fresh gesture, and
+// only unhook once the music has actually started.
+function onFirstGestures() {
   unlockShutter();
   unlockSwap();
-  startBgMusic();
-}, { once: true });
+  if (startBgMusic()) document.removeEventListener('pointerdown', onFirstGestures);
+}
+document.addEventListener('pointerdown', onFirstGestures);
 
 function playShutter() {
   const s = shutterSound.cloneNode(); // already cached, so no extra request
@@ -443,15 +450,15 @@ function youtubeId(url) {
 // which covers deep links like ?page=5 that never see the Step 1 tap.
 function startBgMusic() {
   const embed = document.getElementById('bg-music');
-  if (embed.dataset.started) return; // only start once
-  // Step 1 (cover) doesn't wait on DATA_READY, so the very first tap — the
-  // one that opens the envelope and is also this function's only gesture to
-  // ride along with — can land before basics.json (DATA.song) has loaded.
-  // Retry once it's actually there instead of throwing and giving up for good.
-  if (!DATA.song) { DATA_READY.then(startBgMusic); return; }
+  if (embed.dataset.started) return true; // only start once
+  // Step 1 (cover) doesn't wait on DATA_READY, so a fast first tap can land
+  // before basics.json (DATA.song) has loaded. Report the miss so the caller
+  // keeps its listener attached and tries again on the next tap — see
+  // onFirstGestures() above for why a promise-based retry can't work.
+  if (!DATA.song) return false;
   embed.dataset.started = '1';
   const id = youtubeId(DATA.song.youtubeUrl || '');
-  if (!id) return;
+  if (!id) return true; // no song configured — nothing to retry on later taps
   const start = DATA.song.startSeconds || 0;
   // loop=1 + playlist=<same id> is the documented way to loop a single youtube video.
   // enablejsapi=1 is what makes the setVolume command below reachable.
@@ -465,6 +472,7 @@ function startBgMusic() {
     event: 'command', func: 'setVolume', args: [DATA.song.volume ?? 100],
   }), 'https://www.youtube.com');
   for (let i = 1; i <= 6; i++) setTimeout(setVolume, i * 700);
+  return true;
 }
 
 // --- Voice (paused) ---
