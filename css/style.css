@@ -8,7 +8,7 @@
   src: url('../assets/fonts/JaoCherry-Thin.ttf') format('truetype');
   font-weight: 100 700;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
   /* the only weight available is Thin — its strokes read noticeably smaller
      than Caveat's at the same declared size, so bump it up here once instead
      of hand-tuning every font-size that pairs the two */
@@ -22,7 +22,7 @@
   src: url('../assets/fonts/JaoTomato-Thin.ttf') format('truetype');
   font-weight: 100 700;
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
 }
 
 /* ---- hand-drawn icon set (CSS shapes, no emoji/image assets) ---- */
