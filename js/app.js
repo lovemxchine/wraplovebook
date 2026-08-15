@@ -440,14 +440,19 @@ function closePhotoModal() {
 }
 
 // --- Background music (plays across the whole site, see DATA.song in data.js) ---
-// pulls the 11-char video id out of any youtube.com/watch?v= or youtu.be/ link
-function youtubeId(url) {
-  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
+// A self-hosted <audio> loop, same pattern as shutter.wav/swap_image.mp3 below.
+// Replaces an earlier YouTube iframe embed: that version hit YouTube's own
+// "Error 153" on this video (embedding config, not something on our end) and
+// dragged in an ad + iOS's autoplay-in-iframe restrictions on top of that —
+// this file already plays fine here, so none of that applies to it.
+//
 // Browsers block audio autoplay without a user gesture, so this can't run on
 // page load — it's wired to the first tap anywhere (see the listener below),
 // which covers deep links like ?page=5 that never see the Step 1 tap.
+const bgMusic = new Audio('assets/sounds/song.mp3');
+bgMusic.preload = 'auto';
+bgMusic.loop = true;
+
 function startBgMusic() {
   const embed = document.getElementById('bg-music');
   if (embed.dataset.started) return true; // only start once
@@ -457,21 +462,9 @@ function startBgMusic() {
   // onFirstGestures() above for why a promise-based retry can't work.
   if (!DATA.song) return false;
   embed.dataset.started = '1';
-  const id = youtubeId(DATA.song.youtubeUrl || '');
-  if (!id) return true; // no song configured — nothing to retry on later taps
-  const start = DATA.song.startSeconds || 0;
-  // loop=1 + playlist=<same id> is the documented way to loop a single youtube video.
-  // enablejsapi=1 is what makes the setVolume command below reachable.
-  embed.innerHTML = `<iframe width="1" height="1" src="https://www.youtube.com/embed/${id}?start=${start}&autoplay=1&loop=1&playlist=${id}&enablejsapi=1" title="background music" frameborder="0" allow="autoplay; encrypted-media"></iframe>`;
-
-  // The volume can only be set once the player is ready, and there's no ready
-  // callback without pulling in the whole IFrame API — so just send the command
-  // a few times over the first seconds. Extra sends after it lands are no-ops.
-  const iframe = embed.querySelector('iframe');
-  const setVolume = () => iframe.contentWindow.postMessage(JSON.stringify({
-    event: 'command', func: 'setVolume', args: [DATA.song.volume ?? 100],
-  }), 'https://www.youtube.com');
-  for (let i = 1; i <= 6; i++) setTimeout(setVolume, i * 700);
+  bgMusic.currentTime = DATA.song.startSeconds || 0;
+  bgMusic.volume = (DATA.song.volume ?? 100) / 100;
+  bgMusic.play().catch(() => {}); // never let a blocked track break the tap
   return true;
 }
 
