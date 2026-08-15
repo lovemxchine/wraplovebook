@@ -230,12 +230,16 @@ function startQuestions() {
   renderQuestion();
 }
 
+// cycles so every question gets a different corner flower — repeats if there are more questions than flowers
+const QUIZ_FLOWERS = ['assets/stickers/flower/1.webp', 'assets/stickers/flower/2.webp', 'assets/stickers/question/question2.webp'];
+
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];
   if (!q) { renderQuestionResult(); return; } // out of questions -> score summary
   document.getElementById('question-progress').textContent = `ข้อ ${questionIndex + 1} จาก ${DATA.quiz.length}`;
   document.getElementById('question-text').classList.remove('q-result');
   document.getElementById('question-text').textContent = q.question;
+  document.querySelector('.q-card-flower').src = QUIZ_FLOWERS[questionIndex % QUIZ_FLOWERS.length];
   document.getElementById('question-options').innerHTML = q.options
     .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
     .join('');
