@@ -1326,7 +1326,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 }
 .pc-photo img.empty { background: #e7e0d4; }
 /* hand-placed, deliberately uneven — an even fan reads as a gallery grid */
-.pc-photo-1 { top: 3%;  left: 2%;  width: 62%; transform: rotate(-3.5deg); z-index: 2; }
+.pc-photo-1 { top: 6%;  left: 2%;  width: 62%; transform: rotate(-3.5deg); z-index: 2; }
 .pc-photo-2 { top: 14%; left: 40%; width: 57%; transform: rotate(3deg);    z-index: 3; }
 .pc-photo-3 { top: 46%; left: 1%;  width: 48%; transform: rotate(2.5deg);  z-index: 2; }
 .pc-photo-4 { top: 66%; left: 26%; width: 66%; transform: rotate(-2deg);   z-index: 1; }
@@ -1338,16 +1338,17 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pc-sticker { position: absolute; display: block; pointer-events: none; }
 /* the star sits ON the first print's corner, like the reference — in front of
    the photos, not behind them */
-.pc-star-a { top: 0%;  left: 4%;  width: 36%; transform: rotate(-14deg); z-index: 4; }
+.pc-star-a { top: 0%;  left: 2%;  width: 45%; transform: rotate(-14deg); z-index: 4; }
 /* scribble hearts on the open paper at the top right */
-.pc-heart-a { top: 5%;  left: 70%; width: 22%; transform: rotate(8deg);   z-index: 6; }
-.pc-heart-b { top: 12%; left: 61%; width: 13%; transform: rotate(-12deg); z-index: 6; }
+.pc-heart-a { top: 7%;  left: 71%; width: 23%; transform: rotate(8deg);   z-index: 6; }
+.pc-heart-b { top: 1%;  left: 72%; width: 15%; transform: rotate(-6deg);  z-index: 6; }
+.pc-heart-e { top: 13%; left: 62%; width: 13%; transform: rotate(-14deg); z-index: 6; }
 /* the two small ones punctuate the handwriting */
 .pc-heart-c { top: 43%; left: 67%; width: 8%;  transform: rotate(14deg);  z-index: 6; }
 .pc-heart-d { top: 56%; left: 91%; width: 7%;  transform: rotate(-8deg);  z-index: 6; }
 /* buttons: on top of the prints, half-off the photo edge like real ones */
-.pc-buttons      { top: 24%; left: 79%; width: 21%; transform: rotate(6deg);   z-index: 7; }
-.pc-button-heart { top: 72%; left: 15%; width: 23%; transform: rotate(-10deg); z-index: 7; }
+.pc-buttons      { top: 20%; left: 80%; width: 21%; transform: rotate(6deg);   z-index: 7; }
+.pc-button-heart { top: 67%; left: 14%; width: 24%; transform: rotate(-10deg); z-index: 7; }
 
 /* Handwriting laid over the photos. The white band behind each line comes from
    an INLINE span: box-decoration-break: clone re-applies the background and
