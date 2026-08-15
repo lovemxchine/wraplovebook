@@ -1364,8 +1364,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
      one box means the card and the words in it cannot drift apart, and the
      padding below is what keeps the text off the wavy pink border.
      aspect-ratio comes from the asset (604x341) so the rules stay unstretched. */
-  top: 37%; left: 6%;
-  width: 89%;
+  top: 31%; left: 2%;
+  width: 95%;
   aspect-ratio: 604 / 341;
   background: url('../assets/stickers/final-decorate-page/note-card.webp') center / 100% 100% no-repeat;
   filter: drop-shadow(0 4px 10px rgba(60,45,30,0.28));
@@ -1377,10 +1377,10 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   box-sizing: border-box;
   padding: 5% 8%;
   text-align: center;
-  /* 5cqw = 17px on a phone, 20px on desktop, and the wrapped block is 138px
-     inside 144px of card — ~6px of slack, so editing ending.json a few words
-     longer still fits instead of spilling over the ruled area. */
-  font-size: 5cqw;
+  /* smaller type on a bigger card, per request: 4.3cqw = 15px phone / 17px
+     desktop, and the block now clears the card's inner height by a wide
+     margin, so a much longer message would still fit. */
+  font-size: 4.3cqw;
   line-height: 1.55;
   transform: rotate(-1deg);
 }
