@@ -254,6 +254,16 @@ function setDecor(el, src, posClass, posList) {
   el.classList.add(posClass);
 }
 
+// re-plays the .q-float-in CSS animation (see style.css) on every question change,
+// not just the first time step 4 appears — otherwise new content just pops in.
+function replayFloat() {
+  document.querySelectorAll('.step[data-step="4"] .q-float-in').forEach(el => {
+    el.classList.remove('q-float-in');
+    void el.offsetWidth; // force reflow so the browser notices the class left and re-add actually restarts it
+    el.classList.add('q-float-in');
+  });
+}
+
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];
   if (!q) { renderQuestionResult(); return; } // out of questions -> score summary
@@ -267,6 +277,7 @@ function renderQuestion() {
   document.getElementById('question-options').innerHTML = q.options
     .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
     .join('');
+  replayFloat();
 }
 
 function answerQuestion(btn) {
@@ -291,6 +302,7 @@ function renderQuestionResult() {
   document.getElementById('question-options').innerHTML =
     `<p class="quiz-praise">${questionPraise(questionScore, total)}</p>
      <button class="btn-primary" data-action="next">ไปต่อ</button>`;
+  replayFloat();
 }
 
 // --- Step 5: Gallery ---

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=fallback" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=205" />
+<link rel="stylesheet" href="css/style.css?v=206" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -163,10 +163,10 @@
        Tapping any option just advances to the next question. See
        renderQuestion()/answerQuestion() in app.js. -->
   <section class="step" data-step="4">
-    <img class="q-sticker q-sticker-mark pos-1" src="assets/stickers/question/question1.webp" alt="" />
-    <img class="q-sticker q-sticker-heart pos-2" src="assets/stickers/question/question3.webp" alt="" loading="lazy" />
-    <div class="card">
-      <img class="q-card-flower pos-1" src="assets/stickers/flower/1.webp" alt="" />
+    <img class="q-sticker q-sticker-mark pos-1 q-float-in" src="assets/stickers/question/question1.webp" alt="" style="animation-delay: 0.05s" />
+    <img class="q-sticker q-sticker-heart pos-2 q-float-in" src="assets/stickers/question/question3.webp" alt="" loading="lazy" style="animation-delay: 0.15s" />
+    <div class="card q-float-in">
+      <img class="q-card-flower pos-1 q-float-in" src="assets/stickers/flower/1.webp" alt="" style="animation-delay: 0.1s" />
       <p class="eyebrow" id="question-progress"></p>
       <h2 class="script" id="question-text"></h2>
       <div class="quiz-options" id="question-options"></div>
@@ -318,6 +318,6 @@
 
 </div>
 
-<script src="js/data.js?v=19"></script><script src="js/app.js?v=51"></script>
+<script src="js/data.js?v=19"></script><script src="js/app.js?v=52"></script>
 </body>
 </html>
