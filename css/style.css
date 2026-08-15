@@ -721,28 +721,32 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   pointer-events: none;
   z-index: 1;
-}
-.q-sticker-mark {
-  top: 4%; right: 8%;
-  width: 20%;
-  transform: rotate(12deg);
+  /* caps the tall portrait stickers (bunny, tulips) the same as the wide ones —
+     without this, "width: 20%" alone let a portrait image grow tall enough to
+     reach down into the card ("โดน block ของคำถามบัง") */
+  max-height: 100px;
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
-.q-sticker-heart {
-  bottom: 6%; left: 6%;
-  width: 26%;
-  transform: rotate(-20deg);
-  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
-}
+/* Three position variants per sticker slot, rotated per question in app.js (see
+   QUIZ_MARK_POS/QUIZ_HEART_POS) — otherwise every question puts its sticker in
+   exactly the same spot and only the picture changes ("ตำแหน่งซ้ำกันไปหมด"). */
+.q-sticker-mark.pos-1 { top: 4%; right: 8%; width: 20%; transform: rotate(12deg); }
+.q-sticker-mark.pos-2 { top: 2%; left: 8%; width: 17%; transform: rotate(-10deg); }
+.q-sticker-mark.pos-3 { top: 8%; right: 4%; width: 16%; transform: rotate(6deg); }
+.q-sticker-heart.pos-1 { bottom: 6%; left: 6%; width: 22%; transform: rotate(-20deg); }
+.q-sticker-heart.pos-2 { bottom: 4%; right: 8%; width: 18%; transform: rotate(15deg); }
+.q-sticker-heart.pos-3 { bottom: 12%; left: 12%; width: 16%; transform: rotate(-8deg); }
 /* pinned to the question card itself, corner peeking over the edge, rather
-   than floating loose on the page like .q-sticker */
+   than floating loose on the page like .q-sticker. Two variants (right/left
+   corner), rotated per question in app.js. */
 .q-card-flower {
   position: absolute;
-  top: -30px; right: -10px; /* right pulled in from -25px — at narrow phone widths (~375px) the card only has ~18px of margin to the viewport edge, so -25px pushed the flower past it into #app's overflow:hidden clip ("โดนตัด") */
+  top: -30px;
   height: 100px; width: auto; /* capped by height, not width — the animal/draw stickers are taller-than-wide, unlike the original flowers, so a fixed width let them grow tall enough to cover the question text */
   pointer-events: none;
-  transform: rotate(10deg);
 }
+.q-card-flower.pos-1 { right: -10px; transform: rotate(10deg); } /* right pulled in from -25px — at narrow phone widths (~375px) the card only has ~18px of margin to the viewport edge, so -25px pushed the flower past it into #app's overflow:hidden clip ("โดนตัด") */
+.q-card-flower.pos-2 { left: -10px; transform: rotate(-10deg); }
 /* whole step (question text AND the score summary) shares one font now — matches step 7's .pc-note, per request */
 .step[data-step="4"] .card .script { text-align: center; line-height: 1.35; margin-top: 1.1em; font-size: 1.3rem; font-family: 'JaoTomato', 'Mali', sans-serif; font-weight: 500; }
 .step[data-step="4"] .eyebrow { text-align: center; }

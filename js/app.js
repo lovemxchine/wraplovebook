@@ -238,6 +238,17 @@ function startQuestions() {
 const QUIZ_FLOWERS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/draw/tulip-purple.webp', 'assets/stickers/question/question2.webp'];
 const QUIZ_MARKS = ['assets/stickers/question/question1.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/draw/tulip-yellow.webp'];
 const QUIZ_HEARTS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/question/question3.webp', 'assets/stickers/draw/cherry.webp'];
+// position variants (see .pos-1/2/3 in style.css) — cycled independently of the images above
+// so the layout itself changes per question, not just which picture sits in a fixed spot
+const QUIZ_FLOWER_POS = ['pos-1', 'pos-2', 'pos-1'];
+const QUIZ_MARK_POS = ['pos-1', 'pos-2', 'pos-3'];
+const QUIZ_HEART_POS = ['pos-2', 'pos-3', 'pos-1'];
+
+function setDecor(el, src, posClass, posList) {
+  el.src = src;
+  posList.forEach(p => el.classList.remove(p));
+  el.classList.add(posClass);
+}
 
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];
@@ -245,9 +256,10 @@ function renderQuestion() {
   document.getElementById('question-progress').textContent = `ข้อ ${questionIndex + 1} จาก ${DATA.quiz.length}`;
   document.getElementById('question-text').classList.remove('q-result');
   document.getElementById('question-text').textContent = q.question;
-  document.querySelector('.q-card-flower').src = QUIZ_FLOWERS[questionIndex % QUIZ_FLOWERS.length];
-  document.querySelector('.q-sticker-mark').src = QUIZ_MARKS[questionIndex % QUIZ_MARKS.length];
-  document.querySelector('.q-sticker-heart').src = QUIZ_HEARTS[questionIndex % QUIZ_HEARTS.length];
+  const i = questionIndex;
+  setDecor(document.querySelector('.q-card-flower'), QUIZ_FLOWERS[i % QUIZ_FLOWERS.length], QUIZ_FLOWER_POS[i % QUIZ_FLOWER_POS.length], ['pos-1', 'pos-2']);
+  setDecor(document.querySelector('.q-sticker-mark'), QUIZ_MARKS[i % QUIZ_MARKS.length], QUIZ_MARK_POS[i % QUIZ_MARK_POS.length], ['pos-1', 'pos-2', 'pos-3']);
+  setDecor(document.querySelector('.q-sticker-heart'), QUIZ_HEARTS[i % QUIZ_HEARTS.length], QUIZ_HEART_POS[i % QUIZ_HEART_POS.length], ['pos-1', 'pos-2', 'pos-3']);
   document.getElementById('question-options').innerHTML = q.options
     .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
     .join('');
