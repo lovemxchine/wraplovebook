@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=174" />
+<link rel="stylesheet" href="css/style.css?v=176" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -262,10 +262,9 @@
       <img class="pc-sticker pc-buttons" src="assets/stickers/final-decorate-page/buttons.webp" alt="" loading="lazy" />
       <img class="pc-sticker pc-button-heart" src="assets/stickers/final-decorate-page/button-heart.webp" alt="" loading="lazy" />
 
-      <!-- the white band behind each line comes from box-decoration-break on
-           an inline span, so it follows however the text happens to wrap -->
+      <!-- the ruled note card is the .pc-note background, so the card and the
+           text it holds can never drift apart -->
       <p class="pc-hand pc-note"><span id="pc-message"></span></p>
-      <p class="pc-hand pc-date"><span id="pc-date"></span></p>
     </div>
 
     <!-- Previous layout (ruled sheet + photo-booth strip + month calendar),
@@ -310,6 +309,6 @@
 
 </div>
 
-<script src="js/data.js?v=19"></script><script src="js/app.js?v=36"></script>
+<script src="js/data.js?v=19"></script><script src="js/app.js?v=37"></script>
 </body>
 </html>

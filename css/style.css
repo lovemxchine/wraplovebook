@@ -1349,44 +1349,40 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pc-buttons      { top: 9%; left: 85%; width: 21%; transform: rotate(6deg);   z-index: 7; }
 .pc-button-heart { top: 68%; left: 14%; width: 24%; transform: rotate(-10deg); z-index: 7; }
 
-/* Handwriting laid over the photos. The white band behind each line comes from
-   an INLINE span: box-decoration-break: clone re-applies the background and
-   padding to every line fragment, so the bands follow the real wrap points
-   instead of needing one element per line. */
+/* The handwriting. It used to sit straight on the photos with a white band
+   behind each line (box-decoration-break on an inline span); it now lives on
+   the ruled note card below, which does that job better. */
 .pc-hand {
   position: absolute;
   margin: 0;
   z-index: 5;
   font-family: 'Caveat', 'JaoCherry', cursive;
   color: #2e241d;
-  /* generous, because the bands would otherwise collide — JaoCherry's tone
-     marks sit above its line box and eat into the gap. At the bigger size the
-     bands need MORE room, not less: 1.85 made them touch. */
-  line-height: 2.05;
-}
-.pc-hand span {
-  /* fully opaque, not 0.93 — the photo texture showing through the band was
-     fighting the letterforms at this size */
-  background: #fff;
-  padding: 0.08em 0.3em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
 }
 .pc-note {
-  top: 30%; left: 4%;
-  /* wider + bigger: at 66%/4.4cqw this was ~15px of Thai handwriting script,
-     which is the smallest the page gets and the hardest thing on it to read.
-     Widening first means the bigger type still wraps to the same 5 lines. */
-  width: 80%;
-  font-size: 5.4cqw;
-  transform: rotate(-1.5deg);
-}
-.pc-date {
-  top: 67%; left: 52%;
-  width: 44%;
-  font-size: 5.2cqw;
-  text-align: right;
-  transform: rotate(-2deg);
+  /* The ruled note card IS this element's background, not a separate <img>:
+     one box means the card and the words in it cannot drift apart, and the
+     padding below is what keeps the text off the wavy pink border.
+     aspect-ratio comes from the asset (604x341) so the rules stay unstretched. */
+  top: 37%; left: 6%;
+  width: 89%;
+  aspect-ratio: 604 / 341;
+  background: url('../assets/stickers/final-decorate-page/note-card.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 4px 10px rgba(60,45,30,0.28));
+  /* the text is centred as a block, so an edit that runs shorter or longer
+     stays balanced on the card instead of drifting off the rules */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 5% 8%;
+  text-align: center;
+  /* 5cqw = 17px on a phone, 20px on desktop, and the wrapped block is 138px
+     inside 144px of card — ~6px of slack, so editing ending.json a few words
+     longer still fits instead of spilling over the ruled area. */
+  font-size: 5cqw;
+  line-height: 1.55;
+  transform: rotate(-1deg);
 }
 
 /* ---- Step 8, previous layout (hidden, see index.html): ruled sheet +

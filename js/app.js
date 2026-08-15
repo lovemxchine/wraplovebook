@@ -547,14 +547,13 @@ function renderLetter() {
 }
 
 // --- Step 8: Photo Collage — four overlapping tilted prints with the closing
-// message written across them. See CONTEXT.md "Step 8 ending is a Photo
-// Collage". The paper-and-calendar layout it replaced is still below. ---
+// message written on a ruled note card laid over them. See CONTEXT.md "Step 8
+// ending is a Photo Collage". The paper-and-calendar layout it replaced is
+// still below. The met date used to be printed here too; it is the answer to
+// step 2's pin, so it was already on screen once and did not need repeating. ---
 function renderCollageEnd() {
   [1, 2, 3, 4].forEach((i) => fillPhotoSlot(document.getElementById(`pc-img-${i}`), i));
   document.getElementById('pc-message').textContent = DATA.ending.message;
-  const { day, month } = DATA.metDate || {};
-  document.getElementById('pc-date').textContent =
-    day && month ? `${day} ${THAI_MONTHS[month - 1]}` : '';
 }
 
 // An <img src> that 404s flashes the browser's broken-image icon before any
