@@ -731,7 +731,7 @@ body.dev-mode .progress-dots { display: flex; }
 .q-sticker-heart {
   bottom: 6%; left: 6%;
   width: 26%;
-  transform: rotate(-8deg);
+  transform: rotate(-20deg);
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
 /* pinned to the question card itself, corner peeking over the edge, rather
