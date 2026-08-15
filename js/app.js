@@ -233,16 +233,17 @@ function startQuestions() {
 // each question gets its own set of decorations across all 3 spots (card corner, the big
 // top-right background sticker, the bottom-left background sticker) — and which ASSET lands
 // in which spot also rotates per question, so it's not just "different picture, same place".
-// Grouped so no two same-looking stickers (e.g. two flowers) share a question where avoidable —
+// Card corner sequence is flower, cherry, flower per request. Grouped so no two
+// same-looking stickers (e.g. two flowers) share a question where avoidable —
 // only exception is Q3, forced by having 4 flower-family assets across 3 questions.
-const QUIZ_FLOWERS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/draw/tulip-purple.webp', 'assets/stickers/question/question2.webp'];
-const QUIZ_MARKS = ['assets/stickers/question/question1.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/draw/tulip-yellow.webp'];
-const QUIZ_HEARTS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/question/question3.webp', 'assets/stickers/draw/cherry.webp'];
-// position variants (see .pos-1/2/3 in style.css) — cycled independently of the images above
-// so the layout itself changes per question, not just which picture sits in a fixed spot
+const QUIZ_FLOWERS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/draw/cherry.webp', 'assets/stickers/draw/tulip-yellow.webp'];
+const QUIZ_MARKS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/question/question3.webp'];
+const QUIZ_HEARTS = ['assets/stickers/question/question1.webp', 'assets/stickers/draw/tulip-purple.webp', 'assets/stickers/question/question2.webp'];
+// position variants (see .pos-1/.pos-2 in style.css, mirrored left/right) — cycled
+// independently of the images above so the layout itself changes per question
 const QUIZ_FLOWER_POS = ['pos-1', 'pos-2', 'pos-1'];
-const QUIZ_MARK_POS = ['pos-1', 'pos-2', 'pos-3'];
-const QUIZ_HEART_POS = ['pos-2', 'pos-3', 'pos-1'];
+const QUIZ_MARK_POS = ['pos-1', 'pos-2', 'pos-1'];
+const QUIZ_HEART_POS = ['pos-2', 'pos-1', 'pos-2'];
 
 function setDecor(el, src, posClass, posList) {
   el.src = src;
@@ -258,8 +259,8 @@ function renderQuestion() {
   document.getElementById('question-text').textContent = q.question;
   const i = questionIndex;
   setDecor(document.querySelector('.q-card-flower'), QUIZ_FLOWERS[i % QUIZ_FLOWERS.length], QUIZ_FLOWER_POS[i % QUIZ_FLOWER_POS.length], ['pos-1', 'pos-2']);
-  setDecor(document.querySelector('.q-sticker-mark'), QUIZ_MARKS[i % QUIZ_MARKS.length], QUIZ_MARK_POS[i % QUIZ_MARK_POS.length], ['pos-1', 'pos-2', 'pos-3']);
-  setDecor(document.querySelector('.q-sticker-heart'), QUIZ_HEARTS[i % QUIZ_HEARTS.length], QUIZ_HEART_POS[i % QUIZ_HEART_POS.length], ['pos-1', 'pos-2', 'pos-3']);
+  setDecor(document.querySelector('.q-sticker-mark'), QUIZ_MARKS[i % QUIZ_MARKS.length], QUIZ_MARK_POS[i % QUIZ_MARK_POS.length], ['pos-1', 'pos-2']);
+  setDecor(document.querySelector('.q-sticker-heart'), QUIZ_HEARTS[i % QUIZ_HEARTS.length], QUIZ_HEART_POS[i % QUIZ_HEART_POS.length], ['pos-1', 'pos-2']);
   document.getElementById('question-options').innerHTML = q.options
     .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
     .join('');

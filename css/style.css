@@ -721,21 +721,22 @@ body.dev-mode .progress-dots { display: flex; }
   position: absolute;
   pointer-events: none;
   z-index: 1;
-  /* caps the tall portrait stickers (bunny, tulips) the same as the wide ones —
-     without this, "width: 20%" alone let a portrait image grow tall enough to
-     reach down into the card ("โดน block ของคำถามบัง") */
-  max-height: 100px;
+  /* a position:absolute image resolves width/height:auto per-axis, independently of
+     each other — so ANY two-constraint combo (width+max-height, or max-width+max-height)
+     still distorts it ("โดนบีบ"). Only a single explicit dimension is safe; the other
+     stays auto and the browser is then forced to keep the intrinsic ratio. Same pattern
+     as .q-card-flower below. */
+  height: 80px; width: auto;
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
-/* Three position variants per sticker slot, rotated per question in app.js (see
-   QUIZ_MARK_POS/QUIZ_HEART_POS) — otherwise every question puts its sticker in
-   exactly the same spot and only the picture changes ("ตำแหน่งซ้ำกันไปหมด"). */
-.q-sticker-mark.pos-1 { top: 4%; right: 8%; width: 20%; transform: rotate(12deg); }
-.q-sticker-mark.pos-2 { top: 2%; left: 8%; width: 17%; transform: rotate(-10deg); }
-.q-sticker-mark.pos-3 { top: 8%; right: 4%; width: 16%; transform: rotate(6deg); }
-.q-sticker-heart.pos-1 { bottom: 6%; left: 6%; width: 22%; transform: rotate(-20deg); }
-.q-sticker-heart.pos-2 { bottom: 4%; right: 8%; width: 18%; transform: rotate(15deg); }
-.q-sticker-heart.pos-3 { bottom: 12%; left: 12%; width: 16%; transform: rotate(-8deg); }
+/* Two position variants per sticker slot (mirrored left/right), rotated per
+   question in app.js — otherwise every question puts its sticker in exactly
+   the same spot and only the picture changes. Kept to 2, not 3: a 3rd, less
+   obvious spot was landing somewhere odd relative to the taped-note corner. */
+.q-sticker-mark.pos-1 { top: 4%; right: 8%; transform: rotate(12deg); }
+.q-sticker-mark.pos-2 { top: 4%; left: 8%; transform: rotate(-12deg); }
+.q-sticker-heart.pos-1 { bottom: 6%; left: 6%; transform: rotate(-20deg); }
+.q-sticker-heart.pos-2 { bottom: 6%; right: 6%; transform: rotate(20deg); }
 /* pinned to the question card itself, corner peeking over the edge, rather
    than floating loose on the page like .q-sticker. Two variants (right/left
    corner), rotated per question in app.js. */
