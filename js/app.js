@@ -30,7 +30,7 @@ function onEnterStep(n) {
   if (n === 5) setTimeout(() => goToStep(6), 2800); // matches .journey-text's fade animation duration
   if (n === 6) renderGallery();
   if (n === 7) renderSpread();
-  if (n === 8) renderClosingScrapbook();
+  if (n === 8) renderCollageEnd();
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -532,24 +532,36 @@ function renderLetter() {
   }, 18);
 }
 
-// --- Step 8: Closing Scrapbook — photo-booth strip (assets/photos/1-3.webp,
+// --- Step 8: Photo Collage — four overlapping tilted prints with the closing
+// message written across them. See CONTEXT.md "Step 8 ending is a Photo
+// Collage". The paper-and-calendar layout it replaced is still below. ---
+function renderCollageEnd() {
+  [1, 2, 3, 4].forEach((i) => fillPhotoSlot(document.getElementById(`pc-img-${i}`), i));
+  document.getElementById('pc-message').textContent = DATA.ending.message;
+  const { day, month } = DATA.metDate || {};
+  document.getElementById('pc-date').textContent =
+    day && month ? `${day} ${THAI_MONTHS[month - 1]}` : '';
+}
+
+// An <img src> that 404s flashes the browser's broken-image icon before any
+// onerror fires, so probe first and only set src once we know it resolves —
+// same reason renderSpread() leaves its src off entirely when there's no photo.
+function fillPhotoSlot(img, i) {
+  const probe = new Image();
+  probe.onload = () => { img.src = probe.src; };
+  probe.onerror = () => { img.classList.add('empty'); };
+  probe.src = `assets/photos/${i}.webp`;
+}
+
+// --- Step 8, previous layout: photo-booth strip (assets/photos/1-3.webp,
 // placeholder box if missing), a calendar circling DATA.metDate, and the
-// closing message (DATA.ending.message) bottom-right. Replaces the Wish
-// Jar — see CONTEXT.md "Step 8 ending is a Closing Scrapbook". ---
+// closing message bottom-right.
+// ponytail: kept, not called — its markup in index.html is `hidden` too. Swap
+// the onEnterStep(8) call back and drop that `hidden` to restore it. ---
 const THAI_MONTHS = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
   'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 function renderClosingScrapbook() {
-  [1, 2, 3].forEach((i) => {
-    const img = document.getElementById(`pb-img-${i}`);
-    // probe first — an <img src> that 404s briefly shows the browser's
-    // broken-image icon before any onerror fires; other photo slots in the
-    // site (see renderSpread()) avoid this by never setting src at all when
-    // there's no photo, so do the same here.
-    const probe = new Image();
-    probe.onload = () => { img.src = probe.src; };
-    probe.onerror = () => { img.classList.add('empty'); };
-    probe.src = `assets/photos/${i}.webp`;
-  });
+  [1, 2, 3].forEach((i) => fillPhotoSlot(document.getElementById(`pb-img-${i}`), i));
   renderCalendar();
   document.getElementById('pb-message').textContent = DATA.ending.message;
 }

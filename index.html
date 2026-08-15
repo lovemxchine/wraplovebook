@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=154" />
+<link rel="stylesheet" href="css/style.css?v=156" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -242,17 +242,33 @@
     </div>
   </section>
 
-  <!-- Step 8: Closing Scrapbook — a photo-booth strip, a calendar circling
-       DATA.metDate, a flower sticker, and the closing message
-       (DATA.ending.message) bottom-right. See renderClosingScrapbook() in
-       app.js. Replaces the Wish Jar — see CONTEXT.md "Step 8 ending is a
-       Closing Scrapbook, not a Wish Jar". -->
+  <!-- Step 8: Photo Collage — overlapping tilted prints with the closing
+       message handwritten across them, each line on its own white band.
+       See renderCollageEnd() in app.js. The paper-and-calendar layout that
+       came before it is kept below but hidden — see CONTEXT.md "Step 8 ending
+       is a Photo Collage". -->
   <section class="step scrapbook-end" data-step="8">
-    <!-- One fixed-ratio canvas that always fits inside the viewport, with every
-         piece positioned in % of IT. Same trick as Step 6's camera: the whole
-         collage scales as a unit, so nothing lands outside #app (which clips
-         overflow) on a shorter or narrower screen. -->
+    <!-- .pb-canvas: one fixed-ratio canvas that always fits inside the
+         viewport, with every piece positioned in % of IT and sized in cqw, and
+         a gutter so a rotated piece can't swing out past #app (which clips
+         overflow). Same trick as Step 6's camera. Shared by both layouts. -->
     <div class="pb-canvas">
+      <div class="pc-photo pc-photo-1"><img id="pc-img-1" alt="" loading="lazy" /></div>
+      <div class="pc-photo pc-photo-2"><img id="pc-img-2" alt="" loading="lazy" /></div>
+      <div class="pc-photo pc-photo-3"><img id="pc-img-3" alt="" loading="lazy" /></div>
+      <div class="pc-photo pc-photo-4"><img id="pc-img-4" alt="" loading="lazy" /></div>
+
+      <!-- the white band behind each line comes from box-decoration-break on
+           an inline span, so it follows however the text happens to wrap -->
+      <p class="pc-hand pc-note"><span id="pc-message"></span></p>
+      <p class="pc-hand pc-date"><span id="pc-date"></span></p>
+    </div>
+
+    <!-- Previous layout (ruled sheet + photo-booth strip + month calendar),
+         kept per request but not shown. renderClosingScrapbook() in app.js is
+         no longer called; drop the `hidden` and swap the call back to bring it
+         and its .pb-* rules in style.css back to life. -->
+    <div class="pb-canvas" hidden>
     <!-- the big ruled sheet everything else is layered onto -->
     <div class="pb-note">
       <span class="pb-tape pb-tape-note"></span>
@@ -290,6 +306,6 @@
 
 </div>
 
-<script src="js/data.js?v=19"></script><script src="js/app.js?v=32"></script>
+<script src="js/data.js?v=19"></script><script src="js/app.js?v=33"></script>
 </body>
 </html>

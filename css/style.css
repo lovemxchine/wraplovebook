@@ -1297,13 +1297,72 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    Width is capped off the viewport height too, so the ratio holds either way. */
 .pb-canvas {
   position: relative;
-  width: min(92%, calc((100vh - 12px) * 375 / 760));
-  aspect-ratio: 375 / 760; /* 375 x 760 is the ratio the composition is laid out at */
+  width: min(92%, calc((100vh - 12px) * 375 / 660));
+  aspect-ratio: 375 / 660; /* the ratio the composition actually fills */
   margin: auto;
   container-type: size; /* makes cqw below resolve against this box */
 }
 
-/* shared paper look for the three "cut out and stuck down" cards */
+/* ---- Step 8 (current): Photo Collage — overlapping tilted prints with the
+   closing message handwritten across them. Sits on .pb-canvas above, so it
+   inherits the fit-and-scale behaviour. ---- */
+.pc-photo {
+  position: absolute;
+  background: #fffdf8;
+  padding: 2.1cqw 2.1cqw 6.5cqw; /* deep bottom margin = reads as a print, not a framed image */
+  filter: drop-shadow(0 4px 10px rgba(60,45,30,0.35));
+}
+.pc-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #e7e0d4; /* placeholder tint until assets/photos/N.webp exist */
+}
+.pc-photo img.empty { background: #e7e0d4; }
+/* hand-placed, deliberately uneven — an even fan reads as a gallery grid */
+.pc-photo-1 { top: 1%;  left: 2%;  width: 62%; transform: rotate(-3.5deg); z-index: 2; }
+.pc-photo-2 { top: 14%; left: 40%; width: 57%; transform: rotate(3deg);    z-index: 3; }
+.pc-photo-3 { top: 46%; left: 1%;  width: 48%; transform: rotate(2.5deg);  z-index: 2; }
+.pc-photo-4 { top: 66%; left: 26%; width: 66%; transform: rotate(-2deg);   z-index: 1; }
+
+/* Handwriting laid over the photos. The white band behind each line comes from
+   an INLINE span: box-decoration-break: clone re-applies the background and
+   padding to every line fragment, so the bands follow the real wrap points
+   instead of needing one element per line. */
+.pc-hand {
+  position: absolute;
+  margin: 0;
+  z-index: 5;
+  font-family: 'Caveat', 'JaoCherry', cursive;
+  color: #3d2f26;
+  /* generous, because the bands would otherwise collide — JaoCherry's tone
+     marks sit above its line box and eat into the gap */
+  line-height: 2.1;
+}
+.pc-hand span {
+  background: rgba(255,255,255,0.93);
+  padding: 0.06em 0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.pc-note {
+  top: 32%; left: 4%;
+  width: 66%;
+  font-size: 4.4cqw;
+  transform: rotate(-1.5deg);
+}
+.pc-date {
+  top: 57%; left: 52%;
+  width: 44%;
+  font-size: 5.2cqw;
+  text-align: right;
+  transform: rotate(-2deg);
+}
+
+/* ---- Step 8, previous layout (hidden, see index.html): ruled sheet +
+   photo-booth strip + month calendar. ----
+   shared paper look for the three "cut out and stuck down" cards */
 .pb-note, .pb-strip, .pb-calendar, .pb-message {
   position: absolute;
   background: #fffdf8;

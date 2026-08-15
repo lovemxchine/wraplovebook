@@ -4,7 +4,7 @@ Single source of truth for architecture decisions and domain glossary for this
 project. AI-agent-agnostic — any coding agent should be able to read this file
 + README.md and be productive.
 
-Last updated: 2026-08-15 (Step 8 changed from Wish Jar to Closing Scrapbook)
+Last updated: 2026-08-15 (Step 8 changed from Closing Scrapbook to Photo Collage)
 
 ---
 
@@ -26,7 +26,7 @@ The visitor experience is a **linear, locked 8-step flow**:
 | 5 | Memory Gallery (camera) | the photo modal has been opened and closed once |
 | 6 | Questions | every question answered, then the score summary's "ไปต่อ" |
 | 7 | The notebook (scrollable photo timeline) | "ไปต่อ" at the end of the list |
-| 8 | Closing Scrapbook (photo strip, calendar, message) | — end of flow |
+| 8 | Photo Collage (overlapping prints + closing message) | — end of flow |
 
 Each step unlocks only after the previous one is completed — no skipping
 ahead. `?page=N` jumps straight to a step, for testing only.
@@ -166,7 +166,24 @@ tried and rejected ("เยอะเกินแถมไม่สวย" — to
 real sticker images go in `assets/stickers/` (separate from
 `assets/photos/`, which is reserved for the couple's actual photos).
 
-### Decision: Step 8 ending is a Closing Scrapbook, not a Wish Jar
+### Decision: Step 8 ending is a Photo Collage
+**Choice**: Step 8 is a collage of four overlapping tilted prints with the
+closing message (`DATA.ending.message`) handwritten across them — each line of
+it on its own white band — plus the met date (`DATA.metDate`) written
+alongside. Photo slots read `assets/photos/1-4.webp` and fall back to the
+site's usual no-image placeholder.
+
+**Why**: Requested directly, from a collage reference (overlapping snapshots
+with handwriting over them). Puts the couple's own photos, not stationery, at
+the centre of the last beat.
+
+**Supersedes**: the Closing Scrapbook layout below, which is kept in the repo
+but not shown — its markup is `hidden` in `index.html`, its
+`renderClosingScrapbook()` is no longer called, and its `.pb-*` rules stay in
+`style.css`. Deliberate, so it can be switched back; the shared `.pb-canvas`
+(fit-and-scale wrapper) is used by both.
+
+### Decision (superseded, kept for the record): Step 8 as a Closing Scrapbook
 **Choice**: Step 8 is a scrapbook-style collage: a photo-booth strip (3 photo
 slots from `assets/photos/`, no-image placeholders until real photos are
 dropped in — same placeholder treatment as every other photo slot in the
@@ -207,7 +224,8 @@ user to fill in later.
 | **Memory Gallery** | Step 5 — the camera screen. Tapping the camera ejects one photo per tap onto a pile; tapping the completed pile opens the Photo Viewer. |
 | **Photo Viewer** | Step 5's modal — the photos enlarged one at a time over a blurred backdrop, tapping the front one sends it to the back, looping. Opening and closing it once is what reveals the "ไปต่อ" button. |
 | **The notebook** | Step 7 — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
-| **Closing Scrapbook** | Step 8's layout — a scrapbook collage: a photo-booth strip (3 photo slots), a calendar graphic circling the date from `DATA.metDate`, and the closing message (`DATA.ending.message`) bottom-right. Replaces the earlier Wish Jar (glass jar of origami cranes) entirely. |
+| **Photo Collage** | Step 8's layout — four overlapping tilted prints with the closing message (`DATA.ending.message`) written across them, each line carrying its own white band behind it, and the met date written alongside. |
+| **Closing Scrapbook** | Step 8's *previous* layout, kept in the repo but not shown: a photo-booth strip, a calendar circling `DATA.metDate`, and the closing message on a torn scrap. Superseded by the Photo Collage. |
 
 ## Sources
 - Design reference: two mockup images provided by user (9-step and 8-step
