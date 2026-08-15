@@ -1297,7 +1297,12 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    Width is capped off the viewport height too, so the ratio holds either way. */
 .pb-canvas {
   position: relative;
-  width: min(92%, calc((100vh - 12px) * 375 / 660));
+  /* 400px cap: without it the canvas grows to fill #app (max-width 540) on
+     desktop — ~448px against a phone's ~345px, which read as oversized. The
+     cap is above every phone width (430px viewport -> 396px canvas) so it only
+     ever bites on desktop, keeping this screen the phone-width frame the rest
+     of the site is designed as. */
+  width: min(92%, calc((100vh - 12px) * 375 / 660), 400px);
   aspect-ratio: 375 / 660; /* the ratio the composition actually fills */
   margin: auto;
   container-type: size; /* makes cqw below resolve against this box */
