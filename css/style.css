@@ -1288,11 +1288,17 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    first — and every piece is sized in cqw (% of the canvas's own width) so it
    scales with the canvas instead of overflowing it. Nothing is positioned
    outside the canvas any more, so there is nothing left to clip. */
+/* The canvas is deliberately NARROWER than #app (92%), not full-bleed. Every
+   card here is rotated a few degrees for the hand-placed look, and rotating a
+   tall box swings its corners sideways by roughly height/2 * sin(angle) — for
+   the 500px-tall photo strip at 2.5deg that is ~11px, which is how the strip
+   ended up at x:-7 and got clipped even though its `left` was positive. The
+   gutter is the room for that swing, so no piece can reach #app's edge.
+   Width is capped off the viewport height too, so the ratio holds either way. */
 .pb-canvas {
   position: relative;
-  /* 375 x 760 is the ratio the composition is laid out at */
-  width: min(100%, calc(100vh * 375 / 760));
-  height: min(100%, calc(100vw * 760 / 375));
+  width: min(92%, calc((100vh - 12px) * 375 / 760));
+  aspect-ratio: 375 / 760; /* 375 x 760 is the ratio the composition is laid out at */
   margin: auto;
   container-type: size; /* makes cqw below resolve against this box */
 }
@@ -1300,15 +1306,15 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* shared paper look for the three "cut out and stuck down" cards */
 .pb-note, .pb-strip, .pb-calendar, .pb-message {
   position: absolute;
-  background: #f7ecd9;
-  filter: drop-shadow(0 6px 12px rgba(60,45,30,0.32)); /* filter, not box-shadow — masked/torn edges keep their shadow */
+  background: #fffdf8;
+  filter: drop-shadow(0 6px 12px rgba(60,45,30,0.28)); /* filter, not box-shadow — masked/torn edges keep their shadow */
 }
 
 /* the big ruled sheet everything else sits on */
 .pb-note {
   top: 5%; left: 25%;
   width: 72%; height: 56%;
-  background-image: repeating-linear-gradient(0deg, transparent 0 5.6cqw, rgba(150,120,90,0.22) 5.6cqw 5.87cqw);
+  background-image: repeating-linear-gradient(0deg, transparent 0 5.6cqw, rgba(150,120,90,0.18) 5.6cqw 5.87cqw);
   transform: rotate(1.5deg);
 }
 /* punched holes down the sheet's left edge */
@@ -1405,9 +1411,9 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  background: #d6ccbb; /* placeholder tint until assets/photos/N.webp exist */
+  background: #e7e0d4; /* placeholder tint until assets/photos/N.webp exist */
 }
-.pb-img.empty { background: #d6ccbb; }
+.pb-img.empty { background: #e7e0d4; }
 /* photo-booth strips are black and white — but only once there IS a photo,
    otherwise this greys the warm placeholder tint out to a dead slab */
 .pb-img[src] { filter: grayscale(1) contrast(1.05); }
@@ -1484,7 +1490,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   transform: rotate(-1.5deg);
   /* ruling under the text, plus a torn bottom edge. In em, so the lines stay
      locked to the text's line-height at every canvas scale. */
-  background-image: repeating-linear-gradient(0deg, transparent 0 1.73em, rgba(150,120,90,0.25) 1.73em 1.8em);
+  background-image: repeating-linear-gradient(0deg, transparent 0 1.73em, rgba(150,120,90,0.2) 1.73em 1.8em);
   background-position: 0 0.7em;
   -webkit-mask-image: radial-gradient(circle 5px at 6px 100%, transparent 5px, #000 5.5px);
   mask-image: radial-gradient(circle 5px at 6px 100%, transparent 5px, #000 5.5px);
