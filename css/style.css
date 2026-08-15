@@ -1326,10 +1326,27 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 }
 .pc-photo img.empty { background: #e7e0d4; }
 /* hand-placed, deliberately uneven — an even fan reads as a gallery grid */
-.pc-photo-1 { top: 1%;  left: 2%;  width: 62%; transform: rotate(-3.5deg); z-index: 2; }
+.pc-photo-1 { top: 5%;  left: 2%;  width: 62%; transform: rotate(-3.5deg); z-index: 2; }
 .pc-photo-2 { top: 14%; left: 40%; width: 57%; transform: rotate(3deg);    z-index: 3; }
 .pc-photo-3 { top: 46%; left: 1%;  width: 48%; transform: rotate(2.5deg);  z-index: 2; }
 .pc-photo-4 { top: 66%; left: 26%; width: 66%; transform: rotate(-2deg);   z-index: 1; }
+
+/* Stickers. Positions are hand-tuned in % of the canvas and sizes in cqw so
+   the whole arrangement scales as one unit. Every rotated piece is kept a few
+   % off the canvas edge: rotating swings the corners sideways by roughly
+   height/2 * sin(angle), and #app clips overflow. */
+.pc-sticker { position: absolute; display: block; pointer-events: none; }
+/* stars: z-index 0 = behind every print, so only a wedge shows */
+.pc-star-a { top: 0%;  left: 3%;  width: 40%; transform: rotate(-14deg); z-index: 0; }
+/* scribble hearts on the open paper at the top right */
+.pc-heart-a { top: 5%;  left: 70%; width: 22%; transform: rotate(8deg);   z-index: 6; }
+.pc-heart-b { top: 12%; left: 61%; width: 13%; transform: rotate(-12deg); z-index: 6; }
+/* the two small ones punctuate the handwriting */
+.pc-heart-c { top: 43%; left: 67%; width: 8%;  transform: rotate(14deg);  z-index: 6; }
+.pc-heart-d { top: 56%; left: 91%; width: 7%;  transform: rotate(-8deg);  z-index: 6; }
+/* buttons: on top of the prints, half-off the photo edge like real ones */
+.pc-buttons      { top: 34%; left: 78%; width: 20%; transform: rotate(6deg);   z-index: 7; }
+.pc-button-heart { top: 74%; left: 12%; width: 24%; transform: rotate(-10deg); z-index: 7; }
 
 /* Handwriting laid over the photos. The white band behind each line comes from
    an INLINE span: box-decoration-break: clone re-applies the background and
