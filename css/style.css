@@ -1369,13 +1369,13 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   aspect-ratio: 604 / 341;
   background: url('../assets/stickers/final-decorate-page/note-card.webp') center / 100% 100% no-repeat;
   filter: drop-shadow(0 4px 10px rgba(60,45,30,0.28));
-  /* the text is centred as a block, so an edit that runs shorter or longer
-     stays balanced on the card instead of drifting off the rules */
+  /* text sits toward the top of the card, per request — a longer message grows
+     downward into the empty rules instead of pushing off the top edge */
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
-  padding: 5% 8%;
+  padding: 6% 8% 2%;
   text-align: center;
   /* smaller type on a bigger card, per request: 3.7cqw = 13px phone / 15px
      desktop. Below this the Thai handwriting face stops being legible on a
