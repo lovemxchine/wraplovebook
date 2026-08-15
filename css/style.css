@@ -15,6 +15,16 @@
   size-adjust: 118%;
 }
 
+/* second Thai handwriting face, used only for the closing message (.pc-note)
+   — user supplied this one directly instead of Mali/JaoCherry. */
+@font-face {
+  font-family: 'JaoTomato';
+  src: url('../assets/fonts/JaoTomato-Thin.ttf') format('truetype');
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ---- hand-drawn icon set (CSS shapes, no emoji/image assets) ---- */
 .icon-heart {
   position: relative;
@@ -1377,16 +1387,14 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   box-sizing: border-box;
   padding: 10% 8% 4%;
   text-align: center;
-  /* Mali, not the Caveat/JaoCherry handwriting inherited from .pc-hand: this
-     message ended up the smallest text on the page, and JaoCherry's script
-     falls apart at 13px. Same call as the chat bubbles (see .chat-msg). */
-  font-family: 'Mali', sans-serif;
-  font-weight: 500;
+  /* JaoTomato, a second Thai handwriting face — user-supplied, swapped in for
+     Mali/JaoCherry after both read poorly at this message's small size. */
+  font-family: 'JaoTomato', 'Mali', sans-serif;
   /* smaller type on a bigger card, per request: 3.7cqw = 13px phone / 15px
      desktop. Below this the Thai handwriting face stops being legible on a
      phone, so treat it as the floor. */
-  font-size: 3.7cqw;
-  line-height: 2.1;
+  font-size: 4.6cqw;
+  line-height: 1.5;
   transform: rotate(-1deg);
 }
 
