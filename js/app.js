@@ -230,8 +230,8 @@ function startQuestions() {
   renderQuestion();
 }
 
-// cycles so every question gets a different corner flower — repeats if there are more questions than flowers
-const QUIZ_FLOWERS = ['assets/stickers/flower/1.webp', 'assets/stickers/flower/2.webp', 'assets/stickers/question/question2.webp'];
+// question 1 matches question 2's flower per request; question 3 stays its own
+const QUIZ_FLOWERS = ['assets/stickers/flower/2.webp', 'assets/stickers/flower/2.webp', 'assets/stickers/question/question2.webp'];
 
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];
