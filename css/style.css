@@ -1375,8 +1375,13 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
-  padding: 6% 8% 2%;
+  padding: 10% 8% 4%;
   text-align: center;
+  /* Mali, not the Caveat/JaoCherry handwriting inherited from .pc-hand: this
+     message ended up the smallest text on the page, and JaoCherry's script
+     falls apart at 13px. Same call as the chat bubbles (see .chat-msg). */
+  font-family: 'Mali', sans-serif;
+  font-weight: 500;
   /* smaller type on a bigger card, per request: 3.7cqw = 13px phone / 15px
      desktop. Below this the Thai handwriting face stops being legible on a
      phone, so treat it as the floor. */
