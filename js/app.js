@@ -234,6 +234,7 @@ function renderQuestion() {
   const q = DATA.quiz[questionIndex];
   if (!q) { renderQuestionResult(); return; } // out of questions -> score summary
   document.getElementById('question-progress').textContent = `ข้อ ${questionIndex + 1} จาก ${DATA.quiz.length}`;
+  document.getElementById('question-text').classList.remove('q-result');
   document.getElementById('question-text').textContent = q.question;
   document.getElementById('question-options').innerHTML = q.options
     .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
@@ -257,6 +258,7 @@ function questionPraise(score, total) {
 function renderQuestionResult() {
   const total = DATA.quiz.length;
   document.getElementById('question-progress').textContent = 'สรุปผล';
+  document.getElementById('question-text').classList.add('q-result');
   document.getElementById('question-text').textContent = `ตอบถูก ${questionScore} จาก ${total} ข้อ`;
   document.getElementById('question-options').innerHTML =
     `<p class="quiz-praise">${questionPraise(questionScore, total)}</p>
