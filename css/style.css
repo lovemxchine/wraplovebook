@@ -739,7 +739,7 @@ body.dev-mode .progress-dots { display: flex; }
 .q-card-flower {
   position: absolute;
   top: -30px; right: -10px; /* right pulled in from -25px — at narrow phone widths (~375px) the card only has ~18px of margin to the viewport edge, so -25px pushed the flower past it into #app's overflow:hidden clip ("โดนตัด") */
-  width: 90px;
+  height: 100px; width: auto; /* capped by height, not width — the animal/draw stickers are taller-than-wide, unlike the original flowers, so a fixed width let them grow tall enough to cover the question text */
   pointer-events: none;
   transform: rotate(10deg);
 }

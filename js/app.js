@@ -230,8 +230,8 @@ function startQuestions() {
   renderQuestion();
 }
 
-// question 1 matches question 2's flower per request; question 3 stays its own
-const QUIZ_FLOWERS = ['assets/stickers/flower/2.webp', 'assets/stickers/flower/2.webp', 'assets/stickers/question/question2.webp'];
+// each question gets its own corner decoration — animal / fruit / flower, so no two questions match
+const QUIZ_FLOWERS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/draw/cherry.webp', 'assets/stickers/draw/tulip-yellow.webp'];
 
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];
