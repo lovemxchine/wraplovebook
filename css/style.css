@@ -1377,11 +1377,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   box-sizing: border-box;
   padding: 5% 8%;
   text-align: center;
-  /* smaller type on a bigger card, per request: 4.3cqw = 15px phone / 17px
-     desktop, and the block now clears the card's inner height by a wide
-     margin, so a much longer message would still fit. */
-  font-size: 4.3cqw;
-  line-height: 1.55;
+  /* smaller type on a bigger card, per request: 3.7cqw = 13px phone / 15px
+     desktop. Below this the Thai handwriting face stops being legible on a
+     phone, so treat it as the floor. */
+  font-size: 3.7cqw;
+  line-height: 2.1;
   transform: rotate(-1deg);
 }
 
