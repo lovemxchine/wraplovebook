@@ -233,17 +233,20 @@ function startQuestions() {
 // each question gets its own set of decorations across all 3 spots (card corner, the big
 // top-right background sticker, the bottom-left background sticker) — and which ASSET lands
 // in which spot also rotates per question, so it's not just "different picture, same place".
-// Card corner sequence is flower, cherry, flower per request. Grouped so no two
-// same-looking stickers (e.g. two flowers) share a question where avoidable —
-// only exception is Q3, forced by having 4 flower-family assets across 3 questions.
-const QUIZ_FLOWERS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/draw/cherry.webp', 'assets/stickers/draw/tulip-yellow.webp'];
+// Card corner sequence is "?", cherry, pink flower per request, always on the right
+// (pos-1). Grouped so no two same-looking stickers (e.g. two flowers) share a question
+// where avoidable — only exception is Q3, forced by having 4 flower-family assets
+// across 3 questions.
+const QUIZ_FLOWERS = ['assets/stickers/question/question1.webp', 'assets/stickers/draw/cherry.webp', 'assets/stickers/question/question2.webp'];
 const QUIZ_MARKS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/question/question3.webp'];
-const QUIZ_HEARTS = ['assets/stickers/question/question1.webp', 'assets/stickers/draw/tulip-purple.webp', 'assets/stickers/question/question2.webp'];
+const QUIZ_HEARTS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/draw/tulip-purple.webp', 'assets/stickers/draw/tulip-yellow.webp'];
 // position variants (see .pos-1/.pos-2 in style.css, mirrored left/right) — cycled
-// independently of the images above so the layout itself changes per question
-const QUIZ_FLOWER_POS = ['pos-1', 'pos-2', 'pos-1'];
-const QUIZ_MARK_POS = ['pos-1', 'pos-2', 'pos-1'];
-const QUIZ_HEART_POS = ['pos-2', 'pos-1', 'pos-2'];
+// independently of the images above so the layout itself changes per question.
+// Card corner always right (pos-1). Mark (top) / heart (bottom) alternate
+// left/right each question, per request.
+const QUIZ_FLOWER_POS = ['pos-1', 'pos-1', 'pos-1'];
+const QUIZ_MARK_POS = ['pos-2', 'pos-1', 'pos-2']; // top: left, right, left
+const QUIZ_HEART_POS = ['pos-2', 'pos-1', 'pos-2']; // bottom: right, left, right (mark.pos-2=left, heart.pos-2=right)
 
 function setDecor(el, src, posClass, posList) {
   el.src = src;
