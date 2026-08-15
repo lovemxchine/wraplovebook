@@ -1184,33 +1184,19 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .btn-transparent[hidden] { display: none; } /* author `display` rules above beat the UA [hidden] rule otherwise — this was showing regardless of the hidden attribute */
 
-/* Step 6's continue link, dressed up — scoped to the id, not .btn-transparent
-   itself, since that class is shared with the retired notebook step below.
-   Handwriting font to match this screen's "ยิ้มหน่อยยย" heading (.script),
-   a soft pill so it reads as a tappable thing instead of a stray link, and a
-   slow bounce to draw the eye down to it once the photo pile is done. */
+/* Step 6's continue link — text only, per request (the pill/border/bounce
+   version read as too much). Scoped to the id, not .btn-transparent itself,
+   since that base class is shared with the retired notebook step below.
+   Handwriting font to match this screen's "ยิ้มหน่อยยย" heading (.script). */
 #gallery-continue {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   margin: 32px auto 0;
-  padding: 10px 22px;
-  border-radius: 999px;
-  background: var(--pink-light);
-  border: 1.5px solid var(--pink);
+  background: none;
+  border: none;
   color: var(--pink);
   font-family: 'Caveat', 'JaoCherry', cursive;
-  font-size: 1.35rem;
-  text-decoration: none;
-  box-shadow: 0 4px 10px rgba(122,32,37,0.15);
-  animation: gallery-continue-bounce 1.8s ease-in-out infinite;
+  font-size: 1.05rem;
 }
-#gallery-continue[hidden] { display: none; animation: none; }
-#gallery-continue::after { content: '♡'; }
-@keyframes gallery-continue-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
+#gallery-continue[hidden] { display: none; }
 
 /* Photo viewer modal — full-screen blurred backdrop, one polaroid focused
    in the middle at a time. Tapping the front card sends it to the back
