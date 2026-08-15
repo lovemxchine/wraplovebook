@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=186" />
+<link rel="stylesheet" href="css/style.css?v=187" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -112,31 +112,40 @@
     <!-- The camera is drawn in CSS (no image asset) — see .cam-* rules in
          style.css. Every part is a positioned div sized in % of .cam, so the
          whole thing scales by changing .camera-frame's width alone. -->
-    <button class="camera-frame" id="camera-trigger" data-action="reveal-photos" aria-label="ถ่ายรูป">
-      <span class="cam">
-        <span class="cam-top">
-          <span class="cam-flash-unit"></span>
-          <span class="cam-lens"><span class="cam-lens-mid"><span class="cam-lens-glass"></span></span></span>
-          <!-- the flash lives inside the top-right box, so it blinks there -->
-          <span class="cam-viewfinder"><span class="flash" id="camera-flash"></span></span>
-          <span class="cam-slider-knob"></span>
-          <span class="cam-shutter"></span>
+    <!-- .camera-wrap holds the arrow OUTSIDE .camera-frame on purpose: the
+         camera has its own idle jiggle (camera-invite), and the arrow used to
+         live inside it, so its own little "point" animation just compounded
+         with the camera's rotation and read as one blurry wiggle instead of
+         a separate pointing gesture ("มองไม่ออก"). Sibling of the button now,
+         positioned off the wrap instead of the button, so it animates on its
+         own clock. -->
+    <div class="camera-wrap">
+      <button class="camera-frame" id="camera-trigger" data-action="reveal-photos" aria-label="ถ่ายรูป">
+        <span class="cam">
+          <span class="cam-top">
+            <span class="cam-flash-unit"></span>
+            <span class="cam-lens"><span class="cam-lens-mid"><span class="cam-lens-glass"></span></span></span>
+            <!-- the flash lives inside the top-right box, so it blinks there -->
+            <span class="cam-viewfinder"><span class="flash" id="camera-flash"></span></span>
+            <span class="cam-slider-knob"></span>
+            <span class="cam-shutter"></span>
+          </span>
+          <span class="cam-bottom">
+            <span class="cam-handle"></span>
+            <span class="cam-eject"></span>
+            <span class="cam-rainbow"></span>
+          </span>
         </span>
-        <span class="cam-bottom">
-          <span class="cam-handle"></span>
-          <span class="cam-eject"></span>
-          <span class="cam-rainbow"></span>
+        <!-- small stars scattered around the camera — these stay inside the
+             button, jiggling with it, that reads fine as camera sparkle -->
+        <span class="cam-fx" aria-hidden="true">
+          <i class="cam-star cam-star-1">✦</i>
+          <i class="cam-star cam-star-2">✦</i>
+          <i class="cam-star cam-star-3">✦</i>
         </span>
-      </span>
-      <!-- curved motion arrow top-left + a few small stars scattered around
-           the camera, all jiggling on the same beat as the camera itself -->
-      <span class="cam-fx" aria-hidden="true">
-        <img class="cam-arrow" src="assets/stickers/arrow.webp" alt="" />
-        <i class="cam-star cam-star-1">✦</i>
-        <i class="cam-star cam-star-2">✦</i>
-        <i class="cam-star cam-star-3">✦</i>
-      </span>
-    </button>
+      </button>
+      <img class="cam-arrow" src="assets/stickers/arrow.webp" alt="" aria-hidden="true" />
+    </div>
     <div class="photo-stack" id="photo-stack" data-action="open-photo-modal"></div>
     <button class="btn-transparent" id="gallery-continue" data-action="next" hidden>และที่อยากจะบอกก็คือ</button>
   </section>

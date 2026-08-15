@@ -899,12 +899,17 @@ body.dev-mode .progress-dots { display: flex; }
    the page needing to scroll. */
 .step[data-step="6"] { padding-top: 48px; justify-content: flex-start; }
 .step[data-step="6"] .script { margin: 0.05em 0 0; }
-.camera-frame {
-  display: block;
-  /* matches the old camera.webp's visible size — that image was a 240px square
-     with transparent margin, so the artwork itself was only ~180px across */
+/* sizing/centering moved here from .camera-frame so .cam-arrow (now a sibling
+   of the button, see index.html) shares the same box without inheriting the
+   button's own rotate animation */
+.camera-wrap {
+  position: relative;
   width: 180px;
   margin: 34px auto 6px;
+}
+.camera-frame {
+  display: block;
+  width: 100%;
   background: none;
   border: none;
   padding: 0;
@@ -917,7 +922,7 @@ body.dev-mode .progress-dots { display: flex; }
 .camera-frame:disabled { cursor: default; animation: none; }
 
 /* idle wiggle loop — brief wiggle then a long rest, not constant */
-.camera-frame:not(:disabled) { animation: camera-invite 2.5s ease-in-out infinite; }
+/* .camera-frame:not(:disabled) { animation: camera-invite 2.5s ease-in-out infinite; } */
 .camera-frame:not(:disabled):active { animation-play-state: paused; }
 @keyframes camera-invite {
   0%, 55%, 100% { transform: rotate(0deg); }
@@ -2233,24 +2238,30 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 /* curved motion arrow, tucked close to the camera's top-right corner so its
    tip reads as pointing straight at it — arrow.webp has a white (not
-   transparent) background, multiply blends it away against the cream page */
+   transparent) background, multiply blends it away against the cream page.
+   Positioned off .camera-wrap now (a sibling of the button, not a child of
+   it) specifically so its own motion doesn't compound with the camera's
+   rotate jiggle — that combination was reading as one blurry wiggle instead
+   of a separate pointing gesture. */
 .cam-fx { position: absolute; inset: 0; pointer-events: none; }
 .cam-arrow {
   position: absolute;
-  top: -20px; right: -56px; left: auto;
+  top: -20px; right: -56px;
   width: 72px;
   mix-blend-mode: multiply;
   opacity: 0.9;
+  pointer-events: none;
 }
-/* a little poke/nod on top of the jiggle — reads as "pointing at it" rather than just shaking */
-.camera-frame:not(:disabled) .cam-arrow { animation: cam-arrow-point 2.5s ease-in-out infinite; }
-.camera-frame:not(:disabled):active .cam-arrow { animation-play-state: paused; }
-@keyframes cam-arrow-point {
-  0%, 55%, 100% { rotate: 0deg; translate: 0 0; }
-  58% { rotate: -8deg; translate: -3px 1px; }
-  61% { rotate: 5deg; translate: 1px -1px; }
-  64% { rotate: -4deg; translate: -2px 1px; }
-  67% { rotate: 0deg; translate: 0 0; }
+/* a clear side-to-side nudge toward the camera and back — "เข้าออกซ้ายขวา" per
+   request, on its own faster clock so it visibly reads as separate motion
+   even while the camera is also jiggling on its own beat. */
+.cam-arrow { 
+  animation: cam-arrow-nudge 1.3s ease-in-out infinite; 
+  z-index: 10;
+}
+@keyframes cam-arrow-nudge {
+  0%, 100% { translate: 8px 0; }
+  50% { translate: -6px 0; }
 }
 
 /* small stars scattered loosely around the camera — spaced apart so they
