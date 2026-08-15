@@ -1393,8 +1393,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   /* smaller type on a bigger card, per request: 3.7cqw = 13px phone / 15px
      desktop. Below this the Thai handwriting face stops being legible on a
      phone, so treat it as the floor. */
-  font-size: 4.6cqw;
-  line-height: 1.5;
+  font-size: 5cqw;
+  line-height: 1.4;
   transform: rotate(-1deg);
 }
 
