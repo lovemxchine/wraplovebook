@@ -61,7 +61,7 @@ function initMissionPin() {
       input.value = input.value.replace(/\D/g, '').slice(0, 1);
       updateDigitImg(input);
       document.getElementById('mission-error').hidden = true; // typing again -> hide the "wrong" warning right away
-      if (input.value && digits[i + 1]) digits[i + 1].focus();
+      if (input.value && digits[i + 1]) digits[i + 1].focus({ preventScroll: true });
       if (digits.every(d => d.value)) checkMission(digits); // last digit filled -> auto-check
     });
     input.addEventListener('keydown', (e) => {
@@ -79,7 +79,7 @@ function initMissionPin() {
         updateDigitImg(input);
         document.getElementById('mission-error').hidden = true;
       } else if (digits[i - 1]) {
-        digits[i - 1].focus();
+        digits[i - 1].focus({ preventScroll: true });
       }
     });
     // Tapping/tabbing straight into a later empty slot let you type digits
@@ -89,7 +89,7 @@ function initMissionPin() {
     // fix a typo still works).
     input.addEventListener('focus', () => {
       const firstEmptyIndex = digits.findIndex(d => !d.value);
-      if (firstEmptyIndex !== -1 && i > firstEmptyIndex) digits[firstEmptyIndex].focus();
+      if (firstEmptyIndex !== -1 && i > firstEmptyIndex) digits[firstEmptyIndex].focus({ preventScroll: true });
     });
     // If focus leaves the pin group entirely mid-entry — finger slips off the
     // slot, a stray scroll steals it, whatever — treat it the same as a wrong
@@ -144,7 +144,7 @@ function failMissionPin(digits) {
   app.classList.add('shake');
   setTimeout(() => { // keep the wrong digits visible through the shake instead of wiping instantly
     digits.forEach(d => { d.value = ''; d.nextElementSibling.style.display = 'none'; });
-    digits[0].focus();
+    digits[0].focus({ preventScroll: true });
   }, 500);
   setTimeout(() => { errEl.hidden = true; }, 1800); // toast auto-dismisses like a toast should
 }
