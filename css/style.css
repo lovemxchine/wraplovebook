@@ -742,7 +742,6 @@ body.dev-mode .progress-dots { display: flex; }
   width: 90px;
   pointer-events: none;
   transform: rotate(10deg);
-  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
 .step[data-step="4"] .card .script { text-align: center; line-height: 1.35; margin-top: 1.1em; font-size: 1.0rem; } /* extra clearance — JaoCherry's tone marks sit above the line box and were touching .eyebrow otherwise; smaller than the shared .script size because the question text runs longer than the other headings using that class */
 /* score summary only ("ตอบถูก X จาก Y ข้อ") — matches the final page's .pc-note font, see renderQuestionResult() */
