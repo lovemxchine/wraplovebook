@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=141" />
+<link rel="stylesheet" href="css/style.css?v=142" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -245,12 +245,13 @@
        app.js. Replaces the Wish Jar — see CONTEXT.md "Step 8 ending is a
        Closing Scrapbook, not a Wish Jar". -->
   <section class="step scrapbook-end" data-step="8">
+    <div class="pb-note"></div>
     <div class="pb-strip">
       <div class="pb-shot"><img class="pb-img" id="pb-img-1" alt="" /></div>
       <div class="pb-shot"><img class="pb-img" id="pb-img-2" alt="" /></div>
       <div class="pb-shot"><img class="pb-img" id="pb-img-3" alt="" /></div>
     </div>
-    <h2 class="script pb-happy">Happy</h2>
+    <h2 class="script pb-happy">Happy <span class="icon-heart"></span></h2>
     <div class="pb-calendar" id="pb-calendar">
       <span class="pb-cal-month" id="pb-cal-month"></span>
       <span class="pb-cal-day" id="pb-cal-day"></span>

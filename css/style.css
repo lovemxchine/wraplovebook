@@ -1243,14 +1243,37 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    bottom-right. See CONTEXT.md "Step 8 ending is a Closing Scrapbook". ---- */
 .scrapbook-end { padding: 20px 16px; }
 
+/* torn/lined notepad card the "Happy" heading sits on, echoing the
+   reference's handwritten-note-page layer behind the photo strip */
+.pb-note {
+  position: absolute;
+  top: 4%; left: 22%;
+  width: 60%;
+  height: 46%;
+  background:
+    repeating-linear-gradient(0deg, rgba(150,120,90,0.16) 0 1px, transparent 1px 22px),
+    #fffaf0;
+  box-shadow: 0 6px 14px rgba(60,45,30,0.25);
+  transform: rotate(5deg);
+}
+
 .pb-strip {
   position: absolute;
-  top: 8%; left: 7%;
-  width: 30%;
+  top: 10%; left: 6%;
+  width: 34%;
   background: #fffdf8;
   padding: 6px 6px 10px;
-  box-shadow: 0 6px 14px rgba(60,45,30,0.3);
-  transform: rotate(-4deg);
+  box-shadow: 0 8px 18px rgba(60,45,30,0.35);
+  transform: rotate(-6deg);
+  /* scalloped perforation edge along the left side, like a photo-booth strip */
+  mask-image: radial-gradient(circle 5px at 0 0, transparent 5px, #000 5.5px);
+  mask-repeat: repeat-y;
+  mask-position: -1px 4px;
+  mask-size: 100% 16px;
+  -webkit-mask-image: radial-gradient(circle 5px at 0 0, transparent 5px, #000 5.5px);
+  -webkit-mask-repeat: repeat-y;
+  -webkit-mask-position: -1px 4px;
+  -webkit-mask-size: 100% 16px;
 }
 .pb-shot + .pb-shot { margin-top: 6px; }
 .pb-img {
@@ -1264,31 +1287,34 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 .pb-happy {
   position: absolute;
-  top: 6%; right: 8%;
+  top: 8%; left: 30%;
   margin: 0;
-  transform: rotate(-3deg);
+  font-size: 2rem;
+  transform: rotate(-4deg);
+  z-index: 1;
 }
+.pb-happy .icon-heart { width: 0.4em; height: 0.4em; vertical-align: middle; }
 
 .pb-calendar {
   position: absolute;
-  top: 26%; right: 8%;
-  width: 42%;
+  top: 40%; right: 6%;
+  width: 46%;
   background: #fffdf8;
   border-radius: 4px;
   padding: 14px 10px;
   text-align: center;
-  box-shadow: 0 6px 14px rgba(60,45,30,0.3);
-  transform: rotate(3deg);
+  box-shadow: 0 8px 18px rgba(60,45,30,0.35);
+  transform: rotate(4deg);
 }
 .pb-cal-month {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--pink);
   font-weight: 700;
 }
 .pb-cal-day {
   display: block;
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: var(--text);
   border: 3px solid var(--pink);
@@ -1301,17 +1327,22 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 
 .pb-flower {
   position: absolute;
-  bottom: 30%; right: 4%;
-  width: 26%;
+  bottom: 26%; right: 10%;
+  width: 30%;
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
   transform: rotate(8deg);
+  z-index: 1;
 }
 
 .pb-message {
   position: absolute;
-  bottom: 6%; right: 6%;
-  width: 56%;
+  bottom: 5%; right: 6%;
+  width: 60%;
   margin: 0;
+  background: #fffdf8;
+  padding: 10px 12px;
+  box-shadow: 0 6px 14px rgba(60,45,30,0.3);
+  transform: rotate(-2deg);
   font-family: 'Caveat', 'JaoCherry', cursive;
   font-size: 0.85rem;
   line-height: 1.75; /* JaoCherry's tall tone marks need extra clearance between wrapped lines */
