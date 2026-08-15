@@ -704,8 +704,9 @@ body.dev-mode .progress-dots { display: flex; }
 .step[data-step="4"] .card { transform: rotate(-1deg); border-radius: 18px 22px 18px 24px; }
 
 /* decorative stickers — assets/stickers/question/ (torn-paper question mark,
-   hand-drawn flower). question3.webp (glow heart) skipped: its baked-in
-   vignette reads as a smudge on the light card, not used here. */
+   hand-drawn flower, paper heart). All three have clean alpha — question3's
+   apparent dark "vignette" is just its transparent background rendering dark
+   in image previews, not baked into the file. */
 .q-sticker {
   position: absolute;
   pointer-events: none;
@@ -717,24 +718,12 @@ body.dev-mode .progress-dots { display: flex; }
   transform: rotate(12deg);
   filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
-/* L O V E as separate paper cut-outs, each tilted its own way so the word
-   reads as four scraps stuck down by hand rather than one printed label */
-.q-love-letters {
+.q-sticker-heart {
   bottom: 6%; left: 6%;
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  transform: rotate(-4deg);
+  width: 26%;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
 }
-.q-love-letters img {
-  height: 34px;
-  width: auto;
-  filter: drop-shadow(0 3px 6px rgba(60,45,30,0.3));
-}
-.q-love-letters img:nth-child(1) { transform: rotate(-7deg); }
-.q-love-letters img:nth-child(2) { transform: rotate(5deg) translateY(-2px); }
-.q-love-letters img:nth-child(3) { transform: rotate(-4deg) translateY(1px); }
-.q-love-letters img:nth-child(4) { transform: rotate(8deg) translateY(-1px); }
 /* pinned to the question card itself, corner peeking over the edge, rather
    than floating loose on the page like .q-sticker */
 .q-card-flower {
