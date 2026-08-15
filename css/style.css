@@ -1269,116 +1269,234 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   color: var(--text);
 }
 
-/* ---- Step 8 (current): Closing Scrapbook — photo-booth strip, a calendar
-   circling DATA.metDate, a flower sticker, and the closing message
-   bottom-right. See CONTEXT.md "Step 8 ending is a Closing Scrapbook". ---- */
-.scrapbook-end { padding: 20px 16px; }
+/* ---- Step 8 (current): Closing Scrapbook — a ruled sheet with a photo-booth
+   strip, a month calendar circling DATA.metDate, a flower and the closing
+   message layered over it. See CONTEXT.md "Step 8 ending is a Closing
+   Scrapbook". Every piece is absolutely positioned in % of the step, so the
+   whole collage scales with the viewport rather than breaking apart. ---- */
+.scrapbook-end { padding: 0; }
 
-/* torn/lined notepad card the "Happy" heading sits on, echoing the
-   reference's handwritten-note-page layer behind the photo strip */
+/* shared paper look for the three "cut out and stuck down" cards */
+.pb-note, .pb-strip, .pb-calendar, .pb-message {
+  position: absolute;
+  background: #f7ecd9;
+  filter: drop-shadow(0 6px 12px rgba(60,45,30,0.32)); /* filter, not box-shadow — masked/torn edges keep their shadow */
+}
+
+/* the big ruled sheet everything else sits on */
 .pb-note {
-  position: absolute;
-  top: 4%; left: 22%;
-  width: 60%;
-  height: 46%;
-  background:
-    repeating-linear-gradient(0deg, rgba(150,120,90,0.16) 0 1px, transparent 1px 22px),
-    #fffaf0;
-  box-shadow: 0 6px 14px rgba(60,45,30,0.25);
-  transform: rotate(5deg);
+  top: 5%; left: 25%;
+  width: 72%; height: 56%;
+  background-image: repeating-linear-gradient(0deg, transparent 0 21px, rgba(150,120,90,0.22) 21px 22px);
+  transform: rotate(1.5deg);
 }
+/* punched holes down the sheet's left edge */
+.pb-punch {
+  position: absolute;
+  left: 7px;
+  width: 7px; height: 9px;
+  border-radius: 2px;
+  background: rgba(90,60,45,0.55);
+}
+.pb-punch:nth-of-type(1) { top: 7%; }
+.pb-punch:nth-of-type(2) { top: 12%; }
+.pb-punch:nth-of-type(3) { top: 17%; }
 
-.pb-strip {
+/* washi tape holding a card down */
+.pb-tape {
   position: absolute;
-  top: 10%; left: 6%;
-  width: 34%;
-  background: #fffdf8;
-  padding: 6px 6px 10px;
-  box-shadow: 0 8px 18px rgba(60,45,30,0.35);
-  transform: rotate(-6deg);
-  /* scalloped perforation edge along the left side, like a photo-booth strip */
-  mask-image: radial-gradient(circle 5px at 0 0, transparent 5px, #000 5.5px);
-  mask-repeat: repeat-y;
-  mask-position: -1px 4px;
-  mask-size: 100% 16px;
-  -webkit-mask-image: radial-gradient(circle 5px at 0 0, transparent 5px, #000 5.5px);
-  -webkit-mask-repeat: repeat-y;
-  -webkit-mask-position: -1px 4px;
-  -webkit-mask-size: 100% 16px;
+  width: 54px; height: 20px;
+  background: repeating-linear-gradient(135deg, rgba(196,164,116,0.55) 0 5px, rgba(226,202,160,0.55) 5px 10px);
 }
-.pb-shot + .pb-shot { margin-top: 6px; }
-.pb-img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  background: #ded5c4; /* placeholder tint until assets/photos/N.webp exist */
-}
-.pb-img.empty { background: #ded5c4; }
+.pb-tape-note { top: -10px; left: 32%; transform: rotate(-2deg); }
+.pb-tape-cal  { top: -9px; left: 18%; transform: rotate(-6deg); }
 
 .pb-happy {
   position: absolute;
-  top: 8%; left: 30%;
+  top: 8%; left: 14%;
   margin: 0;
-  font-size: 2rem;
-  transform: rotate(-4deg);
-  z-index: 1;
+  font-family: 'Yellowtail', cursive; /* already loaded — no extra font request for one heading */
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--pink);
 }
-.pb-happy .icon-heart { width: 0.4em; height: 0.4em; vertical-align: middle; }
-
-.pb-calendar {
+/* CSS-drawn hearts, same construction as .icon-heart */
+.pb-heart-solid, .pb-heart-doodle {
+  position: relative;
+  display: inline-block;
+  width: 1em; height: 0.9em;
+  color: var(--pink);
+  vertical-align: -0.05em;
+}
+.pb-heart-solid::before, .pb-heart-solid::after,
+.pb-heart-doodle::before, .pb-heart-doodle::after {
+  content: "";
   position: absolute;
-  top: 40%; right: 6%;
-  width: 46%;
-  background: #fffdf8;
-  border-radius: 4px;
-  padding: 14px 10px;
+  top: 0; left: 0.5em;
+  width: 0.5em; height: 0.8em;
+  background: currentColor;
+  border-radius: 0.5em 0.5em 0 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+.pb-heart-solid::after, .pb-heart-doodle::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+/* the loose heart doodled on the sheet's right side */
+.pb-heart-doodle {
+  position: absolute;
+  top: 19%; right: 13%;
+  font-size: 22px;
+  opacity: 0.5;
+  transform: rotate(-10deg);
+}
+
+/* --- photo-booth strip --- */
+.pb-strip {
+  top: 16%; left: 1%;
+  width: 35%;
+  padding: 7px 6px 5px;
   text-align: center;
-  box-shadow: 0 8px 18px rgba(60,45,30,0.35);
-  transform: rotate(4deg);
+  transform: rotate(-2.5deg);
+  /* perforated edge down BOTH sides — two mask layers intersected, so each
+     side keeps its own row of bites out of the paper */
+  -webkit-mask-image:
+    radial-gradient(circle 4px at 0 8px, transparent 4px, #000 4.5px),
+    radial-gradient(circle 4px at 100% 8px, transparent 4px, #000 4.5px);
+  mask-image:
+    radial-gradient(circle 4px at 0 8px, transparent 4px, #000 4.5px),
+    radial-gradient(circle 4px at 100% 8px, transparent 4px, #000 4.5px);
+  -webkit-mask-size: 100% 16px;
+  mask-size: 100% 16px;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.pb-strip-top, .pb-strip-bottom {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif; /* system serif — nothing new to download */
+  color: var(--text);
+}
+.pb-strip-top { font-size: 0.6rem; letter-spacing: 0.02em; padding: 2px 0 6px; }
+.pb-strip-bottom { font-size: 0.85rem; font-weight: 700; padding: 6px 0 2px; }
+.pb-shot + .pb-shot { margin-top: 5px; }
+.pb-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #d6ccbb; /* placeholder tint until assets/photos/N.webp exist */
+}
+.pb-img.empty { background: #d6ccbb; }
+/* photo-booth strips are black and white — but only once there IS a photo,
+   otherwise this greys the warm placeholder tint out to a dead slab */
+.pb-img[src] { filter: grayscale(1) contrast(1.05); }
+/* the little heart tucked beside the strip's bottom caption */
+.pb-heart-strip {
+  position: absolute;
+  bottom: 20.5%; left: 33%;
+  font-size: 16px;
+  transform: rotate(9deg);
+  z-index: 2;
+}
+
+/* --- calendar --- */
+.pb-calendar {
+  top: 42%; right: 1%;
+  width: 54%;
+  padding: 12px 10px 14px;
+  text-align: center;
+  transform: rotate(-1deg);
+}
+.pb-cal-year {
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif; /* system serif — nothing new to download */
+  font-size: 0.6rem;
+  color: var(--text);
 }
 .pb-cal-month {
   display: block;
-  font-size: 0.9rem;
-  color: var(--pink);
-  font-weight: 700;
-}
-.pb-cal-day {
-  display: block;
-  font-size: 2.6rem;
-  font-weight: 700;
+  font-family: Georgia, 'Times New Roman', serif; /* system serif — nothing new to download */
+  font-size: 1.1rem;
   color: var(--text);
-  border: 3px solid var(--pink);
+  margin-bottom: 6px;
+}
+.pb-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px 0;
+  font-size: 0.5rem;
+  color: var(--text);
+}
+.pb-cal-head { opacity: 0.65; padding-bottom: 3px; }
+.pb-cal-cell {
+  /* square-ish cells so the circled date's ring lands on the number, not
+     an oval around it */
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pb-cal-cell.is-met {
+  background: var(--pink);
+  color: #fff;
   border-radius: 50%;
-  width: 1.7em;
-  height: 1.7em;
-  line-height: 1.7em;
-  margin: 4px auto 0;
+  font-weight: 700;
 }
 
 .pb-flower {
   position: absolute;
-  bottom: 26%; right: 10%;
-  width: 30%;
-  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
-  transform: rotate(8deg);
+  bottom: 13%; right: -5%;
+  width: 33%;
+  /* the reference's flowers are dried/bleached — desaturating the daffodil
+     asset gets it into the same washed-out family as the paper */
+  filter: sepia(0.45) saturate(0.5) brightness(1.05) drop-shadow(0 5px 9px rgba(60,45,30,0.3));
+  transform: rotate(6deg);
   z-index: 1;
 }
 
+/* --- the closing message, on its own torn-off scrap --- */
 .pb-message {
-  position: absolute;
-  bottom: 5%; right: 6%;
-  width: 60%;
+  bottom: 2%; left: 19%;
+  width: 64%;
+  padding: 14px 14px 16px 24px;
+  transform: rotate(-1.5deg);
+  /* ruling under the text, plus a torn bottom edge */
+  background-image: repeating-linear-gradient(0deg, transparent 0 25px, rgba(150,120,90,0.25) 25px 26px);
+  background-position: 0 10px;
+  -webkit-mask-image: radial-gradient(circle 5px at 6px 100%, transparent 5px, #000 5.5px);
+  mask-image: radial-gradient(circle 5px at 6px 100%, transparent 5px, #000 5.5px);
+  -webkit-mask-size: 12px 100%;
+  mask-size: 12px 100%;
+  -webkit-mask-repeat: repeat-x;
+  mask-repeat: repeat-x;
+  z-index: 2;
+}
+.pb-message-text {
   margin: 0;
-  background: #fffdf8;
-  padding: 10px 12px;
-  box-shadow: 0 6px 14px rgba(60,45,30,0.3);
-  transform: rotate(-2deg);
   font-family: 'Caveat', 'JaoCherry', cursive;
-  font-size: 0.85rem;
-  line-height: 1.75; /* JaoCherry's tall tone marks need extra clearance between wrapped lines */
-  text-align: right;
+  font-size: 0.9rem;
+  line-height: 26px; /* matches the ruling above so the text sits ON the lines */
+  text-align: center;
   color: var(--text);
+}
+/* paperclip on the scrap's left edge */
+.pb-clip {
+  position: absolute;
+  top: 12px; left: -3px;
+  width: 11px; height: 34px;
+  border: 2px solid #c9a86a;
+  border-radius: 6px;
+  transform: rotate(-6deg);
+  z-index: 3;
+}
+.pb-clip::before {
+  content: "";
+  position: absolute;
+  top: 5px; left: 1px;
+  width: 5px; height: 22px;
+  border: 2px solid #c9a86a;
+  border-top: 0;
+  border-radius: 0 0 4px 4px;
 }
 
 /* ---- Step 8 (dead, kept per CONTEXT.md — was the Wish Jar): glass jar of

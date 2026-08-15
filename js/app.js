@@ -550,10 +550,29 @@ function renderClosingScrapbook() {
     probe.onerror = () => { img.classList.add('empty'); };
     probe.src = `assets/photos/${i}.webp`;
   });
-  const { day, month } = DATA.metDate || {};
-  document.getElementById('pb-cal-month').textContent = month ? THAI_MONTHS[month - 1] : '';
-  document.getElementById('pb-cal-day').textContent = day || '';
+  renderCalendar();
   document.getElementById('pb-message').textContent = DATA.ending.message;
+}
+
+// A real month grid with the met-date circled, not just the date on its own.
+// metDate.year is Buddhist (2569), so -543 to get the CE year Date() wants.
+function renderCalendar() {
+  const grid = document.getElementById('pb-cal-grid');
+  const { day, month, year } = DATA.metDate || {};
+  if (!day || !month || !year) { grid.innerHTML = ''; return; }
+  const ce = year - 543;
+  document.getElementById('pb-cal-year').textContent = year;
+  document.getElementById('pb-cal-month').textContent = THAI_MONTHS[month - 1];
+
+  const cells = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส']
+    .map((d) => `<span class="pb-cal-head">${d}</span>`);
+  const firstWeekday = new Date(ce, month - 1, 1).getDay();
+  const daysInMonth = new Date(ce, month, 0).getDate(); // day 0 of next month = last of this one
+  for (let i = 0; i < firstWeekday; i++) cells.push('<span></span>');
+  for (let d = 1; d <= daysInMonth; d++) {
+    cells.push(`<span class="pb-cal-cell${d === day ? ' is-met' : ''}">${d}</span>`);
+  }
+  grid.innerHTML = cells.join('');
 }
 
 // --- background floating shapes (decorative, all steps) ---

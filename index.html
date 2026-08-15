@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=145" />
+<link rel="stylesheet" href="css/style.css?v=149" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
      The number/*.png digits are preloaded from app.js (see preloadDigits). -->
@@ -248,23 +248,42 @@
        app.js. Replaces the Wish Jar — see CONTEXT.md "Step 8 ending is a
        Closing Scrapbook, not a Wish Jar". -->
   <section class="step scrapbook-end" data-step="8">
-    <div class="pb-note"></div>
+    <!-- the big ruled sheet everything else is layered onto -->
+    <div class="pb-note">
+      <span class="pb-tape pb-tape-note"></span>
+      <span class="pb-punch"></span><span class="pb-punch"></span><span class="pb-punch"></span>
+      <h2 class="pb-happy">Happy <span class="pb-heart-solid"></span></h2>
+      <span class="pb-heart-doodle"></span>
+    </div>
+
+    <!-- photo-booth strip: scalloped both edges, captioned top and bottom -->
     <div class="pb-strip">
-      <div class="pb-shot"><img class="pb-img" id="pb-img-1" alt="" /></div>
-      <div class="pb-shot"><img class="pb-img" id="pb-img-2" alt="" /></div>
-      <div class="pb-shot"><img class="pb-img" id="pb-img-3" alt="" /></div>
+      <p class="pb-strip-top">A Box Of Memories</p>
+      <div class="pb-shot"><img class="pb-img" id="pb-img-1" alt="" loading="lazy" /></div>
+      <div class="pb-shot"><img class="pb-img" id="pb-img-2" alt="" loading="lazy" /></div>
+      <div class="pb-shot"><img class="pb-img" id="pb-img-3" alt="" loading="lazy" /></div>
+      <p class="pb-strip-bottom">Ourbox</p>
     </div>
-    <h2 class="script pb-happy">Happy <span class="icon-heart"></span></h2>
-    <div class="pb-calendar" id="pb-calendar">
+    <span class="pb-heart-solid pb-heart-strip"></span>
+
+    <!-- month grid, the met-date circled — filled by renderClosingScrapbook() -->
+    <div class="pb-calendar">
+      <span class="pb-tape pb-tape-cal"></span>
+      <span class="pb-cal-year" id="pb-cal-year"></span>
       <span class="pb-cal-month" id="pb-cal-month"></span>
-      <span class="pb-cal-day" id="pb-cal-day"></span>
+      <div class="pb-cal-grid" id="pb-cal-grid"></div>
     </div>
-    <img class="pb-flower" src="assets/stickers/flower/1.webp" alt="" />
-    <p class="pb-message" id="pb-message"></p>
+
+    <img class="pb-flower" src="assets/stickers/flower/1.webp" alt="" loading="lazy" />
+
+    <div class="pb-message">
+      <span class="pb-clip"></span>
+      <p class="pb-message-text" id="pb-message"></p>
+    </div>
   </section>
 
 </div>
 
-<script src="js/data.js?v=19"></script><script src="js/app.js?v=31"></script>
+<script src="js/data.js?v=19"></script><script src="js/app.js?v=32"></script>
 </body>
 </html>
