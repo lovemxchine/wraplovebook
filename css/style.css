@@ -1238,10 +1238,90 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   color: var(--text);
 }
 
-/* ---- Step 8: the Wish Jar — glass jar of paper cranes, tap the jar to
-   open it, tap each crane to reveal its message. Replaces the old
-   letter+closing-note scrapbook spread (see CONTEXT.md). ---- */
-.step[data-step="8"] { padding: 20px 16px; gap: 8px; }
+/* ---- Step 8 (current): Closing Scrapbook — photo-booth strip, a calendar
+   circling DATA.metDate, a flower sticker, and the closing message
+   bottom-right. See CONTEXT.md "Step 8 ending is a Closing Scrapbook". ---- */
+.scrapbook-end { padding: 20px 16px; }
+
+.pb-strip {
+  position: absolute;
+  top: 8%; left: 7%;
+  width: 30%;
+  background: #fffdf8;
+  padding: 6px 6px 10px;
+  box-shadow: 0 6px 14px rgba(60,45,30,0.3);
+  transform: rotate(-4deg);
+}
+.pb-shot + .pb-shot { margin-top: 6px; }
+.pb-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: #ded5c4; /* placeholder tint until assets/photos/N.webp exist */
+}
+.pb-img.empty { background: #ded5c4; }
+
+.pb-happy {
+  position: absolute;
+  top: 6%; right: 8%;
+  margin: 0;
+  transform: rotate(-3deg);
+}
+
+.pb-calendar {
+  position: absolute;
+  top: 26%; right: 8%;
+  width: 42%;
+  background: #fffdf8;
+  border-radius: 4px;
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(60,45,30,0.3);
+  transform: rotate(3deg);
+}
+.pb-cal-month {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--pink);
+  font-weight: 700;
+}
+.pb-cal-day {
+  display: block;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text);
+  border: 3px solid var(--pink);
+  border-radius: 50%;
+  width: 1.7em;
+  height: 1.7em;
+  line-height: 1.7em;
+  margin: 4px auto 0;
+}
+
+.pb-flower {
+  position: absolute;
+  bottom: 30%; right: 4%;
+  width: 26%;
+  filter: drop-shadow(0 4px 8px rgba(60,45,30,0.25));
+  transform: rotate(8deg);
+}
+
+.pb-message {
+  position: absolute;
+  bottom: 6%; right: 6%;
+  width: 56%;
+  margin: 0;
+  font-family: 'Caveat', 'JaoCherry', cursive;
+  font-size: 0.85rem;
+  line-height: 1.75; /* JaoCherry's tall tone marks need extra clearance between wrapped lines */
+  text-align: right;
+  color: var(--text);
+}
+
+/* ---- Step 8 (dead, kept per CONTEXT.md — was the Wish Jar): glass jar of
+   paper cranes, tap the jar to open it, tap each crane to reveal its
+   message. Unused since Step 8 became the Closing Scrapbook above. ---- */
 .wish-jar {
   position: relative;
   width: min(52vw, 190px);

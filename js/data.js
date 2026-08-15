@@ -7,8 +7,9 @@
 // a tiny server (`python3 -m http.server`), same as production (Cloudflare
 // Pages already serves over https).
 let DATA = {
-  // dead fields, kept only so any leftover reference doesn't throw — see
-  // CONTEXT.md "Step 8 ending is a Wish Jar, not a letter+note spread"
+  // letter/voiceMessage: dead fields, kept only so any leftover reference
+  // doesn't throw — see CONTEXT.md "Step 8 ending is a Closing Scrapbook,
+  // not a Wish Jar". ending: used by Step 8, loaded from ending.json below.
   letter: { to: "", body: "", from: "" },
   ending: { message: "" },
   voiceMessage: { from: "", src: "" },
@@ -22,6 +23,7 @@ const DATA_SOURCES = [
   { file: 'camera.json', key: 'photos' },
   { file: 'timeline.json', key: 'timeline' },
   { file: 'wishes.json', key: 'wishes' },
+  { file: 'ending.json', key: 'ending' },
 ];
 
 // ?lang=en tries user_data/en/<file> first and falls back to the default

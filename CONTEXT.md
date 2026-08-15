@@ -4,7 +4,7 @@ Single source of truth for architecture decisions and domain glossary for this
 project. AI-agent-agnostic — any coding agent should be able to read this file
 + README.md and be productive.
 
-Last updated: 2026-08-07 (Chat added as Step 3, Questions moved after the camera — 8 steps)
+Last updated: 2026-08-15 (Step 8 changed from Wish Jar to Closing Scrapbook)
 
 ---
 
@@ -26,7 +26,7 @@ The visitor experience is a **linear, locked 8-step flow**:
 | 5 | Memory Gallery (camera) | the photo modal has been opened and closed once |
 | 6 | Questions | every question answered, then the score summary's "ไปต่อ" |
 | 7 | The notebook (scrollable photo timeline) | "ไปต่อ" at the end of the list |
-| 8 | The Wish Jar (glass jar of origami cranes) | — end of flow |
+| 8 | Closing Scrapbook (photo strip, calendar, message) | — end of flow |
 
 Each step unlocks only after the previous one is completed — no skipping
 ahead. `?page=N` jumps straight to a step, for testing only.
@@ -166,18 +166,30 @@ tried and rejected ("เยอะเกินแถมไม่สวย" — to
 real sticker images go in `assets/stickers/` (separate from
 `assets/photos/`, which is reserved for the couple's actual photos).
 
-### Decision: Step 8 ending is a Wish Jar, not a letter+note spread
-**Choice**: Step 8 is a glass jar of origami cranes. Tapping opens the jar;
-tapping each crane one at a time reveals one of 4-5 short blessing messages.
-This replaces the scrapbook letter+closing-note layout entirely — not added
-alongside it, not a new step before it (rejected a 9-step version).
-`DATA.letter` (the handwritten body) is not used by this layout.
+### Decision: Step 8 ending is a Closing Scrapbook, not a Wish Jar
+**Choice**: Step 8 is a scrapbook-style collage: a photo-booth strip (3 photo
+slots from `assets/photos/`, no-image placeholders until real photos are
+dropped in — same placeholder treatment as every other photo slot in the
+site), a calendar graphic circling the date from `DATA.metDate` (the same
+field Step 2's pin already uses; shows no circled date if `metDate` is
+blank), and the closing message (`DATA.ending.message`) placed bottom-right.
+This replaces the Wish Jar (glass jar of origami cranes) entirely — one
+ending beat, not two stacked ones. `DATA.letter` (the `to`/`body`/`from`
+triptych) stays unused; `ending.message`'s single free-text shape is the
+closer match for one message box.
 
-**Why**: One ending beat lands harder than two stacked ones (jar + full
-letter would dilute the payoff). Resolved via `/grill-with-docs`, 2026-08-14.
+**Why**: Superseded by explicit user request for a scrapbook-collage ending
+(Pinterest-style layout reference: photo strip, "Happy" script, calendar,
+flower, torn-paper shapes on a dark maroon background). Per the existing
+"CSS-recreated now, real assets later" decision, this is rebuilt as original
+CSS/layout matching the *feeling* of the reference — the reference image
+itself (a real Pinterest post by another creator) is never copied,
+screenshotted, or shipped in the repo. Resolved via `/grill-with-docs`,
+2026-08-15.
 
-**Trade-offs accepted**: The letter-writing feature (`DATA.letter`,
-`renderLetter()`) becomes dead code unless repurposed elsewhere later.
+**Trade-offs accepted**: The Wish Jar (`renderWishJar()`, `.wish-jar`/`.wj-*`
+CSS) becomes dead code unless repurposed elsewhere later — same fate the
+letter+note layout had before it.
 
 ### Decision: Content is placeholder for now
 **Choice**: No real photos yet (no-image placeholders). All text fields
@@ -195,7 +207,7 @@ user to fill in later.
 | **Memory Gallery** | Step 5 — the camera screen. Tapping the camera ejects one photo per tap onto a pile; tapping the completed pile opens the Photo Viewer. |
 | **Photo Viewer** | Step 5's modal — the photos enlarged one at a time over a blurred backdrop, tapping the front one sends it to the back, looping. Opening and closing it once is what reveals the "ไปต่อ" button. |
 | **The notebook** | Step 7 — grid paper with a spiral binding, holding the relationship's milestones as a photo timeline: one polaroid per entry with its words beside it, sides alternating. About three entries fill the page and the rest arrive on scroll. The only screen in the flow that scrolls, and it scrolls inside its own box (`.spread-scroll`), never the page — html/body lock scrolling site-wide. Entries fade in via IntersectionObserver; the "ไปต่อ" button is the last item in the scroller, so reaching it means having scrolled the lot. Merged from what were two separate steps (a fixed photo collage and a plain timeline). |
-| **Wish Jar** | Step 8's layout — a glass jar of folded paper cranes (origami). Tapping the jar opens it; the recipient then taps each crane one at a time to reveal a blessing/well-wish message (4-5 total, anniversary/thank-you tone). Replaces the earlier "Scrapbook spread" (letter + closing note) entirely — the handwritten `DATA.letter` body is not carried over into this layout. |
+| **Closing Scrapbook** | Step 8's layout — a scrapbook collage: a photo-booth strip (3 photo slots), a calendar graphic circling the date from `DATA.metDate`, and the closing message (`DATA.ending.message`) bottom-right. Replaces the earlier Wish Jar (glass jar of origami cranes) entirely. |
 
 ## Sources
 - Design reference: two mockup images provided by user (9-step and 8-step

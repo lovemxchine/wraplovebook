@@ -30,7 +30,7 @@ function onEnterStep(n) {
   if (n === 5) setTimeout(() => goToStep(6), 2800); // matches .journey-text's fade animation duration
   if (n === 6) renderGallery();
   if (n === 7) renderSpread();
-  if (n === 8) renderWishJar();
+  if (n === 8) renderClosingScrapbook();
   // renderVoice() is paused along with the step-5-voice markup in index.html — not called in the active flow.
 }
 
@@ -532,26 +532,28 @@ function renderLetter() {
   }, 18);
 }
 
-// --- Step 6: Ending (shown together with the letter) ---
-// ponytail: unused since Step 8 became the Wish Jar (see CONTEXT.md) — kept
-// in case the letter content gets repurposed later.
-function renderEnding() {
-  document.getElementById('ending-message').textContent = DATA.ending.message;
-}
-
-// --- Step 8: Wish Jar — one paper crane per DATA.wishes entry. Tapping the
-// jar (data-action="open-jar") flies them out into a small scattered fan;
-// tapping a crane (data-action="reveal-wish") reveals its message. ---
-const WISH_BIRDS = ['bird-1.webp', 'bird-2.webp', 'bird-3.webp', 'bird-4.webp', 'bird-5.webp', 'bird-6.webp'];
-function renderWishJar() {
-  const wrap = document.getElementById('wj-cranes');
-  if (wrap.dataset.rendered) return; // built once — re-entering the step shouldn't reshuffle/reset it
-  wrap.dataset.rendered = '1';
-  wrap.innerHTML = DATA.wishes.map((msg, i) => `
-    <button class="wj-crane" data-action="reveal-wish" style="--i:${i}; --flip:${i % 2 ? -1 : 1}">
-      <img src="assets/stickers/paper-bird/${WISH_BIRDS[i % WISH_BIRDS.length]}" alt="" />
-      <span class="wj-msg">${msg}</span>
-    </button>`).join('');
+// --- Step 8: Closing Scrapbook — photo-booth strip (assets/photos/1-3.webp,
+// placeholder box if missing), a calendar circling DATA.metDate, and the
+// closing message (DATA.ending.message) bottom-right. Replaces the Wish
+// Jar — see CONTEXT.md "Step 8 ending is a Closing Scrapbook". ---
+const THAI_MONTHS = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+  'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+function renderClosingScrapbook() {
+  [1, 2, 3].forEach((i) => {
+    const img = document.getElementById(`pb-img-${i}`);
+    // probe first — an <img src> that 404s briefly shows the browser's
+    // broken-image icon before any onerror fires; other photo slots in the
+    // site (see renderSpread()) avoid this by never setting src at all when
+    // there's no photo, so do the same here.
+    const probe = new Image();
+    probe.onload = () => { img.src = probe.src; };
+    probe.onerror = () => { img.classList.add('empty'); };
+    probe.src = `assets/photos/${i}.webp`;
+  });
+  const { day, month } = DATA.metDate || {};
+  document.getElementById('pb-cal-month').textContent = month ? THAI_MONTHS[month - 1] : '';
+  document.getElementById('pb-cal-day').textContent = day || '';
+  document.getElementById('pb-message').textContent = DATA.ending.message;
 }
 
 // --- background floating shapes (decorative, all steps) ---
