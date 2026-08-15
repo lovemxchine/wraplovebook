@@ -230,12 +230,14 @@ function startQuestions() {
   renderQuestion();
 }
 
-// each question gets its own set of decorations — card corner, top-right background sticker,
-// bottom-left background sticker — so the whole page looks different question to question,
-// not just the card. All 9 slots below use a different asset.
-const QUIZ_FLOWERS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/draw/cherry.webp', 'assets/stickers/draw/tulip-yellow.webp'];
-const QUIZ_MARKS = ['assets/stickers/question/question1.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/draw/tulip-purple.webp'];
-const QUIZ_HEARTS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/question/question3.webp', 'assets/stickers/question/question2.webp'];
+// each question gets its own set of decorations across all 3 spots (card corner, the big
+// top-right background sticker, the bottom-left background sticker) — and which ASSET lands
+// in which spot also rotates per question, so it's not just "different picture, same place".
+// Grouped so no two same-looking stickers (e.g. two flowers) share a question where avoidable —
+// only exception is Q3, forced by having 4 flower-family assets across 3 questions.
+const QUIZ_FLOWERS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/draw/tulip-purple.webp', 'assets/stickers/question/question2.webp'];
+const QUIZ_MARKS = ['assets/stickers/question/question1.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/draw/tulip-yellow.webp'];
+const QUIZ_HEARTS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/question/question3.webp', 'assets/stickers/draw/cherry.webp'];
 
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];

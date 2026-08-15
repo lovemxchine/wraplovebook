@@ -743,9 +743,8 @@ body.dev-mode .progress-dots { display: flex; }
   pointer-events: none;
   transform: rotate(10deg);
 }
-.step[data-step="4"] .card .script { text-align: center; line-height: 1.35; margin-top: 1.1em; font-size: 1.0rem; } /* extra clearance — JaoCherry's tone marks sit above the line box and were touching .eyebrow otherwise; smaller than the shared .script size because the question text runs longer than the other headings using that class */
-/* score summary only ("ตอบถูก X จาก Y ข้อ") — matches the final page's .pc-note font, see renderQuestionResult() */
-.step[data-step="4"] .card .script.q-result { font-family: 'JaoTomato', 'Mali', sans-serif; }
+/* whole step (question text AND the score summary) shares one font now — matches step 7's .pc-note, per request */
+.step[data-step="4"] .card .script { text-align: center; line-height: 1.35; margin-top: 1.1em; font-size: 1.3rem; font-family: 'JaoTomato', 'Mali', sans-serif; font-weight: 500; }
 .step[data-step="4"] .eyebrow { text-align: center; }
 .quiz-option {
   box-shadow: 0 3px 0 rgba(122,32,37,0.08);
