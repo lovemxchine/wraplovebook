@@ -230,8 +230,12 @@ function startQuestions() {
   renderQuestion();
 }
 
-// each question gets its own corner decoration — animal / fruit / flower, so no two questions match
+// each question gets its own set of decorations — card corner, top-right background sticker,
+// bottom-left background sticker — so the whole page looks different question to question,
+// not just the card. All 9 slots below use a different asset.
 const QUIZ_FLOWERS = ['assets/stickers/animal/bunny.webp', 'assets/stickers/draw/cherry.webp', 'assets/stickers/draw/tulip-yellow.webp'];
+const QUIZ_MARKS = ['assets/stickers/question/question1.webp', 'assets/stickers/animal/dog.webp', 'assets/stickers/draw/tulip-purple.webp'];
+const QUIZ_HEARTS = ['assets/stickers/draw/tulip-red.webp', 'assets/stickers/question/question3.webp', 'assets/stickers/question/question2.webp'];
 
 function renderQuestion() {
   const q = DATA.quiz[questionIndex];
@@ -240,6 +244,8 @@ function renderQuestion() {
   document.getElementById('question-text').classList.remove('q-result');
   document.getElementById('question-text').textContent = q.question;
   document.querySelector('.q-card-flower').src = QUIZ_FLOWERS[questionIndex % QUIZ_FLOWERS.length];
+  document.querySelector('.q-sticker-mark').src = QUIZ_MARKS[questionIndex % QUIZ_MARKS.length];
+  document.querySelector('.q-sticker-heart').src = QUIZ_HEARTS[questionIndex % QUIZ_HEARTS.length];
   document.getElementById('question-options').innerHTML = q.options
     .map((opt, i) => `<button class="quiz-option" data-action="answer-question" data-index="${i}">${opt}</button>`)
     .join('');
