@@ -1338,17 +1338,16 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pc-sticker { position: absolute; display: block; pointer-events: none; }
 /* the star sits ON the first print's corner, like the reference — in front of
    the photos, not behind them */
-.pc-star-a { top: 0%;  left: 2%;  width: 45%; transform: rotate(-14deg); z-index: 4; }
+.pc-star-a { top: -8%;  left: -10%;  width: 40%; transform: rotate(-14deg); z-index: 4; }
 /* scribble hearts on the open paper at the top right */
-.pc-heart-a { top: 7%;  left: 71%; width: 23%; transform: rotate(8deg);   z-index: 6; }
-.pc-heart-b { top: 1%;  left: 72%; width: 15%; transform: rotate(-6deg);  z-index: 6; }
-.pc-heart-e { top: 13%; left: 62%; width: 13%; transform: rotate(-14deg); z-index: 6; }
+.pc-heart-a { top: -11%;  left: 71%; width: 14%; transform: rotate(8deg);   z-index: 6; }
+.pc-heart-e { top: -3%; left: 66%; width: 8%; transform: rotate(-14deg); z-index: 6; }
+.pc-heart-b { top: 0%;  left: 76%; width: 7%; transform: rotate(-6deg);  z-index: 6; }
 /* the two small ones punctuate the handwriting */
-.pc-heart-c { top: 43%; left: 67%; width: 8%;  transform: rotate(14deg);  z-index: 6; }
-.pc-heart-d { top: 56%; left: 91%; width: 7%;  transform: rotate(-8deg);  z-index: 6; }
+
 /* buttons: on top of the prints, half-off the photo edge like real ones */
-.pc-buttons      { top: 20%; left: 80%; width: 21%; transform: rotate(6deg);   z-index: 7; }
-.pc-button-heart { top: 67%; left: 14%; width: 24%; transform: rotate(-10deg); z-index: 7; }
+.pc-buttons      { top: 9%; left: 85%; width: 21%; transform: rotate(6deg);   z-index: 7; }
+.pc-button-heart { top: 68%; left: 14%; width: 24%; transform: rotate(-10deg); z-index: 7; }
 
 /* Handwriting laid over the photos. The white band behind each line comes from
    an INLINE span: box-decoration-break: clone re-applies the background and
@@ -1359,25 +1358,31 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   margin: 0;
   z-index: 5;
   font-family: 'Caveat', 'JaoCherry', cursive;
-  color: #3d2f26;
+  color: #2e241d;
   /* generous, because the bands would otherwise collide — JaoCherry's tone
-     marks sit above its line box and eat into the gap */
-  line-height: 2.1;
+     marks sit above its line box and eat into the gap. At the bigger size the
+     bands need MORE room, not less: 1.85 made them touch. */
+  line-height: 2.05;
 }
 .pc-hand span {
-  background: rgba(255,255,255,0.93);
-  padding: 0.06em 0.3em;
+  /* fully opaque, not 0.93 — the photo texture showing through the band was
+     fighting the letterforms at this size */
+  background: #fff;
+  padding: 0.08em 0.3em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 .pc-note {
-  top: 32%; left: 4%;
-  width: 66%;
-  font-size: 4.4cqw;
+  top: 30%; left: 4%;
+  /* wider + bigger: at 66%/4.4cqw this was ~15px of Thai handwriting script,
+     which is the smallest the page gets and the hardest thing on it to read.
+     Widening first means the bigger type still wraps to the same 5 lines. */
+  width: 84%;
+  font-size: 6cqw;
   transform: rotate(-1.5deg);
 }
 .pc-date {
-  top: 57%; left: 52%;
+  top: 67%; left: 52%;
   width: 44%;
   font-size: 5.2cqw;
   text-align: right;
