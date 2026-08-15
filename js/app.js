@@ -76,6 +76,19 @@ function initMissionPin() {
       const firstEmptyIndex = digits.findIndex(d => !d.value);
       if (firstEmptyIndex !== -1 && i > firstEmptyIndex) digits[firstEmptyIndex].focus();
     });
+    // If focus leaves the pin group entirely mid-entry — finger slips off the
+    // slot, a stray scroll steals it, whatever — treat it the same as a wrong
+    // guess: clear + shake, instead of leaving a half-filled pin sitting
+    // there. The 0ms timeout lets the *next* focus land first, so tabbing/
+    // auto-advancing between slots (still inside the group) doesn't trip this.
+    input.addEventListener('blur', () => {
+      setTimeout(() => {
+        const stillInGroup = digits.includes(document.activeElement);
+        const allFilled = digits.every(d => d.value);
+        const startedTyping = digits.some(d => d.value);
+        if (!stillInGroup && !allFilled && startedTyping) failMissionPin(digits);
+      }, 0);
+    });
   });
 }
 
@@ -93,25 +106,32 @@ function resetMissionPin() {
 
 function checkMission(digits) {
   const entered = digits.map(d => d.value).join('');
-  const errEl = document.getElementById('mission-error');
   if (entered === missionPinAnswer()) {
-    errEl.hidden = true;
+    document.getElementById('mission-error').hidden = true;
     digits.forEach(d => d.blur()); // drop focus so the 6th digit's image + caret aren't fighting for attention
     const successEl = document.getElementById('mission-success');
     successEl.hidden = false;
     setTimeout(() => { successEl.hidden = true; goToStep(3); }, 1200); // let all 6 digits + "ถูกต้อง" actually be seen before advancing — mission is step 2, hands off to step 3 (chat)
   } else {
-    errEl.hidden = false;
-    const app = document.getElementById('app'); // shake the whole screen, not just the card — feels more "wrong"
-    app.classList.remove('shake');
-    void app.offsetWidth; // restart animation
-    app.classList.add('shake');
-    setTimeout(() => { // keep the wrong digits visible through the shake instead of wiping instantly
-      digits.forEach(d => { d.value = ''; d.nextElementSibling.style.display = 'none'; });
-      digits[0].focus();
-    }, 500);
-    setTimeout(() => { errEl.hidden = true; }, 1800); // toast auto-dismisses like a toast should
+    failMissionPin(digits);
   }
+}
+
+// Shared "wrong" reaction: shake + clear + re-focus slot 1, with the error
+// toast. Used both for a wrong 6-digit guess and for focus abandoning the pin
+// group mid-entry (see the blur listener in initMissionPin).
+function failMissionPin(digits) {
+  const errEl = document.getElementById('mission-error');
+  errEl.hidden = false;
+  const app = document.getElementById('app'); // shake the whole screen, not just the card — feels more "wrong"
+  app.classList.remove('shake');
+  void app.offsetWidth; // restart animation
+  app.classList.add('shake');
+  setTimeout(() => { // keep the wrong digits visible through the shake instead of wiping instantly
+    digits.forEach(d => { d.value = ''; d.nextElementSibling.style.display = 'none'; });
+    digits[0].focus();
+  }, 500);
+  setTimeout(() => { errEl.hidden = true; }, 1800); // toast auto-dismisses like a toast should
 }
 
 // --- Step 3: Chat ---
