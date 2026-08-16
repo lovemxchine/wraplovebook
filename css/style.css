@@ -1271,7 +1271,7 @@ body.dev-mode .progress-dots { display: flex; }
    handwritten note under the photo */
 .photo-modal-stack .photo-caption {
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 12px; right: 12px;
   text-align: center;
   font-family: 'Caveat', cursive;
@@ -1408,7 +1408,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
      one box means the card and the words in it cannot drift apart, and the
      padding below is what keeps the text off the wavy pink border.
      aspect-ratio comes from the asset (604x341) so the rules stay unstretched. */
-  top: 31%; left: 2%;
+  top: 29%; left: 2%;
   width: 95%;
   aspect-ratio: 604 / 341;
   background: url('../assets/stickers/final-decorate-page/note-card.webp') center / 100% 100% no-repeat;
@@ -1419,7 +1419,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
-  padding: 10% 8% 4%;
+  padding: 6% 8% 4%;
   text-align: center;
   /* JaoTomato, a second Thai handwriting face — user-supplied, swapped in for
      Mali/JaoCherry after both read poorly at this message's small size. */
@@ -1428,7 +1428,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
      desktop. Below this the Thai handwriting face stops being legible on a
      phone, so treat it as the floor. */
   font-size: 5cqw;
-  line-height: 1.4;
+  line-height: 1.3;
   transform: rotate(-1deg);
 }
 
