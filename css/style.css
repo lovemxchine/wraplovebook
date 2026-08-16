@@ -1268,10 +1268,17 @@ body.dev-mode .progress-dots { display: flex; }
 }
 .photo-modal-stack .photo-slot.front { cursor: pointer; }
 /* caption text sits in the polaroid's own white bottom margin, like a
-   handwritten note under the photo */
+   handwritten note under the photo. Anchored from the TOP of the caption
+   strip (not bottom) so line 1 lands at the same spot for every photo —
+   bottom-anchoring made 1-line captions sit lower and 2-line captions push
+   their first line up, so the top edge never matched across photos. */
 .photo-modal-stack .photo-caption {
   position: absolute;
-  bottom: 0;
+  /* .photo-slot reserves a fixed 64px strip below the photo (padding-bottom
+     above) — anchor the caption's TOP 6px into that strip, not its bottom,
+     so line 1 always lands here regardless of whether the caption wraps to
+     1 or 2 lines. */
+  top: calc(100% - 58px);
   left: 12px; right: 12px;
   text-align: center;
   font-family: 'Caveat', cursive;
