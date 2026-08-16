@@ -1394,9 +1394,9 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    the photos, not behind them */
 .pc-star-a { top: -12%; left: -10%; width: 36%; transform: rotate(-14deg); z-index: 4; } /* moved up + to the left side */
 /* scribble hearts on the open paper at the top right */
-.pc-heart-a { top: -17%; left: 71%; width: 14%; transform: rotate(8deg);   z-index: 6; }
-.pc-heart-e { top: -9%; left: 66%; width: 8%; transform: rotate(-14deg); z-index: 6; }
-.pc-heart-b { top: -6%;  left: 76%; width: 7%; transform: rotate(-6deg);  z-index: 6; }
+.pc-heart-a { top: -9%; left: 71%; width: 14%; transform: rotate(8deg);   z-index: 6; }
+.pc-heart-e { top: -1%; left: 66%; width: 8%; transform: rotate(-14deg); z-index: 6; }
+.pc-heart-b { top: 2%;  left: 76%; width: 7%; transform: rotate(-6deg);  z-index: 6; }
 /* the two small ones punctuate the handwriting */
 
 /* buttons: on top of the prints, half-off the photo edge like real ones */
@@ -1406,7 +1406,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pc-flower-3 { top: 68%;  left: 83%;  width: 24%; transform: rotate(10deg); z-index: 2; } /* other-color flower — top of the bottom-right photo */
 .pc-camera-2 { top: 85%; left: -4%;  width: 32%; transform: rotate(-8deg); z-index: 7; } /* nudged up + right */
 .pc-clip { top: 25%; left: 88%; width: 12%; transform: rotate(80deg); z-index: 7; } /* turned near-horizontal/diagonal so it sits along the note's top edge instead of hanging down across the text */
-.pc-arrow-text { top: 92%; left: 55%; width: 34%; transform: rotate(-6deg); z-index: 7; } /* combined luv-you-with-hearts-and-bow sticker, replaces the separate arrow + text */
+.pc-arrow-text { top: 90%; left: 55%; width: 34%; transform: rotate(-6deg); z-index: 7; } /* combined luv-you-with-hearts-and-bow sticker, replaces the separate arrow + text */
 /* extra bottom-left heart, per reference mockup */
 .pc-heart-c { top: 80%; left: -6%; width: 12%; transform: rotate(-10deg); z-index: 7; }
 
