@@ -1278,7 +1278,7 @@ body.dev-mode .progress-dots { display: flex; }
      above) — anchor the caption's TOP 6px into that strip, not its bottom,
      so line 1 always lands here regardless of whether the caption wraps to
      1 or 2 lines. */
-  top: calc(100% - 58px);
+  top: calc(100% - 62px);
   left: 12px; right: 12px;
   text-align: center;
   font-family: 'Caveat', cursive;
