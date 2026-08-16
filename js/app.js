@@ -523,6 +523,7 @@ function closePhotoModal() {
   setTimeout(() => { modal.hidden = true; }, 250); // matches .photo-modal's opacity transition
   galleryModalOpened = true;
   document.getElementById('gallery-continue').hidden = false;
+  document.getElementById('photo-stack').classList.add('viewed'); // modal only opens once every pile photo is out, so closing it unblurs them all
 }
 
 // --- Background music (plays across the whole site, see DATA.song in data.js) ---

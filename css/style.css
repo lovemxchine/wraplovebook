@@ -1188,6 +1188,8 @@ body.dev-mode .progress-dots { display: flex; }
   color: #c48;
 }
 .photo-stack .photo-inner img, .photo-modal-stack .photo-inner img { width: 100%; height: 100%; object-fit: cover; }
+.photo-stack .photo-inner img { filter: blur(6px); } /* stays blurred on the pile until opened in the modal viewer */
+#photo-stack.viewed .photo-inner img { filter: none; } /* modal was closed at least once — unblur the pile too */
 
 /* transparent text-only "continue" affordance — only shown after the photo
    modal has been opened & closed at least once, see closePhotoModal() */
@@ -1278,13 +1280,14 @@ body.dev-mode .progress-dots { display: flex; }
      above) — anchor the caption's TOP 6px into that strip, not its bottom,
      so line 1 always lands here regardless of whether the caption wraps to
      1 or 2 lines. */
-  top: calc(100% - 62px);
+  top: calc(100% - 72px);
   left: 12px; right: 12px;
   text-align: center;
-  font-family: 'Caveat', cursive;
+  font-family: 'JaoTomato', 'Mali', sans-serif;
+  /* font-family: 'Caveat', cursive; */
   font-size: 1rem;
   line-height: 1.35;
-  color: #c48;
+  color: #6b4a35;
 }
 
 /* #bg-music — persistent background-music iframe, lives outside #app in
@@ -1379,7 +1382,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* hand-placed, deliberately uneven — an even fan reads as a gallery grid */
 .pc-photo-1 { top: 6%;  left: 2%;  width: 62%; transform: rotate(-3.5deg); z-index: 2; }
 .pc-photo-2 { top: 14%; left: 40%; width: 57%; transform: rotate(3deg);    z-index: 3; }
-.pc-photo-3 { top: 46%; left: 1%;  width: 48%; transform: rotate(2.5deg);  z-index: 2; }
+.pc-photo-3 { top: 60%; left: 3%;  width: 40%; transform: rotate(2.5deg);  z-index: 2; } /* moved down + shrunk so it mostly clears .pc-note's bottom edge (28.5%-68.9%) instead of covering the note's text or sitting fully hidden under it */
 .pc-photo-4 { top: 66%; left: 26%; width: 66%; transform: rotate(-2deg);   z-index: 1; }
 
 /* Stickers. Positions are hand-tuned in % of the canvas and sizes in cqw so
@@ -1399,6 +1402,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 /* buttons: on top of the prints, half-off the photo edge like real ones */
 .pc-buttons      { top: 9%; left: 85%; width: 21%; transform: rotate(6deg);   z-index: 7; }
 .pc-button-heart { top: 68%; left: 14%; width: 24%; transform: rotate(-10deg); z-index: 7; }
+/* bottom-left corner, per request — sits behind the last print like the star does for the first */
+.pc-flower-a { top: 72%; left: -14%; width: 30%; transform: rotate(10deg); z-index: 1; }
 
 /* The handwriting. It used to sit straight on the photos with a white band
    behind each line (box-decoration-break on an inline span); it now lives on
@@ -1414,10 +1419,10 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   /* The ruled note card IS this element's background, not a separate <img>:
      one box means the card and the words in it cannot drift apart, and the
      padding below is what keeps the text off the wavy pink border.
-     aspect-ratio comes from the asset (604x341) so the rules stay unstretched. */
-  top: 29%; left: 2%;
-  width: 95%;
-  aspect-ratio: 604 / 341;
+     aspect-ratio comes from the asset (1536x1024) so the rules stay unstretched. */
+  top: 29%; left: -2%;
+  width: 104%;
+  aspect-ratio: 1536 / 1024;
   background: url('../assets/stickers/final-decorate-page/note-card.webp') center / 100% 100% no-repeat;
   filter: drop-shadow(0 4px 10px rgba(60,45,30,0.28));
   /* text sits toward the top of the card, per request — a longer message grows
@@ -1426,7 +1431,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   align-items: flex-start;
   justify-content: center;
   box-sizing: border-box;
-  padding: 6% 8% 4%;
+  padding: 9% 11% 7%;
   text-align: center;
   /* JaoTomato, a second Thai handwriting face — user-supplied, swapped in for
      Mali/JaoCherry after both read poorly at this message's small size. */
@@ -1438,6 +1443,22 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   line-height: 1.3;
   transform: rotate(-1deg);
 }
+
+/* Washi tape — CSS-drawn (no matching asset in the project yet), small
+   half-transparent strips pinning a couple of the prints down like the
+   reference. Kept plain/solid rather than a busy pattern so it reads as
+   tape, not another sticker competing with the photos themselves. */
+.pc-tape {
+  position: absolute;
+  z-index: 8;
+  width: 14cqw;
+  height: 6cqw;
+  opacity: 0.75;
+  box-shadow: 0 2px 4px rgba(60,45,30,0.15);
+}
+.pc-tape-1 { top: -2.5cqw; right: 6cqw; background: #f3c9d6; transform: rotate(-8deg); }
+.pc-tape-2 { top: -2.5cqw; left: 8cqw; background: #cdd3ef; transform: rotate(6deg); }
+.pc-tape-4 { top: -2.5cqw; right: 10cqw; background: #f3c9d6; transform: rotate(5deg); }
 
 /* ---- Step 8, previous layout (hidden, see index.html): ruled sheet +
    photo-booth strip + month calendar. ----
