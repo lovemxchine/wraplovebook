@@ -1392,7 +1392,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
 .pc-sticker { position: absolute; display: block; pointer-events: none; }
 /* the star sits ON the first print's corner, like the reference — in front of
    the photos, not behind them */
-.pc-star-a { top: -14%; left: -10%; width: 36%; transform: rotate(-14deg); z-index: 4; } /* moved up + to the left side */
+.pc-star-a { top: -12%; left: -10%; width: 36%; transform: rotate(-14deg); z-index: 4; } /* moved up + to the left side */
 /* scribble hearts on the open paper at the top right */
 .pc-heart-a { top: -17%; left: 71%; width: 14%; transform: rotate(8deg);   z-index: 6; }
 .pc-heart-e { top: -9%; left: 66%; width: 8%; transform: rotate(-14deg); z-index: 6; }
@@ -1461,7 +1461,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
   box-shadow: 0 2px 4px rgba(60,45,30,0.15);
 }
 .pc-tape-1 { top: -2.5cqw; right: 6cqw; background: #f3c9d6; transform: rotate(-8deg); }
-.pc-tape-2 { top: -2.5cqw; left: 8cqw; background: #cdd3ef; transform: rotate(6deg); }
+.pc-tape-2 { top: -2.5cqw; left: 28cqw; background: #cdd3ef; transform: rotate(6deg); }
 .pc-tape-4 { top: -2.5cqw; right: 26cqw; background: #f3c9d6; transform: rotate(5deg); }
 
 /* ---- Step 8, previous layout (hidden, see index.html): ruled sheet +
@@ -2161,6 +2161,9 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--pink); border-radius:
    scrolling site-wide); the replies sit under it in a fixed row, the way a
    keyboard would. */
 .step[data-step="3"] { padding: 20px 10px 14px; justify-content: flex-start; }
+
+/* ponytail: bigger frame just for the chat step, via :has instead of a JS-toggled class */
+body:has(.step[data-step="3"].active) #app { max-width: 640px; }
 
 .chat-scroll {
   flex: 1;
