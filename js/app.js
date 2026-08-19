@@ -776,10 +776,6 @@ document.addEventListener('click', (e) => {
 // The digit images are only assigned on keypress, so without this the first
 // tap of each number waits on a network/disk fetch — that's the "pin slot
 // feels laggy while typing". Warm all ten into cache up front.
-function preloadDigits() {
-  for (let i = 0; i <= 9; i++) new Image().src = `assets/number/${i}.webp`;
-}
-preloadDigits();
 initMissionPin();
 // ?page=N jumps straight to step N (testing/sharing a specific step), clamped to valid range.
 // The old ?page=7-1 hook is gone with the notebook step it belonged to — it did

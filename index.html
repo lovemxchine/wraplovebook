@@ -7,15 +7,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Caveat:wght@600;700&family=Yellowtail&family=Charmonman:wght@400;700&family=Itim&display=fallback" rel="stylesheet" />
-<link rel="stylesheet" href="css/style.css?v=211" />
+<link rel="stylesheet" href="css/style.css?v=212" />
 <!-- the background + the two biggest step images: fetched up front so they're
      already cached by the time their step appears, instead of popping in late.
-     The number/*.png digits are preloaded from app.js (see preloadDigits). -->
+     The number digits are preloaded here too — 40KB total, and the PIN is step 2,
+     so waiting for app.js to request them made them visibly pop in on mobile. -->
 <link rel="preload" as="image" href="assets/bg/image/paper-2.webp" />
 <link rel="preload" as="image" href="assets/stickers/pin-slot.webp" />
 <link rel="preload" as="image" href="assets/stickers/letter/close.webp" />
 <link rel="preload" as="image" href="assets/stickers/letter/back.webp" />
 <link rel="preload" as="image" href="assets/stickers/letter/front.webp" />
+<link rel="preload" as="image" href="assets/number/0.webp" />
+<link rel="preload" as="image" href="assets/number/1.webp" />
+<link rel="preload" as="image" href="assets/number/2.webp" />
+<link rel="preload" as="image" href="assets/number/3.webp" />
+<link rel="preload" as="image" href="assets/number/4.webp" />
+<link rel="preload" as="image" href="assets/number/5.webp" />
+<link rel="preload" as="image" href="assets/number/6.webp" />
+<link rel="preload" as="image" href="assets/number/7.webp" />
+<link rel="preload" as="image" href="assets/number/8.webp" />
+<link rel="preload" as="image" href="assets/number/9.webp" />
 </head>
 <body>
 <!-- background music, lives outside #app so it survives every step change — see startBgMusic() in app.js -->
@@ -323,6 +334,6 @@
 
 </div>
 
-<script src="js/data.js?v=19"></script><script src="js/app.js?v=52"></script>
+<script src="js/data.js?v=19"></script><script src="js/app.js?v=53"></script>
 </body>
 </html>

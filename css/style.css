@@ -809,9 +809,10 @@ body.dev-mode .progress-dots { display: flex; }
 .pin-slot {
   position: absolute;
   transform: translateX(-50%);
-  /* pencil sticker as the cursor, tilted 135deg so the tip points down-right
-     like it's actually writing on the paper piece — hotspot near the tip */
-  cursor: url('../assets/stickers/pencil-cursor-135.webp') 42 41, text;
+  /* ponytail: the pencil-cursor asset was deleted in aa3ce0b but this url()
+     stayed, so every PIN load spent a request on a 404 before falling back.
+     Plain text cursor now — restore the url() only if the asset comes back. */
+  cursor: text;
 }
 /* Each slot's left/top/height/width/tilt is measured off its own piece in
    pin-slot.png (center x, writable-paper y-range) — not one uniform row,
