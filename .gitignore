@@ -1,5 +1,6 @@
 .DS_Store
 # per-customer copies (deploy-customer.sh) — each contains a real
-# customer's personal data in js/data.js, never commit these
+# customer's personal data in user_data/*.json, never commit these
 deploys/
+customer-data/
 
