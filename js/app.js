@@ -462,6 +462,18 @@ function revealNextPhoto() {
 // starts as the most-recently-revealed one (same one on top of the pile),
 // tapping it sends it to the back and loops.
 let modalOrder = []; // card elements, index 0 = front, rest = peeking out behind in order
+let modalSeen = 0;   // how many cards have been cycled to the back this session
+let modalIdleTimer = null;
+
+// Once every photo has had its turn at the front, close the modal on its own
+// if the reader stops tapping — they're done, and the continue button below
+// is what they need next. Any further tap re-arms it, so a slow reader who
+// keeps looping never gets yanked out mid-tap.
+const MODAL_IDLE_MS = 3000;
+function armModalAutoClose() {
+  clearTimeout(modalIdleTimer);
+  modalIdleTimer = setTimeout(closePhotoModal, MODAL_IDLE_MS);
+}
 
 function openPhotoModal() {
   const photos = galleryPhotoList();
@@ -486,6 +498,10 @@ function openPhotoModal() {
   modal.hidden = false;
   void modal.offsetWidth;
   modal.classList.add('active');
+  modalSeen = 0;
+  clearTimeout(modalIdleTimer);
+  // a single-photo deck can't be cycled, so it's "fully seen" the moment it opens
+  if (modalOrder.length < 2) armModalAutoClose();
 }
 
 // positions every card by its depth in modalOrder — depth 0 (front) is full
@@ -515,9 +531,12 @@ function cyclePhotoModal() {
   modalOrder.push(modalOrder.shift());
   applyModalDepths(false);
   playSwap();
+  modalSeen++;
+  if (modalSeen >= modalOrder.length) armModalAutoClose();
 }
 
 function closePhotoModal() {
+  clearTimeout(modalIdleTimer);
   const modal = document.getElementById('photo-modal');
   modal.classList.remove('active');
   setTimeout(() => { modal.hidden = true; }, 250); // matches .photo-modal's opacity transition
