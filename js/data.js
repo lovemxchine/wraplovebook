@@ -21,8 +21,13 @@ const DATA_SOURCES = [
   { file: 'chat.json', key: 'chat' },
   { file: 'quiz.json', key: 'quiz' },
   { file: 'camera.json', key: 'photos' },
-  { file: 'timeline.json', key: 'timeline' },
-  { file: 'wishes.json', key: 'wishes' },
+  // ponytail: dead fetches, commented out rather than deleted — the json files
+  // and their renderers are still in the repo. timeline drove step 7 (the
+  // notebook, now commented out in index.html; renderSpread() in app.js has no
+  // caller), wishes has no renderer at all. Uncomment if either screen comes
+  // back; nothing else reads DATA.timeline / DATA.wishes today.
+  // { file: 'timeline.json', key: 'timeline' },
+  // { file: 'wishes.json', key: 'wishes' },
   { file: 'ending.json', key: 'ending' },
 ];
 
