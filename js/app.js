@@ -762,6 +762,15 @@ document.getElementById('photo-modal-stack').addEventListener('click', (e) => {
 
 // --- click delegation for data-action buttons ---
 document.addEventListener('click', (e) => {
+  // Step 1: first tap anywhere opens the envelope, and once the letter is out
+  // any tap anywhere goes on to step 2 — the letter paper used to be the only
+  // hit target and people kept tapping the envelope with nothing happening.
+  if (state.step === 1) {
+    const cover = document.querySelector('.cover');
+    if (cover.classList.contains('opening')) goToStep(2);
+    else cover.classList.add('opening');
+    return;
+  }
   const btn = e.target.closest('[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
